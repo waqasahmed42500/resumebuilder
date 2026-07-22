@@ -1,5 +1,14 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
 import Header from "../Component/Header";
 import Resume1 from "../tempelate/EachResume/Resume1";
+import Resume2 from "../tempelate/EachResume/Resume2";
+import Resume3 from "../tempelate/EachResume/Resume3";
+import Resume4 from "../tempelate/EachResume/Resume4";
+import Resume5 from "../tempelate/EachResume/Resume5";
+import Resume6 from "../tempelate/EachResume/Resume6";
+import Resume7 from "../tempelate/EachResume/Resume7";
 
 const sections = [
   { name: "Contact", icon: "●" },
@@ -9,6 +18,20 @@ const sections = [
 ];
 
 export default function Editor() {
+  const searchParams = useSearchParams();
+  const selectedTemplate = searchParams.get("template") || "resume1";
+
+  const templateComponents = {
+    resume1: Resume1,
+    resume2: Resume2,
+    resume3: Resume3,
+    resume4: Resume4,
+    resume5: Resume5,
+    resume6: Resume6,
+    resume7: Resume7,
+  };
+
+  const SelectedResume = templateComponents[selectedTemplate] || Resume1;
 
   return (
     <>
@@ -163,7 +186,7 @@ export default function Editor() {
             </div>
 
             <div className="flex w-full  justify-center items-start  lg:w-[50%] pt-4">
-              <Resume1/>
+              <SelectedResume />
             </div>
           </section>
         </div>

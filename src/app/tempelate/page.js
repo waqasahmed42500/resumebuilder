@@ -9,6 +9,7 @@ const templateStyles = ["All", "Modern", "Professional", "Creative", "Minimalist
 
 const templates = [
   {
+    id: "resume1",
     title: "Modernist",
     subtitle: "High-impact tech roles",
     style: "Modern",
@@ -17,6 +18,7 @@ const templates = [
     label: "Top Pick",
   },
   {
+    id: "resume2",
     title: "The Curator",
     subtitle: "Creative & Design leads",
     style: "Creative",
@@ -24,6 +26,7 @@ const templates = [
       "https://lh3.googleusercontent.com/aida-public/AB6AXuB_bh_uo4WmhZe_KDJ6EKubcbATqGi-oeBzoOAQ78Y5FWo2EJJ5MDJN-yfn4ujLjpxEE_UbUhFBGSUxwuq0HNSjI-Z2OIR7z2MqDGnw3S9Q1oA7kbTUEH-DmTXrrEI02z9pSlP4T_ICUTuiVz7460S2ixpOVWze0zwaJu8XeXWst80ZGV9x-eyQwQkhzXRWdUveSnHPeiTOWN2wLIiG1J98nx1nFYrJ4m_7jI1N6I7BUW_AppuTH4ZuRn2otLLKLUw0h1DWeQWAaBI",
   },
   {
+    id: "resume3",
     title: "Executive",
     subtitle: "Banking & Management",
     style: "Professional",
@@ -31,6 +34,7 @@ const templates = [
       "https://lh3.googleusercontent.com/aida-public/AB6AXuC2FXmaOFcyXINFgWmN6e4HP8zb5XqWxfO59FGAb2WLis62aSg9lK_21Cj5qVKRNiynxZUqUMGaEKOeMpRu0S-XvjQLjpuNK3m3WriEfBLmBAha9Qv0z_DEI0Js1wiUFkma4ilh1AiWMaAMfEYTHCE6SbyB8-GHXGJrx4HIj7poimlshzTnrzS4QGGCytBnIFqrT9qRINYOF78kzfoPaodJtmKayKlkvhyeiAbPZYqFRRIVDNM4gPzDdVwLCBib_SLVMxZ4Um9wcwk",
   },
   {
+    id: "resume4",
     title: "Zenith",
     subtitle: "Focus on content",
     style: "Minimalist",
@@ -38,6 +42,7 @@ const templates = [
       "https://lh3.googleusercontent.com/aida-public/AB6AXuB71Z6Afn4KWaoDoSkMAqcCxQykxehhVbwaCyBxnSH3QZ3YsAEWox1JbWtKUWeQ2gP4LlIi1JU8SkXUzp-NXxvwiJ14XS8WVyI6x0OME1zFRqVxNJPowQxxlKWI7bt73HRBUKPdrYAO9413RHe3HDod-wkXYT8E12lajozLYsXT0NRM7i8jhiDCLpoGugzr3xluvyBO-tVqxAuWQackRNwGReu6C-mNowx0H1wOpqOT7NvBzA8lO841m7IbdD4Xb8MpghwdtlNM7JY",
   },
   {
+    id: "resume5",
     title: "The Blueprint",
     subtitle: "Architecture & Engineering",
     style: "Professional",
@@ -45,11 +50,20 @@ const templates = [
       "https://lh3.googleusercontent.com/aida-public/AB6AXuC1lctFEzKoryEXkOS-6mUhI2ynilFgBXeaDBzJTWNo3dQX0BqsIfvXHf9YfDZ-0px3ZMt2h2Wwd_agDsrYNda8h39N9ph0d1u1YISQQ0h1Eem7rihjMyDXrgcM3K_ARZ2B1w6rMTpqqiiQtU_dCNHtRS0RJXk34d2CttE-HDYcOjIeivty8Xyn13C3gu_EAwbrXuh4HvigTSIJWRc9Aa-VrbjYPHZHoNpf0uBmJpWaIrEoC8jXeZyG5Y5Z_zy44Yjk1QS4720NIa0",
   },
   {
+    id: "resume6",
     title: "Helvetica",
     subtitle: "Bold and direct",
     style: "Modern",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA_XpsYfbPrGgtGay0HzsIW0hfnPldXzBw7n91YtKESm4GVOzzwcDXNprshAXop6ezCjIYktERHTi8nNphbyVgvg3-qQBbrMWOKUerLXNI3aPuOK26aAnedbUFwmldd2ic0qMoeo_5ZxSlc0Js35LT7Gy2UZwCCTDnpIhnD-KCyKWhV_Pchsxrrw6fo3ml1b2zmz2T4C7q5ljUNu1wVGW-yzz8l_2QDoVX5AgBfqBSppT4TzxPoa5OvxD0LFK413xmDEGgpgfqDk",
+  },
+  {
+    id: "resume7",
+    title: "Northstar",
+    subtitle: "Balanced and polished",
+    style: "Professional",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCVBOLq1nq6dIzc4v0eLua42wLpMZfNqvPr3feJ8f_B0kTWc6d3i7u4z7g0bKCu6PnC0Lr6r0B3vG9lt3uNq2b0mZ5YxScOpaQ2z4B8MF4hV9qNQ7D7gJ7m5aOjt6Umk3wFI9K_25s1kN11vNqJ5wWp3kk6Gd8gF99TjA",
   },
 ];
 
@@ -139,7 +153,7 @@ export default function tempelate() {
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-sky-900/30 opacity-0 backdrop-blur-[2px] transition-opacity group-hover:opacity-100">
                     <Link
-                      href="/Editor"
+                      href={`/Editor?template=${template.id}`}
                       className="rounded-xl bg-white px-8 py-3 font-bold text-sky-700 shadow-xl transition-all active:scale-95"
                     >
                       Use {template.title}
