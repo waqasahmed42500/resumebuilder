@@ -7,7 +7,7 @@ const Resume1 = () => {
       <div className="w-[794px] -mt-[250px] scale-55 min-h-[1123px] bg-white shadow-2xl flex overflow-hidden">
 
         {/* ================= LEFT SIDEBAR ================= */}
-        <aside className="w-[250px] bg-slate-900 text-white">
+        <aside className="w-[250px] bg-blue-300 text-white">
 
           {/* Profile */}
           <div className="flex flex-col items-center pt-10">
