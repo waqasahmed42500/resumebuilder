@@ -1,6 +1,14 @@
 const Resume2 = () => {
   return (
-    <div className="w-[794px] -mt-[250px] scale-55 min-h-[1123px] bg-white shadow-2xl overflow-hidden">
+    <div
+    className="
+    w-[794px]
+    h-[1123px]
+    bg-white
+    shadow-2xl
+    origin-top
+    "
+>
       <div className="bg-emerald-700 px-10 py-9 text-white">
         <div className="flex items-end justify-between gap-6">
           <div>

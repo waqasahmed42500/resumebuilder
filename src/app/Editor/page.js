@@ -36,9 +36,11 @@ export default function Editor() {
   return (
     <>
       <Header />
-      <main className="min-h-screen  bg-slate-50 pt-16">
-        <div className="flex min-h-[100vh]  flex-col lg:flex-row">
-          <aside className="flex w-full shrink-0 flex-col border-b border-slate-200 bg-white p-3 lg:w-55 lg:border-b-0 lg:border-r">
+      
+   <main className="pt-16 bg-slate-100">
+  <div className="flex">
+
+  <aside className="flex fixed top-16 h-[90vh] left-0 w-full shrink-0 flex-col border-b border-slate-200 bg-white p-3 lg:w-50 lg:border-b-0 lg:border-r">
             <div className="rounded-2xl relative border border-slate-200 bg-slate-50 p-4 shadow-sm">
               <div className="flex  items-center justify-between">
                 <div>
@@ -83,9 +85,14 @@ export default function Editor() {
             </div>
           </aside>
 
-          <section className="flex flex-1 flex-col overflow-hidden lg:flex-row">
-            <div className="w-full  bg-slate-100 px-4 py-6 lg:w-[50%] md:w-[50%] md:px-4 lg:px-6  xl:px-6">
-              <div className="mx-auto max-w-xl">
+
+
+    {/* Right Side */}
+    <div className="ml-48 flex flex-1">
+
+      {/* Form */}
+      <div className="w-full lg:w-1/2 p-6 overflow-y-auto h-[calc(100vh-64px)]">
+            <div className="mx-auto max-w-xl">
                 <div className="mb-8">
                   <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-600">
                     Step 2
@@ -183,14 +190,17 @@ export default function Editor() {
                   </button>
                 </div>
               </div>
-            </div>
+      </div>
 
-            <div className="flex w-full  justify-center items-start  lg:w-[50%] pt-4">
-              <SelectedResume />
-            </div>
-          </section>
-        </div>
-      </main>
+      {/* Resume Preview */}
+      <div className="hidden lg:flex lg:w-1/2 justify-center bg-slate-200 overflow-auto h-[calc(100vh-64px)] p-8">
+        <SelectedResume />
+      </div>
+
+    </div>
+
+  </div>
+</main>
     </>
   );
 }
