@@ -10,6 +10,8 @@ const fallbackData = {
 };
 
 const Resume2 = ({ data = fallbackData }) => {
+
+  
   const { contact, summary, experiences, education, skills } = data;
 
   return (
