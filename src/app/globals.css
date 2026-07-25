@@ -1,28 +1,101 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f7fb;
+  --foreground: #111827;
+  --primary: #4f46e5;
+  --on-primary: #ffffff;
+  --primary-container: #dfe4ff;
+  --on-primary-container: #17236b;
+  --secondary: #dc7a96;
+  --secondary-container: #ffe6ef;
+  --on-secondary-container: #8a3354;
+  --secondary-fixed: #ffe6ef;
+  --on-secondary-fixed: #8a3354;
+  --tertiary-container: #e0f2fe;
+  --on-tertiary-container: #0f4572;
+  --surface: #f8fafc;
+  --surface-container-low: #ffffff;
+  --surface-container: #f3f5f9;
+  --surface-container-high: #eef2ff;
+  --surface-container-lowest: #ffffff;
+  --surface-tint: #4f46e5;
+  --on-surface: #111827;
+  --on-surface-variant: #64748b;
+  --outline-variant: #dbe2ea;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-secondary: var(--secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  --color-secondary-fixed: var(--secondary-fixed);
+  --color-on-secondary-fixed: var(--on-secondary-fixed);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+  --color-surface: var(--surface);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-tint: var(--surface-tint);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline-variant: var(--outline-variant);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-body: "Inter", "Segoe UI", Arial, sans-serif;
+  --font-label: "Inter", "Segoe UI", Arial, sans-serif;
+  --font-headline: "Georgia", "Times New Roman", serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --primary: #818cf8;
+    --on-primary: #0f172a;
+    --primary-container: #312e81;
+    --on-primary-container: #e0e7ff;
+    --secondary: #f9a8d4;
+    --secondary-container: #831843;
+    --on-secondary-container: #ffe4f0;
+    --secondary-fixed: #831843;
+    --on-secondary-fixed: #ffe4f0;
+    --surface: #020617;
+    --surface-container-low: #111827;
+    --surface-container: #1f2937;
+    --surface-container-high: #273449;
+    --surface-container-lowest: #020617;
+    --surface-tint: #818cf8;
+    --on-surface: #f8fafc;
+    --on-surface-variant: #cbd5e1;
+    --outline-variant: #334155;
   }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body, Arial, Helvetica, sans-serif);
+}
+
+.resume-shadow {
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.1);
 }
 
 /* Keeps the A4 document fully visible without transform overflow on tablets. */
