@@ -1,12 +1,24 @@
 const Resume3 = ({ data }) => {
-  const contact = data?.contact ?? { fullName: "Mia Ali", headline: "Brand & Digital Designer", email: "mia.ali@studio.com", phone: "+92 300 555 0142", location: "Karachi, Pakistan", website: "miastudio.co" };
+  const contact = data?.contact ?? { 
+    fullName: "Mia Ali", 
+    headline: "Brand & Digital Designer", 
+    email: "mia.ali@studio.com", 
+    phone: "+92 300 555 0142", 
+    location: "Karachi, Pakistan", 
+    website: "miastudio.co" ,
+    photo: "",
+  
+  };
   const skills = data?.skills?.length ? data.skills : ["Visual identity", "Digital product design", "Editorial design", "Creative direction", "Campaign systems"];
   const experiences = data?.experiences?.length ? data.experiences : [{ id: "1", role: "Senior Brand Designer", company: "Rally Creative", startDate: "2022", endDate: "Present", description: "Direct identity and launch work for technology and cultural brands." }, { id: "2", role: "Visual Designer", company: "Studio Morrow", startDate: "2019", endDate: "2022", description: "Designed campaigns, publication systems, and websites for international clients." }];
   const education = data?.education?.length ? data.education : [{ id: "1", degree: "BDes, Visual Communication", school: "Indus Valley School", year: "2019" }];
   return (
     <article className="min-h-[1123px] w-[794px] bg-[#fbfaf8] font-sans text-slate-700 shadow-2xl">
       <header className="bg-slate-950 px-12 py-12 text-white">
-        <div className="flex items-center justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.32em] text-amber-300">{contact.headline}</p><h1 className="mt-3 text-5xl font-black tracking-tight">{contact.fullName}</h1><p className="mt-3 text-sm text-slate-300">{data?.summary || "Creating considered identities and digital experiences."}</p></div><div className="h-20 w-20 rounded-full border-[9px] border-amber-400" /></div>
+        <div className="flex items-center justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.32em] text-amber-300">{contact.headline}</p><h1 className="mt-3 text-5xl font-black tracking-tight">{contact.fullName}</h1><p className="mt-3 w-[500px] text-sm text-slate-300">{data?.summary || "Creating considered identities and digital experiences."}</p></div><div className="h-30 w-30 rounded-full border-[9px] border-amber-400 overflow-hidden" >
+        <img className="h-full w-full object-cover" src={`${contact.photo}`} alt="" />
+        </div>
+        </div>
       </header>
       <div className="grid grid-cols-[0.7fr_1.3fr]">
         <aside className="bg-amber-400 px-8 py-10 text-slate-950">

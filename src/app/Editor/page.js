@@ -55,6 +55,7 @@ const initialCuratorData = {
     phone: "+1 415 555 0198",
     location: "San Francisco, CA",
     website: "linkedin.com/in/alexmorgan",
+    photo:""
   },
   summary: "Customer-obsessed product manager with 7 years of experience shaping B2B software, aligning teams around outcomes, and turning insight into simple, valuable products.",
   experiences: [
@@ -224,7 +225,7 @@ const canvas = await html2canvas(previewRef.current, {
           <aside 
           onMouseEnter={()=> setsideBarHOver(true)}
           onMouseLeave={()=> setsideBarHOver(false)}
-          className={`editor-sidebar ${ShowResumeScore ? 'brightness-50' :'brightness-100'} group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-200 bg-white p-2 md:flex  `}>
+          className={`editor-sidebar ${ShowResumeScore ? 'brightness-50' :'brightness-100'} group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-blue-100 p-2 md:flex  `}>
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
 
   {/* Circle Progress */}
@@ -311,7 +312,14 @@ const canvas = await html2canvas(previewRef.current, {
                   <AtsScore setShowResumeScore={setShowResumeScore} analysis={atsAnalysis} keywords={targetKeywords} setKeywords={setTargetKeywords} ShowResumeScore={ShowResumeScore} isOpen={showAtsScore} onToggle={() => setShowAtsScore((current) => !current)} />
                   {/* <ThemeControls accent={themeAccent} setAccent={setThemeAccent} font={themeFont} setFont={setThemeFont} /> */}
                   <div className="mb-5 flex gap-2 overflow-x-auto pb-1 md:hidden">{editorSections.map((item) => <button key={item.id} onClick={() => setActiveSection(item.id)} className={`shrink-0 rounded-full px-3 py-2 text-xs font-semibold ${activeSection === item.id ? "bg-emerald-700 text-white" : "bg-white text-slate-600"}`}>{item.label}</button>)}</div>
-                  {activeSection === "contact" && <ContactForm data={resumeData} updateContact={updateContact} updateSummary={updateSummary} />}
+                  {activeSection === "contact" && (
+  <ContactForm
+    data={resumeData}
+    updateContact={updateContact}
+    updateSummary={updateSummary}
+    selectedTemplate={selectedTemplate}
+  />
+)}
                   {activeSection === "experience" && <ExperienceForm experiences={resumeData.experiences} update={updateCollection} add={addExperience} remove={removeItem} />}
                   {activeSection === "education" && <EducationForm education={resumeData.education} update={updateCollection} add={addEducation} remove={removeItem} />}
                   {activeSection === "skills" && <SkillsForm skills={resumeData.skills} value={skillInput} setValue={setSkillInput} add={addSkill} remove={removeSkill} />}
@@ -361,7 +369,88 @@ function Field({ label, value, onChange, type = "text", textarea = false, placeh
 }
 
 function FormCard({ children }) { return <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">{children}</div>; }
-function ContactForm({ data, updateContact, updateSummary }) { return <FormCard><div className="grid gap-4 sm:grid-cols-2"><div className="sm:col-span-2"><Field label="Full name" value={data.contact.fullName} onChange={(value) => updateContact("fullName", value)} /></div><div className="sm:col-span-2"><Field label="Professional headline" value={data.contact.headline} onChange={(value) => updateContact("headline", value)} /></div><Field label="Email" type="email" value={data.contact.email} onChange={(value) => updateContact("email", value)} /><Field label="Phone" type="tel" value={data.contact.phone} onChange={(value) => updateContact("phone", value)} /><Field label="Location" value={data.contact.location} onChange={(value) => updateContact("location", value)} /><Field label="Website or LinkedIn" value={data.contact.website} onChange={(value) => updateContact("website", value)} /><div className="sm:col-span-2"><Field label="Professional summary" textarea value={data.summary} onChange={updateSummary} /></div></div></FormCard>; }
+
+const PHOTO_ENABLED_TEMPLATES = ["resume1", "resume3"];
+
+function ContactForm({ data, updateContact, updateSummary, selectedTemplate }) {
+  const fileInputRef = useRef(null);
+  const showPhotoUpload = PHOTO_ENABLED_TEMPLATES.includes(selectedTemplate);
+
+  const handlePhotoChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) return;
+    if (file.size > 3 * 1024 * 1024) {
+      alert("Please choose an image under 3MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => updateContact("photo", reader.result);
+    reader.readAsDataURL(file);
+    event.target.value = "";
+  };
+
+  const handleRemovePhoto = () => {
+    updateContact("photo", "");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  return (
+    <FormCard>
+      {showPhotoUpload ? (
+        <div className="mb-5 flex items-center gap-4">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-50">
+            {data.contact.photo ? (
+              <img src={data.contact.photo} alt="Profile" className="h-full w-full object-cover" />
+            ) : (
+              <span className="text-[10px] font-semibold uppercase text-slate-400">No photo</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+              >
+                {data.contact.photo ? "Change photo" : "Upload photo"}
+              </button>
+              {data.contact.photo ? (
+                <button
+                  type="button"
+                  onClick={handleRemovePhoto}
+                  className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-semibold text-rose-600 transition hover:bg-rose-50"
+                >
+                  Remove
+                </button>
+              ) : null}
+            </div>
+            <p className="text-[11px] text-slate-500">PNG or JPG, up to 3MB.</p>
+          </div>
+          <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+        </div>
+      ) : null}
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <Field label="Full name" value={data.contact.fullName} onChange={(value) => updateContact("fullName", value)} />
+        </div>
+        <div className="sm:col-span-2">
+          <Field label="Professional headline" value={data.contact.headline} onChange={(value) => updateContact("headline", value)} />
+        </div>
+        <Field label="Email" type="email" value={data.contact.email} onChange={(value) => updateContact("email", value)} />
+        <Field label="Phone" type="tel" value={data.contact.phone} onChange={(value) => updateContact("phone", value)} />
+        <Field label="Location" value={data.contact.location} onChange={(value) => updateContact("location", value)} />
+        <Field label="Website or LinkedIn" value={data.contact.website} onChange={(value) => updateContact("website", value)} />
+        <div className="sm:col-span-2">
+          <Field label="Professional summary" textarea value={data.summary} onChange={updateSummary} />
+        </div>
+      </div>
+    </FormCard>
+  );
+}
 function ExperienceForm({ experiences, update, add, remove }) { return <div className="space-y-4">{experiences.map((experience, index) => <FormCard key={experience.id}><div className="mb-5 flex items-center justify-between"><p className="text-sm font-bold text-slate-900">Role {index + 1}</p><button type="button" onClick={() => remove("experiences", experience.id)} disabled={experiences.length === 1} className="text-xs font-semibold text-rose-600 disabled:opacity-40">Remove</button></div><div className="grid gap-4 sm:grid-cols-2"><div className="sm:col-span-2"><Field label="Job title" value={experience.role} onChange={(value) => update("experiences", experience.id, "role", value)} /></div><Field label="Company" value={experience.company} onChange={(value) => update("experiences", experience.id, "company", value)} /><div className="hidden sm:block" /><Field label="Start year" value={experience.startDate} onChange={(value) => update("experiences", experience.id, "startDate", value)} /><Field label="End year" value={experience.endDate} onChange={(value) => update("experiences", experience.id, "endDate", value)} /><div className="sm:col-span-2"><Field label="Impact and responsibilities" textarea value={experience.description} onChange={(value) => update("experiences", experience.id, "description", value)} /></div></div></FormCard>)}<button type="button" onClick={add} className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-4 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-100">+ Add another role</button></div>; }
 function EducationForm({ education, update, add, remove }) { return <div className="space-y-4">{education.map((entry, index) => <FormCard key={entry.id}><div className="mb-5 flex items-center justify-between"><p className="text-sm font-bold text-slate-900">Education {index + 1}</p><button type="button" onClick={() => remove("education", entry.id)} disabled={education.length === 1} className="text-xs font-semibold text-rose-600 disabled:opacity-40">Remove</button></div><div className="grid gap-4"><Field label="Degree or qualification" value={entry.degree} onChange={(value) => update("education", entry.id, "degree", value)} /><Field label="School or university" value={entry.school} onChange={(value) => update("education", entry.id, "school", value)} /><Field label="Graduation year" value={entry.year} onChange={(value) => update("education", entry.id, "year", value)} /></div></FormCard>)}<button type="button" onClick={add} className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-4 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-100">+ Add education</button></div>; }
 function SkillsForm({ skills, value, setValue, add, remove }) { return <FormCard><p className="mb-5 text-sm leading-6 text-slate-600">Add skills that are specific to the role you want. They will appear in The Curator&apos;s sidebar.</p><div className="flex gap-2"><input value={value} onChange={(event) => setValue(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); add(); } }} className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none focus:border-emerald-500 focus:bg-white" placeholder="e.g. Stakeholder management" /><button type="button" onClick={add} className="rounded-xl bg-emerald-700 px-4 text-sm font-semibold text-white hover:bg-emerald-800">Add</button></div><div className="mt-5 flex flex-wrap gap-2">{skills.map((skill) => <button type="button" onClick={() => remove(skill)} key={skill} className="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-900 transition hover:bg-rose-50 hover:text-rose-700">{skill} <span aria-hidden="true">x</span></button>)}</div></FormCard>; }
@@ -429,7 +518,7 @@ function ThemeControls({setShowResumeScore, accent, setAccent, font, setFont }) 
         </select>
       </label>
       <div className="h-8 w-px bg-slate-200" />
-      <button onClick={()=> setShowResumeScore(true)} className="text-white  px-2 py-1.5 hover:cursor-pointer rounded-md text-sm bg-emerald-700 text-nowrap">Resume score</button>
+      <button onClick={()=> setShowResumeScore(true)} className="text-white  px-2 py-1.5 md:inline-block hidden hover:cursor-pointer rounded-md text-sm bg-emerald-700 text-nowrap">Resume score</button>
     </section>
   );
 }
