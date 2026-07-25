@@ -20,8 +20,8 @@ const templates = [
   {
     id: "resume2",
     title: "The Curator",
-    subtitle: "Creative & Design leads",
-    style: "Creative",
+    subtitle: "Product & strategy leaders",
+    style: "Professional",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuB_bh_uo4WmhZe_KDJ6EKubcbATqGi-oeBzoOAQ78Y5FWo2EJJ5MDJN-yfn4ujLjpxEE_UbUhFBGSUxwuq0HNSjI-Z2OIR7z2MqDGnw3S9Q1oA7kbTUEH-DmTXrrEI02z9pSlP4T_ICUTuiVz7460S2ixpOVWze0zwaJu8XeXWst80ZGV9x-eyQwQkhzXRWdUveSnHPeiTOWN2wLIiG1J98nx1nFYrJ4m_7jI1N6I7BUW_AppuTH4ZuRn2otLLKLUw0h1DWeQWAaBI",
   },
@@ -67,7 +67,7 @@ const templates = [
   },
 ];
 
-export default function tempelate() {
+export default function TemplatePage() {
   const [selectedStyle, setSelectedStyle] = useState("All");
   const [searchValue, setSearchValue] = useState("");
 
