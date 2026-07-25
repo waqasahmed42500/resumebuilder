@@ -123,13 +123,13 @@ export default function TemplatePage() {
             <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
               <IoSearchSharp />
             </span>
-            <input
-              value={searchValue}
-              onChange={(event) => setSearchValue(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-12 pr-4 text-slate-700 transition-all placeholder:text-slate-400 focus:border-sky-400 focus:outline-none"
-              placeholder="Search templates..."
-              type="text"
-            />
+           <input
+  value={searchValue}
+  onChange={(event) => setSearchValue(event.target.value)}
+  className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-12 pr-4 text-slate-700 ..."
+  placeholder="Search templates..."
+  type="text"
+/>
           </div>
         </section>
 

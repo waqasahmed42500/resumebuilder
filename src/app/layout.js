@@ -16,6 +16,11 @@ export const metadata = {
   description: "A modern resume builder experience",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html

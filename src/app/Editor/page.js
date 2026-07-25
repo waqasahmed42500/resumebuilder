@@ -155,6 +155,7 @@ function EditorContent() {
   };
   
   const [sideBarHOver, setsideBarHOver] = useState(false)
+  const [ShowResumeScore, setShowResumeScore] = useState(false)
   useEffect(() => {
     persistDraft("Auto-saved locally");
   }, [resumeData, skillInput, targetKeywords, activeSection, showAtsScore, themeAccent, themeFont]);
@@ -206,7 +207,7 @@ function EditorContent() {
         <div className="flex">
           <div
   className={`fixed left-0 top-0 z-20 h-screen w-full bg-black/60 pt-16 transition-all duration-300
-  ${sideBarHOver ? "block" : "hidden"}
+  ${sideBarHOver || ShowResumeScore ? "block" : "hidden"}
   `}
 >
 
@@ -215,11 +216,11 @@ function EditorContent() {
           <aside 
           onMouseEnter={()=> setsideBarHOver(true)}
           onMouseLeave={()=> setsideBarHOver(false)}
-          className="editor-sidebar group hover:w-50 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-200 bg-white p-2 md:flex xl:w-60 xl:p-3">
+          className={`editor-sidebar ${ShowResumeScore ? 'brightness-50' :'brightness-100'} group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-200 bg-white p-2 md:flex  `}>
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
 
   {/* Circle Progress */}
-  <div className="flex justify-center group-hover:hidden xl:hidden">
+  <div className="flex justify-center group-hover:hidden">
     <div className="relative h-10 w-10">
       <svg className="h-10  w-10 -rotate-90">
         <circle
@@ -250,7 +251,7 @@ function EditorContent() {
   </div>
 
   {/* Expanded Card */}
-  <div className="hidden group-hover:block xl:block">
+  <div className="hidden group-hover:block ">
     <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-500">
       Resume Progress
     </p>
@@ -269,24 +270,24 @@ function EditorContent() {
     </div>
   </div>
 </div>
-            <nav className="mt-6 space-y-2 xl:mt-8">
-              {editorSections.map((item, index) => <button key={item.id} type="button" onClick={() => setActiveSection(item.id)} className={`flex w-full hover:cursor-pointer items-center  gap-3 rounded-xl px-3 py-3 text-sm font-medium transition xl:justify-start xl:px-4 ${activeSection === item.id ? "bg-emerald-700 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`}><span className="text-2xl text-center font-bold">{item.icon}</span><span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto xl:w-auto group-hover:opacity-100 xl:opacity-100">{item.label}</span></button>)}
+            <nav className="mt-6 space-y-2 ">
+              {editorSections.map((item, index) => <button key={item.id} type="button" onClick={() => setActiveSection(item.id)} className={`flex w-full hover:cursor-pointer items-center  gap-3 rounded-xl px-3 py-3 text-sm font-medium transition  ${activeSection === item.id ? "bg-emerald-700 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`}><span className="text-2xl text-center font-bold">{item.icon}</span><span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto xl:w-auto group-hover:opacity-100 xl:opacity-100">{item.label}</span></button>)}
             </nav>
             <div className="mt-auto space-y-3">
               <button type="button" onClick={handleDownloadPdf} disabled={isExportingPdf} className="w-full rounded-xl bg-slate-900 px-3 py-3 text-xs font-semibold text-white flex items-center gap-2 transition hover:bg-slate-800 disabled:cursor-not-allowed hover:cursor-pointer disabled:opacity-70 xl:text-sm">
                 <span><IoMdDownload className="text-xl" /> </span> 
-                <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto xl:w-auto group-hover:opacity-100 xl:opacity-100">
+                <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto  group-hover:opacity-100 ">
                   
                   {isExportingPdf ? "Preparing PDF..." : "Download PDF"}</span>
               </button>
-              <button type="button" onClick={handleSaveDraft} className="flex items-center gap-2 hover:cursor-pointer w-full rounded-xl border border-slate-200 px-3 py-3 text-xs font-semibold text-slate-600 xl:text-sm">
+              <button type="button" onClick={handleSaveDraft} className="flex items-center gap-2 hover:cursor-pointer w-full rounded-xl border border-slate-200 px-3 py-3 text-xs font-semibold text-slate-600 ">
                 <span className="text-xl text-center font-bold"><VscSaveAs /></span>
-                <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto xl:w-auto group-hover:opacity-100 xl:opacity-100">Save draft</span>
+                <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto  group-hover:opacity-100 ">Save draft</span>
               </button>
             </div>
           </aside>
 
-          <div className=" w-full md:ml-16  lg:flex xl:ml-60">
+          <div className=" w-full md:ml-16  lg:flex ">
             <section className="editor-panel  min-w-0 w-full p-4 sm:p-6 lg:w-[48%] lg:pb-12">
               <div className="mx-auto max-w-xl">
                 <>
@@ -299,8 +300,8 @@ function EditorContent() {
                       </div>
                       <button type="button" onClick={handleDownloadPdf} disabled={isExportingPdf} className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70">{isExportingPdf ? "Preparing..." : "Download PDF"}</button>
                       </div>
-                  <AtsScore analysis={atsAnalysis} keywords={targetKeywords} setKeywords={setTargetKeywords} isOpen={showAtsScore} onToggle={() => setShowAtsScore((current) => !current)} />
-                  <ThemeControls accent={themeAccent} setAccent={setThemeAccent} font={themeFont} setFont={setThemeFont} />
+                  <AtsScore setShowResumeScore={setShowResumeScore} analysis={atsAnalysis} keywords={targetKeywords} setKeywords={setTargetKeywords} ShowResumeScore={ShowResumeScore} isOpen={showAtsScore} onToggle={() => setShowAtsScore((current) => !current)} />
+                  {/* <ThemeControls accent={themeAccent} setAccent={setThemeAccent} font={themeFont} setFont={setThemeFont} /> */}
                   <div className="mb-5 flex gap-2 overflow-x-auto pb-1 md:hidden">{editorSections.map((item) => <button key={item.id} onClick={() => setActiveSection(item.id)} className={`shrink-0 rounded-full px-3 py-2 text-xs font-semibold ${activeSection === item.id ? "bg-emerald-700 text-white" : "bg-white text-slate-600"}`}>{item.label}</button>)}</div>
                   {activeSection === "contact" && <ContactForm data={resumeData} updateContact={updateContact} updateSummary={updateSummary} />}
                   {activeSection === "experience" && <ExperienceForm experiences={resumeData.experiences} update={updateCollection} add={addExperience} remove={removeItem} />}
@@ -311,7 +312,14 @@ function EditorContent() {
               </div>
             </section>
 
-            <section aria-label="Live resume preview" className="editor-preview flex min-w-0 w-full justify-center border-t border-slate-200 bg-slate-200/70 px-3 py-6 sm:px-6 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:w-[52%] lg:border-l lg:border-t-0 lg:overflow-auto"><div ref={previewRef} className="resume-preview-document bg-white"><SelectedResume data={resumeData} theme={{ accent: themeAccent, fontFamily: themeFont }} /></div></section>
+            <section aria-label="Live resume preview" className="editor-preview flex min-w-0 w-full flex-col items-center border-t border-slate-200 bg-slate-200/70 px-3 py-6 sm:px-6 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:w-[52%] lg:border-l lg:border-t-0 lg:overflow-auto">
+  <div className="mb-4 w-full max-w-2xl">
+    <ThemeControls accent={themeAccent}  setShowResumeScore = {setShowResumeScore} setAccent={setThemeAccent} font={themeFont} setFont={setThemeFont} />
+  </div>
+  <div ref={previewRef} className="resume-preview-document bg-white">
+    <SelectedResume data={resumeData} theme={{ accent: themeAccent, fontFamily: themeFont }} />
+  </div>
+</section>
           </div>
         </div>
       </main>
@@ -363,65 +371,52 @@ function buildAtsAnalysis(data, keywordInput) {
   return { score, checks, jobKeywords, matchedKeywords };
 }
 
-function ThemeControls({ accent, setAccent, font, setFont }) {
+function ThemeControls({setShowResumeScore, accent, setAccent, font, setFont }) {
   return (
-    <section className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Visual theme</p>
-          <p className="mt-1 text-sm text-slate-600">Adjust the preview colors and typography safely for the selected template.</p>
+    <section className="mb-3 flex max-h-[150px] items-center md:gap-4 gap-2 rounded-b-2xl border -mt-6 border-slate-200 bg-white md:px-4 px-2 py-3 shadow-sm">
+      <div className="md:flex items-center gap-2">
+        <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Color</span>
+        <div className="flex flex-wrap gap-1.5">
+          {accentPresets.map((preset) => (
+            <button
+              key={preset.value}
+              type="button"
+              onClick={() => setAccent(preset.value)}
+              className={`h-6 w-6 rounded-full border-2 transition ${accent === preset.value ? "border-slate-900" : "border-slate-200"}`}
+              style={{ backgroundColor: preset.value }}
+              aria-label={`Use ${preset.label} accent`}
+            />
+          ))}
         </div>
       </div>
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <label className="block">
-          <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Accent color</span>
-          <div className="flex flex-wrap gap-2">
-            {accentPresets.map((preset) => (
-              <button
-                key={preset.value}
-                type="button"
-                onClick={() => setAccent(preset.value)}
-                className={`h-9 w-9 rounded-full border-2 transition ${accent === preset.value ? "border-slate-900" : "border-slate-200"}`}
-                style={{ backgroundColor: preset.value }}
-                aria-label={`Use ${preset.label} accent`}
-              />
-            ))}
-          </div>
-          <input value={accent} onChange={(event) => setAccent(event.target.value)} className="mt-3 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none focus:border-emerald-500" type="color" />
-        </label>
-        <label className="block">
-          <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Typography</span>
-          <select value={font} onChange={(event) => setFont(event.target.value)} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none focus:border-emerald-500">
-            {fontOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-          </select>
-        </label>
-      </div>
+      <div className="h-8 w-px bg-slate-200" />
+      <label className="md:flex flex-1 items-center gap-2">
+        <span className="whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Font</span>
+        <select
+          value={font}
+          onChange={(event) => setFont(event.target.value)}
+          className="min-w-0 text-black flex-1 rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5 text-xs outline-none focus:border-emerald-500"
+        >
+          {fontOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+        </select>
+      </label>
+      <div className="h-8 w-px bg-slate-200" />
+      <button onClick={()=> setShowResumeScore(true)} className="text-white  px-2 py-1.5 hover:cursor-pointer rounded-md text-sm bg-emerald-700">Resume score</button>
     </section>
   );
 }
-
-function AtsScore({ analysis, keywords, setKeywords, isOpen, onToggle }) {
+function AtsScore({setShowResumeScore,ShowResumeScore, analysis, keywords, setKeywords, isOpen, onToggle }) {
   const improvements = analysis.checks.filter((check) => !check.passed).slice(0, 3);
 
   return (
-    <section className="mb-5">
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-expanded={isOpen}
-        className="flex w-full items-center justify-between rounded-2xl border border-emerald-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md sm:p-5"
-      >
-        <span>
-          <span className="block text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">ATS readiness</span>
-          <span className="mt-1 block text-sm text-slate-600">Check keyword coverage, missing details, and ATS-safe formatting.</span>
-        </span>
-        <span className="rounded-xl bg-emerald-700 px-3 py-2 text-xs font-bold text-white">{isOpen ? "Hide score" : "Show resume score"}</span>
-      </button>
-      <div className={`grid transition-all duration-500 ease-out ${isOpen ? "mt-3 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"}`}>
+    <section className="mb-5 relative">
+
+      <div className={`${ShowResumeScore ? 'block' : 'hidden'}  grid transition-all duration-500 ease-out mt-3 grid-rows-[1fr] z-20  fixed top-[15%] left-[25%] -translate-X-[50%]  -translate-Y-[70%]`}>
         <div className="overflow-hidden">
-          <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 sm:p-5">
-            <div className="flex items-start gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-[5px] border-emerald-600 bg-white text-lg font-black text-emerald-800">{analysis.score}</div>
+          <div className="rounded-2xl border  border-emerald-100 bg-emerald-50 p-4 sm:p-5">
+            <div className="flex items-start  gap-4">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-[5px] border-emerald-600 bg-white text-lg font-black  text-emerald-800">{analysis.score}</div>
+      <button onClick={()=>setShowResumeScore(false)} className="absolute rounded-tr-2xl top-0 hover:cursor-pointer right-0 bg-black text-white px-3 rounded-bl-xl py-1">X</button>
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">Current score</p>
                 <p className="mt-1 text-sm leading-5 text-slate-600">A practical check for keywords, standard sections, readable formatting, and missing details.</p>
