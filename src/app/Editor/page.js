@@ -168,15 +168,22 @@ function EditorContent() {
     if (!previewRef.current) return;
 
     setIsExportingPdf(true);
+    const controls = document.querySelector(".theme-controls");
 
     try {
-      const canvas = await html2canvas(previewRef.current, {
+      
+      
+      
+controls?.classList.add("hidden");
+
+const canvas = await html2canvas(previewRef.current, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
         logging: false,
       });
-
+      controls?.classList.remove("hidden");
+      
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
       const pageWidth = pdf.internal.pageSize.getWidth();
@@ -197,6 +204,7 @@ function EditorContent() {
       window.print();
     } finally {
       setIsExportingPdf(false);
+      controls?.classList.remove("hidden");
     }
   };
   
@@ -288,7 +296,7 @@ function EditorContent() {
           </aside>
 
           <div className=" w-full md:ml-16  lg:flex ">
-            <section className="editor-panel  min-w-0 w-full p-4 sm:p-6 lg:w-[48%] lg:pb-12">
+            <section className="editor-panel bg-slate-100  min-w-0 w-full p-4 sm:p-6 lg:w-[48%] lg:pb-12">
               <div className="mx-auto max-w-xl">
                 <>
                   <div className="mb-6    flex items-center justify-between gap-4">
@@ -312,13 +320,33 @@ function EditorContent() {
               </div>
             </section>
 
-            <section aria-label="Live resume preview" className="editor-preview flex min-w-0 w-full flex-col items-center border-t border-slate-200 bg-slate-200/70 px-3 py-6 sm:px-6 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:w-[52%] lg:border-l lg:border-t-0 lg:overflow-auto">
-  <div className="mb-4 w-full max-w-2xl">
-    <ThemeControls accent={themeAccent}  setShowResumeScore = {setShowResumeScore} setAccent={setThemeAccent} font={themeFont} setFont={setThemeFont} />
+          <section aria-label="Live resume preview" className="editor-preview flex min-w-0 w-full flex-col items-center border-t border-slate-100 bg-slate-100 px-3 py-6 sm:px-6 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:w-[52%] lg:border-l lg:border-t-0 lg:overflow-auto">
+
+  <div className="mb-4 w-full max-w-2xl theme-controls">
+    <ThemeControls
+      accent={themeAccent}
+      setAccent={setThemeAccent}
+      font={themeFont}
+      setFont={setThemeFont}
+      setShowResumeScore={setShowResumeScore}
+    />
   </div>
-  <div ref={previewRef} className="resume-preview-document bg-white">
-    <SelectedResume data={resumeData} theme={{ accent: themeAccent, fontFamily: themeFont }} />
+
+  <div className="flex justify-center">
+      <div
+          ref={previewRef}
+          className="resume-preview-document bg-white"
+      >
+          <SelectedResume
+              data={resumeData}
+              theme={{
+                  accent: themeAccent,
+                  fontFamily: themeFont,
+              }}
+          />
+      </div>
   </div>
+
 </section>
           </div>
         </div>
@@ -373,10 +401,10 @@ function buildAtsAnalysis(data, keywordInput) {
 
 function ThemeControls({setShowResumeScore, accent, setAccent, font, setFont }) {
   return (
-    <section className="mb-3 flex max-h-[150px] items-center md:gap-4 gap-2 rounded-b-2xl border -mt-6 border-slate-200 bg-white md:px-4 px-2 py-3 shadow-sm">
-      <div className="md:flex items-center gap-2">
-        <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Color</span>
-        <div className="flex flex-wrap gap-1.5">
+    <section className="mb-3 flex max-h-[150px] items-center justify-between md:gap-3 gap-2 rounded-b-2xl border -mt-6 border-slate-200 bg-white md:px-3 px-2 py-3  shadow-sm">
+      <div className="  xl:flex items-center gap-2">
+        <span className="text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.18em] text-slate-500">Color</span>
+        <div className="flex xl:gap-1.5 gap-1">
           {accentPresets.map((preset) => (
             <button
               key={preset.value}
@@ -390,8 +418,8 @@ function ThemeControls({setShowResumeScore, accent, setAccent, font, setFont }) 
         </div>
       </div>
       <div className="h-8 w-px bg-slate-200" />
-      <label className="md:flex flex-1 items-center gap-2">
-        <span className="whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Font</span>
+      <label className=" xl:flex  items-center gap-2">
+        <span className=" text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.18em] text-slate-500">Font</span> <br/>
         <select
           value={font}
           onChange={(event) => setFont(event.target.value)}
@@ -401,7 +429,7 @@ function ThemeControls({setShowResumeScore, accent, setAccent, font, setFont }) 
         </select>
       </label>
       <div className="h-8 w-px bg-slate-200" />
-      <button onClick={()=> setShowResumeScore(true)} className="text-white  px-2 py-1.5 hover:cursor-pointer rounded-md text-sm bg-emerald-700">Resume score</button>
+      <button onClick={()=> setShowResumeScore(true)} className="text-white  px-2 py-1.5 hover:cursor-pointer rounded-md text-sm bg-emerald-700 text-nowrap">Resume score</button>
     </section>
   );
 }
