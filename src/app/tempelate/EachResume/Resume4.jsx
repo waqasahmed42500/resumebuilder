@@ -5,7 +5,7 @@ const Resume4 = ({ data }) => {
   const education = data?.education?.length ? data.education : [{ id: "1", degree: "MA, Media Studies", school: "University of Karachi", year: "2017" }];
   return (
     <article className="flex min-h-[1123px] w-[794px] bg-white font-serif text-slate-700 shadow-2xl">
-      <aside className="w-[230px] shrink-0 bg-rose-700 px-7 py-10 text-rose-50">
+      <aside className="w-[230px] shrink-0 bg-blue-950 px-7 py-10 text-rose-50">
         <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-rose-200">Curriculum vitae</p>
         <h1 className="mt-4 text-4xl font-bold leading-none">{contact.fullName}</h1>
         <p className="mt-4 border-t border-rose-400 pt-4 text-sm italic text-rose-100">{contact.headline}</p>
