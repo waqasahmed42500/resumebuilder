@@ -12,89 +12,14 @@ import Resume4 from "../tempelate/EachResume/Resume4";
 import Resume5 from "../tempelate/EachResume/Resume5";
 import Resume6 from "../tempelate/EachResume/Resume6";
 import Resume7 from "../tempelate/EachResume/Resume7";
-import { MdBuild, MdPermContactCalendar, MdSchool, MdWork } from "react-icons/md";
 import { IoMdDownload } from "react-icons/io";
 import { VscSaveAs } from "react-icons/vsc";
 import Link from "next/link";
+import { useResume } from "../context/ResumeContext";
 
-const editorSections = [
-  { id: "contact", label: "Contact" , icon: <MdPermContactCalendar  />  },
-  { id: "experience", label: "Experience" , icon: <MdWork /> },
-  { id: "education", label: "Education" , icon: <MdSchool /> },
-  { id: "skills", label: "Skills" , icon: <MdBuild /> },
-];
-
-const templateNames = {
-  resume1: "Modernist",
-  resume2: "The Curator",
-  resume3: "Executive",
-  resume4: "Zenith",
-  resume5: "The Blueprint",
-  resume6: "Helvetica",
-  resume7: "Northstar",
-};
-
-const fontOptions = [
-  { value: "Inter, sans-serif", label: "Inter" },
-  { value: "Georgia, serif", label: "Georgia" },
-  { value: "'Trebuchet MS', sans-serif", label: "Trebuchet" },
-  { value: "'Times New Roman', serif", label: "Times New Roman" },
-];
-
-const accentPresets = [
-  { value: "#0f766e", label: "Teal" },
-  { value: "#2563eb", label: "Blue" },
-  { value: "#7c3aed", label: "Violet" },
-  { value: "#dc2626", label: "Red" },
-];
-
-const initialCuratorData = {
-  contact: {
-    fullName: "Alex Morgan",
-    headline: "Senior Product Manager",
-    email: "alex.morgan@email.com",
-    phone: "+1 415 555 0198",
-    location: "San Francisco, CA",
-    website: "linkedin.com/in/alexmorgan",
-    photo:""
-  },
-  summary: "Customer-obsessed product manager with 7 years of experience shaping B2B software, aligning teams around outcomes, and turning insight into simple, valuable products.",
-  experiences: [
-    { id: "experience-1", role: "Senior Product Manager", company: "Bright Labs", startDate: "2022", endDate: "Present", description: "Own strategy for a workflow platform serving 3,000 weekly users. Launched a self-serve onboarding experience that improved trial-to-paid conversion by 18%." },
-    { id: "experience-2", role: "Product Manager", company: "Nimbus Health", startDate: "2019", endDate: "2022", description: "Led cross-functional squads across discovery, delivery, and measurement for a patient communications suite." },
-  ],
-  education: [
-    { id: "education-1", degree: "MBA, Product Strategy", school: "UC Berkeley", year: "2017" },
-    { id: "education-2", degree: "BA, Economics", school: "UCLA", year: "2013" },
-  ],
-  skills: ["Roadmap strategy", "User research", "Go-to-market", "SQL & analytics", "Stakeholder alignment", "Experimentation"],
-};
-
-const draftStorageKey = "resume-builder-draft-v1";
-
-function readStoredDraft() {
-  if (typeof window === "undefined") return null;
-
-  try {
-    const rawDraft = window.localStorage.getItem(draftStorageKey);
-    return rawDraft ? JSON.parse(rawDraft) : null;
-  } catch (error) {
-    console.warn("Unable to read saved draft", error);
-    return null;
-  }
-}
-
-function writeStoredDraft(payload) {
-  if (typeof window === "undefined") return;
-
-  try {
-    window.localStorage.setItem(draftStorageKey, JSON.stringify(payload));
-  } catch (error) {
-    console.warn("Unable to save draft", error);
-  }
-}
 
 export default function Editor() {
+  
   return <Suspense fallback={<EditorLoading />}><EditorContent /></Suspense>;
 }
 
@@ -102,23 +27,39 @@ function EditorLoading() {
   return <><Header /><main className="min-h-screen bg-slate-100 pt-16" /></>;
 }
 
+
 function EditorContent() {
-  const searchParams = useSearchParams();
-  const selectedTemplate = searchParams.get("template") || "resume1";
+  
+  const {
+resumeData,
+setResumeData,
+themeAccent,
+themeFont,
+setThemeFont,
+setThemeAccent,
+readStoredDraft,
+templateNames,
+editorSections,
+accentPresets 
+} = useResume();
+  
   const storedDraft = readStoredDraft();
   const [activeSection, setActiveSection] = useState(storedDraft?.activeSection || "contact");
-  const [resumeData, setResumeData] = useState(storedDraft?.resumeData || initialCuratorData);
+  
   const [skillInput, setSkillInput] = useState(storedDraft?.skillInput || "");
   const [targetKeywords, setTargetKeywords] = useState(storedDraft?.targetKeywords || "");
   const [showAtsScore, setShowAtsScore] = useState(Boolean(storedDraft?.showAtsScore));
-  const [themeAccent, setThemeAccent] = useState(storedDraft?.themeAccent || "#0f766e");
-  const [themeFont, setThemeFont] = useState(storedDraft?.themeFont || "Inter, sans-serif");
+  
+  
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [draftStatus, setDraftStatus] = useState(storedDraft ? "Draft restored" : "Auto-saves locally");
   const [draftSavedAt, setDraftSavedAt] = useState(storedDraft?.updatedAt ? new Date(storedDraft.updatedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "");
   const previewRef = useRef(null);
   
   const templateComponents = { resume1: Resume1, resume2: Resume2, resume3: Resume3, resume4: Resume4, resume5: Resume5, resume6: Resume6, resume7: Resume7 };
+                      const searchParams = useSearchParams();
+                    const selectedTemplate = searchParams.get("template") || "resume1";
+
   const SelectedResume = templateComponents[selectedTemplate] || Resume1;
   const selectedName = templateNames[selectedTemplate] || "Resume Builder";
   const activeIndex = editorSections.findIndex((section) => section.id === activeSection);
@@ -284,7 +225,7 @@ const canvas = await html2canvas(previewRef.current, {
               {editorSections.map((item, index) => <button key={item.id} type="button" onClick={() => setActiveSection(item.id)} className={`flex w-full hover:cursor-pointer items-center  gap-3 rounded-xl px-3 py-3 text-sm font-medium transition  ${activeSection === item.id ? "bg-emerald-700 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`}><span className="text-2xl text-center font-bold">{item.icon}</span><span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto xl:w-auto group-hover:opacity-100 xl:opacity-100">{item.label}</span></button>)}
             </nav>
             <div className="mt-auto space-y-3">
-              <Link href="/export" type="button"  disabled={isExportingPdf} className="w-full rounded-xl bg-slate-900 px-3 py-3 text-xs font-semibold text-white flex items-center gap-2 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 xl:text-sm">
+              <Link href={`/export?template=${selectedTemplate}`} type="button"  disabled={isExportingPdf} className="w-full rounded-xl bg-slate-900 px-3 py-3 text-xs font-semibold text-white flex items-center gap-2 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 xl:text-sm">
                 <span><IoMdDownload className="text-xl" /> </span> 
                 <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto  group-hover:opacity-100 ">
                   
@@ -308,7 +249,7 @@ const canvas = await html2canvas(previewRef.current, {
                       <p className="mt-2 text-sm leading-6 text-slate-600">Your edits appear immediately in the live resume preview.</p>
                       <p className="mt-2 text-xs font-medium text-emerald-700">{draftStatus}{draftSavedAt ? ` • ${draftSavedAt}` : ""}</p>
                       </div>
-                      <Link href="/export" type="button"  disabled={isExportingPdf} className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70">
+                      <Link href={`/export?template=${selectedTemplate}`} type="button"  disabled={isExportingPdf} className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70">
                         Export Resume
                       </Link>
                       </div>
