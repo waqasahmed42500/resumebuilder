@@ -40,10 +40,10 @@ const Resume16 = memo(function Resume16({ data: propData, theme, readOnly = fals
         <h1 className="text-3xl font-light tracking-tight text-slate-950">
           <EditableText value={contact.fullName} onChange={(val) => updateContact?.("fullName", val)} readOnly={readOnly} placeholder="Full Name" />
         </h1>
-        <p className="mt-1 text-xs uppercase tracking-[0.25em] font-semibold text-slate-500" style={{ color: accent }}>
+        <p className="mt-1 text-xs uppercase tracking-[0.25em] font-semibold text-slate-600" style={{ color: accent }}>
           <EditableText value={contact.headline} onChange={(val) => updateContact?.("headline", val)} readOnly={readOnly} placeholder="Headline" />
         </p>
-        <p className="mt-3 text-xs text-slate-500 space-x-3">
+        <p className="mt-3 text-xs text-slate-600 space-x-3">
           <span><EditableText value={contact.location} onChange={(val) => updateContact?.("location", val)} readOnly={readOnly} placeholder="Location" /></span>
           <span>·</span>
           <span><EditableText value={contact.phone} onChange={(val) => updateContact?.("phone", val)} readOnly={readOnly} placeholder="Phone" /></span>
@@ -56,6 +56,9 @@ const Resume16 = memo(function Resume16({ data: propData, theme, readOnly = fals
 
       {/* Summary */}
       <section className="mb-10">
+        <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600">
+          Profile Summary
+        </h2>
         <p className="text-xs leading-6 text-slate-600 max-w-2xl font-light">
           <EditableText value={data?.summary} onChange={(val) => updateSummary?.(val)} multiline readOnly={readOnly} placeholder="Summary..." />
         </p>
@@ -63,7 +66,7 @@ const Resume16 = memo(function Resume16({ data: propData, theme, readOnly = fals
 
       {/* Experience */}
       <section className="mb-10">
-        <h2 className="mb-6 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+        <h2 className="mb-6 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600">
           Experience
         </h2>
         {experiences.map((exp, index) => (
@@ -71,10 +74,10 @@ const Resume16 = memo(function Resume16({ data: propData, theme, readOnly = fals
             <div className="flex justify-between items-baseline">
               <h3 className="text-xs font-bold text-slate-900">
                 <EditableText value={exp.role} onChange={(val) => updateExperience?.(exp.id, "role", val)} readOnly={readOnly} placeholder="Role" />
-                <span className="font-normal text-slate-400">, </span>
+                <span className="font-normal text-slate-600">, </span>
                 <EditableText value={exp.company} onChange={(val) => updateExperience?.(exp.id, "company", val)} readOnly={readOnly} placeholder="Company" />
               </h3>
-              <p className="text-[10px] font-normal text-slate-400 flex gap-1">
+              <p className="text-[10px] font-normal text-slate-600 flex gap-1">
                 <EditableText value={exp.startDate} onChange={(val) => updateExperience?.(exp.id, "startDate", val)} readOnly={readOnly} placeholder="Start" />
                 <span>-</span>
                 <EditableText value={exp.endDate} onChange={(val) => updateExperience?.(exp.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
@@ -102,7 +105,7 @@ const Resume16 = memo(function Resume16({ data: propData, theme, readOnly = fals
       {/* Education & Skills */}
       <div className="grid grid-cols-2 gap-10">
         <section>
-          <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+          <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600">
             Education
           </h2>
           {education.map((entry, index) => (
@@ -110,7 +113,7 @@ const Resume16 = memo(function Resume16({ data: propData, theme, readOnly = fals
               <p className="font-bold text-slate-900">
                 <EditableText value={entry.degree} onChange={(val) => updateEducation?.(entry.id, "degree", val)} readOnly={readOnly} placeholder="Degree" />
               </p>
-              <p className="mt-0.5 text-slate-500 text-[11px]">
+              <p className="mt-0.5 text-slate-600 text-[11px]">
                 <EditableText value={entry.school} onChange={(val) => updateEducation?.(entry.id, "school", val)} readOnly={readOnly} placeholder="School" />
                 <span> · </span>
                 <EditableText value={entry.year} onChange={(val) => updateEducation?.(entry.id, "year", val)} readOnly={readOnly} placeholder="Year" />
@@ -132,7 +135,7 @@ const Resume16 = memo(function Resume16({ data: propData, theme, readOnly = fals
         </section>
 
         <section>
-          <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+          <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600">
             Skills
           </h2>
           <div className="flex flex-wrap gap-1.5 text-xs text-slate-700">

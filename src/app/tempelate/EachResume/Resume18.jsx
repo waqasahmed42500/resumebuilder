@@ -54,7 +54,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
       {/* Summary */}
       <section className="mb-8">
         <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-2 border-b border-black pb-1">
-          // SUMMARY
+          SUMMARY
         </h2>
         <p className="text-xs leading-5 text-slate-800 font-mono">
           <EditableText value={data?.summary} onChange={(val) => updateSummary?.(val)} multiline readOnly={readOnly} placeholder="Summary..." />
@@ -64,7 +64,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
       {/* Experience */}
       <section className="mb-8">
         <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-4 border-b border-black pb-1">
-          // EXPERIENCE
+          EXPERIENCE
         </h2>
         {experiences.map((exp, index) => (
           <div key={exp.id || index} className="group/item relative mb-5 last:mb-0">
@@ -103,7 +103,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
       <div className="grid grid-cols-2 gap-8 border-t border-black pt-6">
         <section>
           <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-2 border-b border-black pb-1">
-            // EDUCATION
+            EDUCATION
           </h2>
           {education.map((entry, index) => (
             <div key={entry.id || index} className="group/item relative mb-3 last:mb-0 font-mono text-xs">
@@ -133,7 +133,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
 
         <section>
           <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-2 border-b border-black pb-1">
-            // SKILLS
+            SKILLS
           </h2>
           <div className="flex flex-wrap gap-1.5 font-mono text-xs">
             {skills.map((skill, index) => (

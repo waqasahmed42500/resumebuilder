@@ -56,11 +56,8 @@ export function ResumeProvider({ children }) {
     { value: "#0f766e", label: "Teal" },
     { value: "#2563eb", label: "Blue" },
     { value: "#7c3aed", label: "Violet" },
-    { value: "#dc2626", label: "Red" },
-    { value: "#059669", label: "Emerald" },
     { value: "#0284c7", label: "Sky" },
     { value: "#d97706", label: "Amber" },
-    { value: "#475569", label: "Slate" },
   ];
 
   const initialCuratorData = {

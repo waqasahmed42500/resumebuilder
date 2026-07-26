@@ -48,7 +48,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
             className="h-20 w-20 rounded-xl"
           />
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-white">
+            <h1 className="text-3xl font-black tracking-tight text-black">
               <EditableText value={contact.fullName} onChange={(val) => updateContact?.("fullName", val)} readOnly={readOnly} placeholder="Full Name" />
             </h1>
             <p className="mt-1 text-sm font-semibold" style={{ color: accent }}>
@@ -56,7 +56,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
             </p>
           </div>
         </div>
-        <div className="text-right text-xs leading-5 text-slate-400 space-y-0.5">
+        <div className="text-right text-xs leading-5 text-slate-600 space-y-0.5">
           <p><EditableText value={contact.email} onChange={(val) => updateContact?.("email", val)} readOnly={readOnly} placeholder="Email" /></p>
           <p><EditableText value={contact.phone} onChange={(val) => updateContact?.("phone", val)} readOnly={readOnly} placeholder="Phone" /></p>
           <p><EditableText value={contact.location} onChange={(val) => updateContact?.("location", val)} readOnly={readOnly} placeholder="Location" /></p>
@@ -70,7 +70,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
             <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: accent }}>
               Executive Summary
             </h2>
-            <p className="text-sm leading-6 text-slate-300">
+            <p className="text-sm leading-6 text-slate-700">
               <EditableText value={data?.summary} onChange={(val) => updateSummary?.(val)} multiline readOnly={readOnly} placeholder="Summary..." />
             </p>
           </section>
@@ -83,14 +83,14 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
               <div key={exp.id || index} className="group/item relative mb-6 border-l border-slate-800 pl-4 last:mb-0">
                 <div className="flex justify-between items-baseline">
                   <div>
-                    <h3 className="text-sm font-bold text-white">
+                    <h3 className="text-sm font-bold text-black">
                       <EditableText value={exp.role} onChange={(val) => updateExperience?.(exp.id, "role", val)} readOnly={readOnly} placeholder="Job Title" />
                     </h3>
-                    <p className="mt-0.5 text-xs text-slate-400">
+                    <p className="mt-0.5 text-xs text-slate-800">
                       <EditableText value={exp.company} onChange={(val) => updateExperience?.(exp.id, "company", val)} readOnly={readOnly} placeholder="Company" />
                     </p>
                   </div>
-                  <p className="text-[10px] text-slate-500 flex gap-1">
+                  <p className="text-[10px] text-slate-800 flex gap-1">
                     <EditableText value={exp.startDate} onChange={(val) => updateExperience?.(exp.id, "startDate", val)} readOnly={readOnly} placeholder="Start" />
                     <span>-</span>
                     <EditableText value={exp.endDate} onChange={(val) => updateExperience?.(exp.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
@@ -150,10 +150,10 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
             </h2>
             {education.map((entry, index) => (
               <div key={entry.id || index} className="group/item relative mb-4 last:mb-0">
-                <p className="text-xs font-bold text-white">
+                <p className="text-xs font-bold text-black">
                   <EditableText value={entry.degree} onChange={(val) => updateEducation?.(entry.id, "degree", val)} readOnly={readOnly} placeholder="Degree" />
                 </p>
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-1 text-xs text-slate-600">
                   <EditableText value={entry.school} onChange={(val) => updateEducation?.(entry.id, "school", val)} readOnly={readOnly} placeholder="School" />
                   <span> · </span>
                   <EditableText value={entry.year} onChange={(val) => updateEducation?.(entry.id, "year", val)} readOnly={readOnly} placeholder="Year" />

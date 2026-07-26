@@ -311,46 +311,23 @@ export default function TemplatePage() {
                 </button>
               </div>
             ) : (
-              filteredTemplates.map((template,i) => (
-                <article key={i} className="group overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-
-  {/* Resume Preview */}
-  <Link href={`/Editor?template=${template.id}`}>
-    <div className="relative bg-slate-100 p-5">
-      <div className="overflow-hidden rounded-md bg-white shadow-lg">
-        <Image
-          src={`/templates/${template.id}.png`}
-          
-          alt={template.title}
-          width={500}
-          height={700}
-          className="h-auto w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-        />
-      </div>
-    </div>
-  </Link>
-
-  {/* Footer */}
-  <div className="flex items-start justify-between border-t border-slate-100 px-5 py-4">
-
-    <div>
-      <h3 className="text-2xl font-bold text-slate-900">
-        {template.title}
-      </h3>
-
-      <p className="mt-1 text-sm text-slate-500">
-        {template.subtitle}
-      </p>
-    </div>
-
-    {template.badge === "Top Pick" && (
-      <span className="rounded bg-sky-100 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-sky-700">
-        TOP PICK
-      </span>
-    )}
-
-  </div>
-
+              filteredTemplates.map((templates,i) => (
+          <article class="group relative flex flex-col bg-sky-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
+<div class="aspect-[3/4] bg-red-500-lowest p-0 relative">
+<img class="w-full h-full object-cover shadow-lg group-hover:scale-[1.02] transition-transform duration-500 rounded-sm" data-alt="Clean and professional modern resume layout with sans-serif typography on premium white paper texture with blue accents" src={`/templates/${templates.id}.png`}/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-on-primary text-primary px-8 py-3 rounded-xl font-bold shadow-xl active:scale-95 transition-all">Use Modernist</button>
+</div>
+</div>
+<div class="p-6 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-xl font-bold text-primary font-headline">{templates.title}</h3>
+<p class="text-sm text-on-surface-variant">{templates.subtitle}</p>
+</div>
+<div class="flex gap-1">
+<span class="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold rounded">TOP PICK</span>
+</div>
+</div>
 </article>
               ))
             )}

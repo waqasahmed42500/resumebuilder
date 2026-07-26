@@ -40,11 +40,11 @@ const Resume15 = memo(function Resume15({ data: propData, theme, readOnly = fals
           <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-emerald-400" style={{ color: accent }}>
             <EditableText value={contact.headline} onChange={(val) => updateContact?.("headline", val)} readOnly={readOnly} placeholder="Headline" />
           </span>
-          <h1 className="mt-2 text-4xl font-black tracking-tight text-white">
+          <h1 className="mt-2 text-4xl font-black tracking-tight text-black">
             <EditableText value={contact.fullName} onChange={(val) => updateContact?.("fullName", val)} readOnly={readOnly} placeholder="Full Name" />
           </h1>
         </div>
-        <div className="text-right text-xs text-slate-400 leading-5 space-y-0.5">
+        <div className="text-right text-xs text-slate-600 leading-5 space-y-0.5">
           <p><EditableText value={contact.email} onChange={(val) => updateContact?.("email", val)} readOnly={readOnly} placeholder="Email" /></p>
           <p><EditableText value={contact.phone} onChange={(val) => updateContact?.("phone", val)} readOnly={readOnly} placeholder="Phone" /></p>
           <p><EditableText value={contact.location} onChange={(val) => updateContact?.("location", val)} readOnly={readOnly} placeholder="Location" /></p>
@@ -60,7 +60,7 @@ const Resume15 = memo(function Resume15({ data: propData, theme, readOnly = fals
       <div className="grid grid-cols-[1.5fr_0.9fr] gap-8 flex-1">
         <main>
           <section className="mb-8">
-            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600">
               Selected Work & Leadership
             </h2>
             {experiences.map((exp, index) => (
@@ -80,7 +80,7 @@ const Resume15 = memo(function Resume15({ data: propData, theme, readOnly = fals
                     <EditableText value={exp.endDate} onChange={(val) => updateExperience?.(exp.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
                   </p>
                 </div>
-                <p className="mt-2 text-xs leading-5 text-slate-400">
+                <p className="mt-2 text-xs leading-5 text-slate-600">
                   <EditableText value={exp.description} onChange={(val) => updateExperience?.(exp.id, "description", val)} multiline readOnly={readOnly} placeholder="Responsibilities..." />
                 </p>
                 {!readOnly && (
@@ -102,7 +102,7 @@ const Resume15 = memo(function Resume15({ data: propData, theme, readOnly = fals
 
         <aside className="border-l border-slate-800 pl-6">
           <section className="mb-6">
-            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600">
               Core Skills
             </h2>
             <div className="flex flex-wrap gap-1.5">
@@ -129,15 +129,15 @@ const Resume15 = memo(function Resume15({ data: propData, theme, readOnly = fals
           </section>
 
           <section>
-            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600">
               Education
             </h2>
             {education.map((entry, index) => (
               <div key={entry.id || index} className="group/item relative mb-3 last:mb-0 text-xs">
-                <p className="font-bold text-white">
+                <p className="font-bold text-black">
                   <EditableText value={entry.degree} onChange={(val) => updateEducation?.(entry.id, "degree", val)} readOnly={readOnly} placeholder="Degree" />
                 </p>
-                <p className="mt-0.5 text-[11px] text-slate-400">
+                <p className="mt-0.5 text-[11px] text-slate-600">
                   <EditableText value={entry.school} onChange={(val) => updateEducation?.(entry.id, "school", val)} readOnly={readOnly} placeholder="School" />
                   <span> · </span>
                   <EditableText value={entry.year} onChange={(val) => updateEducation?.(entry.id, "year", val)} readOnly={readOnly} placeholder="Year" />
