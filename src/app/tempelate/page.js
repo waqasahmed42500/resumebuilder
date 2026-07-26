@@ -7,6 +7,7 @@ import Header from "../Component/Header";
 import Image from "next/image";
 import Link from "next/link";
 
+
 const templateCategories = ["All", "Modern", "Professional", "Creative", "Minimalist"];
 
 const templatesData = [
@@ -180,10 +181,12 @@ const templatesData = [
 ];
 
 export default function TemplatePage() {
+  const [openPreview, setOpenPreview] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchValue, setSearchValue] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [previewTemplate, setPreviewTemplate] = useState(null);
+
 
   const filteredTemplates = useMemo(() => {
     let result = templatesData.filter((template) => {
@@ -256,11 +259,10 @@ export default function TemplatePage() {
                     key={cat}
                     type="button"
                     onClick={() => setSelectedCategory(cat)}
-                    className={`rounded-full px-5 py-2 text-xs font-bold transition-all shadow-sm ${
-                      isActive
-                        ? "bg-slate-900 text-white shadow-slate-900/20"
-                        : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-                    }`}
+                    className={`rounded-full px-5 py-2 text-xs font-bold transition-all hover:cursor-pointer shadow-sm ${isActive
+                      ? "bg-slate-900 text-white shadow-slate-900/20"
+                      : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                      }`}
                   >
                     {cat}
                   </button>
@@ -311,87 +313,102 @@ export default function TemplatePage() {
                 </button>
               </div>
             ) : (
-              filteredTemplates.map((templates,i) => (
-          <article class="group relative flex flex-col bg-sky-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
-<div class="aspect-[3/4] bg-red-500-lowest p-0 relative">
-<img class="w-full h-full object-cover shadow-lg group-hover:scale-[1.02] transition-transform duration-500 rounded-sm" data-alt="Clean and professional modern resume layout with sans-serif typography on premium white paper texture with blue accents" src={`/templates/${templates.id}.png`}/>
-<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-<button class="bg-on-primary text-primary px-8 py-3 rounded-xl font-bold shadow-xl active:scale-95 transition-all">Use Modernist</button>
-</div>
-</div>
-<div class="p-6 flex justify-between items-center bg-surface-container-low">
-<div>
-<h3 class="text-xl font-bold text-primary font-headline">{templates.title}</h3>
-<p class="text-sm text-on-surface-variant">{templates.subtitle}</p>
-</div>
-<div class="flex gap-1">
-<span class="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold rounded">TOP PICK</span>
-</div>
-</div>
-</article>
+              filteredTemplates.map((templates, i) => (
+                <article key={i} className="group  relative flex flex-col bg-gray-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
+                  <div className="aspect-[3/4] p-2  bg-red-500-lowest  relative">
+                    <img className="w-full h-full  shadow-lg group-hover:scale-[1.02] transition-transform duration-500 rounded-sm" data-alt="Clean and professional modern resume layout with sans-serif typography on premium white paper texture with blue accents" src={`/templates/${templates.id}.png`} alt={templates.title} />
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-3 justify-center backdrop-blur-[2px]">
+                      <Link
+                        href={`/Editor?template=${templates.id}`}
+                        className="group bg-white flex items-center gap-2 text-black px-6 py-2 rounded-md font-bold shadow-xl active:scale-95 transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5"
+                      >
+                        Use Template
+                        <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                      </Link>
+                      <button
+                        onClick={() => {setOpenPreview(true) ,setPreviewTemplate(templates)}}
+                        className="group bg-white flex items-center gap-2 text-black px-6 py-2 rounded-md font-bold shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                      >
+                        View Template
+                        <FiEye className="transition-transform duration-300 group-hover:scale-110" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="p-5 flex justify-between items-center bg-gray-200 text-black">
+                    <div>
+                      <h3 className="text-xl font-bold  font-headline">{templates.title}</h3>
+                      <p className="text-sm ">{templates.subtitle}</p>
+                    </div>
+                    <div className="flex text-center gap-1">
+                      <span className="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold rounded">TOP PICK</span>
+                    </div>
+                  </div>
+                </article>
               ))
             )}
           </section>
         </div>
 
-        {/* Modal Quick Preview */}
-        {previewTemplate && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-            <div className="relative w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl sm:p-8 animate-in fade-in zoom-in duration-200">
-              <button
-                type="button"
-                onClick={() => setPreviewTemplate(null)}
-                className="absolute right-4 top-4 rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-              >
-                <IoCloseOutline className="text-2xl" />
-              </button>
 
-              <div className="mb-4">
-                <span className={`inline-block rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${categoryColor(previewTemplate.category)}`}>
-                  {previewTemplate.category}
-                </span>
-                <h3 className="mt-3 text-2xl font-black text-slate-900">{previewTemplate.title}</h3>
-                <p className="mt-1 text-sm font-medium text-slate-600">{previewTemplate.subtitle}</p>
-              </div>
+{openPreview && previewTemplate && (
+  <div key={previewTemplate.id} className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
 
-              <p className="mb-6 text-xs leading-6 text-slate-600 border-t border-slate-100 pt-4">
-                {previewTemplate.description}
-              </p>
+    <div className="relative w-full max-w-6xl rounded-2xl bg-white shadow-2xl">
 
-              <div className="mb-6 space-y-2 rounded-2xl bg-slate-50 p-4 text-xs font-medium text-slate-700">
-                <div className="flex items-center gap-2">
-                  <FiCheck className="text-emerald-600" />
-                  <span>Fully editable inline text preview</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FiCheck className="text-emerald-600" />
-                  <span>100% ATS & recruiter friendly format</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FiCheck className="text-emerald-600" />
-                  <span>Dynamic font & color theme customization</span>
-                </div>
-              </div>
+      {/* Header */}
+      <div className="flex items-center justify-between border-b p-5">
+        <div>
+          <h2 className="text-xl font-bold text-black">
+            {previewTemplate.title}
+          </h2>
 
-              <div className="flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setPreviewTemplate(null)}
-                  className="rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
-                >
-                  Close
-                </button>
-                <Link
-                  href={`/Editor?template=${previewTemplate.id}`}
-                  className="rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-bold text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700"
-                >
-                  Use {previewTemplate.title} Template
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-      </main>
+          <p className="text-sm text-slate-500">
+            ATS Friendly • A4 Ready • Professional Design
+          </p>
+        </div>
+
+        <button
+          onClick={() => setOpenPreview(false)}
+          className="rounded-full p-2 hover:bg-slate-100 text-black hover:cursor-pointer transition-all duration-300"
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* Preview */}
+      <div className="flex justify-center bg-slate-100 p-8 overflow-auto max-h-[70vh]">
+
+        <div className="scale-90 origin-top">
+          {/* resume Component */}
+          <img src={`/templates/${previewTemplate.id}.png`} alt={previewTemplate.title} />
+        </div>
+
+      </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-end gap-3 border-t p-5">
+
+        <button
+          onClick={() => setOpenPreview(false)}
+          className="rounded-lg border text-gray-700 px-5 py-2 font-semibold hover:bg-slate-100"
+        >
+          Close
+        </button>
+
+        <Link
+          href={`/Editor?template=${previewTemplate.id}`}
+          className="rounded-lg bg-emerald-600 px-6 py-2 font-semibold text-white hover:bg-emerald-700"
+        >
+          Use This Template
+        </Link>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
+       </main>
     </>
   );
 }

@@ -211,47 +211,47 @@ function EditorContent() {
     persistDraft("Draft saved");
   };
 
-  const handleDownloadPdf = async () => {
-    if (!previewRef.current) return;
+  // const handleDownloadPdf = async () => {
+  //   if (!previewRef.current) return;
 
-    setIsExportingPdf(true);
-    const controls = document.querySelector(".theme-controls");
-    previewRef.current.classList.add("export-mode");
+  //   setIsExportingPdf(true);
+  //   const controls = document.querySelector(".theme-controls");
+  //   previewRef.current.classList.add("export-mode");
 
-    try {
-      controls?.classList.add("hidden");
+  //   try {
+  //     controls?.classList.add("hidden");
 
-      const canvas = await html2canvas(previewRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        logging: false,
-      });
+  //     const canvas = await html2canvas(previewRef.current, {
+  //       scale: 2,
+  //       useCORS: true,
+  //       backgroundColor: "#ffffff",
+  //       logging: false,
+  //     });
 
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const marginX = 24;
-      const marginY = 24;
-      const availableWidth = pageWidth - marginX * 2;
-      const availableHeight = pageHeight - marginY * 2;
-      const imgWidth = availableWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const finalHeight = Math.min(imgHeight, availableHeight);
-      const finalWidth = (canvas.width * finalHeight) / canvas.height;
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+  //     const pageWidth = pdf.internal.pageSize.getWidth();
+  //     const pageHeight = pdf.internal.pageSize.getHeight();
+  //     const marginX = 24;
+  //     const marginY = 24;
+  //     const availableWidth = pageWidth - marginX * 2;
+  //     const availableHeight = pageHeight - marginY * 2;
+  //     const imgWidth = availableWidth;
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //     const finalHeight = Math.min(imgHeight, availableHeight);
+  //     const finalWidth = (canvas.width * finalHeight) / canvas.height;
 
-      pdf.addImage(imgData, "PNG", marginX, marginY, finalWidth, finalHeight, undefined, "FAST");
-      pdf.save(`${selectedName.replace(/\s+/g, "-").toLowerCase()}-resume.pdf`);
-    } catch (error) {
-      console.error("PDF export failed", error);
-      window.print();
-    } finally {
-      setIsExportingPdf(false);
-      controls?.classList.remove("hidden");
-      previewRef.current?.classList.remove("export-mode");
-    }
-  };
+  //     pdf.addImage(imgData, "PNG", marginX, marginY, finalWidth, finalHeight, undefined, "FAST");
+  //     pdf.save(`${selectedName.replace(/\s+/g, "-").toLowerCase()}-resume.pdf`);
+  //   } catch (error) {
+  //     console.error("PDF export failed", error);
+  //     window.print();
+  //   } finally {
+  //     setIsExportingPdf(false);
+  //     controls?.classList.remove("hidden");
+  //     previewRef.current?.classList.remove("export-mode");
+  //   }
+  // };
 
   return (
     <>
@@ -267,7 +267,7 @@ function EditorContent() {
           <aside
             onMouseEnter={() => setsideBarHOver(true)}
             onMouseLeave={() => setsideBarHOver(false)}
-            className="editor-sidebar group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-blue-100 p-2 md:flex"
+            className="editor-sidebar group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-gray-200 p-2 md:flex"
           >
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
               {/* Circle Progress */}
@@ -299,7 +299,7 @@ function EditorContent() {
                 <h2 className="mt-1 text-base font-semibold text-slate-900">{selectedName}</h2>
                 <div className="mt-4 h-1.5 rounded-full bg-slate-200">
                   <div
-                    className="h-full rounded-full bg-emerald-600"
+                    className="h-full rounded-full bg-slate-900"
                     style={{
                       width: `${((activeIndex + 1) / editorSections.length) * 100}%`,
                     }}
@@ -316,7 +316,7 @@ function EditorContent() {
                   onClick={() => setActiveSection(item.id)}
                   className={`flex w-full hover:cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
                     activeSection === item.id
-                      ? "bg-emerald-700 text-white shadow-sm"
+                      ? "bg-slate-900 text-white shadow-sm"
                       : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                   }`}
                 >
@@ -368,20 +368,12 @@ function EditorContent() {
                     <p className="mt-2 text-sm leading-6 text-slate-600">
                       Click text directly in the resume preview to edit instantly!
                     </p>
-                    <p className="mt-2 text-xs font-medium text-emerald-700">
+                    <p className="mt-2 text-xs font-medium text-slate-900">
                       {draftStatus}
                       {draftSavedAt ? ` • ${draftSavedAt}` : ""}
                     </p>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleDownloadPdf}
-                    disabled={isExportingPdf}
-                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 flex items-center gap-1.5"
-                  >
-                    <IoMdDownload />
-                    <span>Download PDF</span>
-                  </button>
+                  
                 </div>
 
                 <div className="mb-5 flex gap-2 overflow-x-auto pb-1 md:hidden">
@@ -390,7 +382,7 @@ function EditorContent() {
                       key={item.id}
                       onClick={() => setActiveSection(item.id)}
                       className={`shrink-0 rounded-full px-3 py-2 text-xs font-semibold ${
-                        activeSection === item.id ? "bg-emerald-700 text-white" : "bg-white text-slate-600"
+                        activeSection === item.id ? "bg-slate-900 text-white" : "bg-white text-slate-600"
                       }`}
                     >
                       {item.label}
@@ -431,6 +423,54 @@ function EditorContent() {
                     remove={removeSkill}
                   />
                 )}
+                {activeSection === "additional" && (
+                  <AdditionalSectionsForm
+                    certifications={resumeData.certifications || []}
+                    languages={resumeData.languages || []}
+                    updateCertification={(id, field, value) =>
+                      setResumeData((current) => ({
+                        ...current,
+                        certifications: (current.certifications || []).map((item) => (item.id === id ? { ...item, [field]: value } : item)),
+                      }))
+                    }
+                    addCertification={() =>
+                      setResumeData((current) => ({
+                        ...current,
+                        certifications: [
+                          ...(current.certifications || []),
+                          { id: `cert-${Date.now()}`, title: "New Certification", issuer: "Issuer", year: "2024" },
+                        ],
+                      }))
+                    }
+                    removeCertification={(id) =>
+                      setResumeData((current) => ({
+                        ...current,
+                        certifications: (current.certifications || []).filter((item) => item.id !== id),
+                      }))
+                    }
+                    updateLanguage={(id, field, value) =>
+                      setResumeData((current) => ({
+                        ...current,
+                        languages: (current.languages || []).map((item) => (item.id === id ? { ...item, [field]: value } : item)),
+                      }))
+                    }
+                    addLanguage={() =>
+                      setResumeData((current) => ({
+                        ...current,
+                        languages: [
+                          ...(current.languages || []),
+                          { id: `lang-${Date.now()}`, name: "New Language", level: "Fluent" },
+                        ],
+                      }))
+                    }
+                    removeLanguage={(id) =>
+                      setResumeData((current) => ({
+                        ...current,
+                        languages: (current.languages || []).filter((item) => item.id !== id),
+                      }))
+                    }
+                  />
+                )}
 
                 <div className="mt-8 flex items-center justify-between gap-3">
                   <button
@@ -448,7 +488,7 @@ function EditorContent() {
                         ? setActiveSection("contact")
                         : setActiveSection(editorSections[activeIndex + 1].id)
                     }
-                    className="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800"
+                    className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
                   >
                     {activeIndex === editorSections.length - 1 ? "Review contact" : `Next: ${editorSections[activeIndex + 1].label}`}
                   </button>
@@ -753,6 +793,66 @@ function SkillsForm({ skills, value, setValue, add, remove }) {
         ))}
       </div>
     </FormCard>
+  );
+}
+
+function AdditionalSectionsForm({
+  certifications,
+  languages,
+  updateCertification,
+  addCertification,
+  removeCertification,
+  updateLanguage,
+  addLanguage,
+  removeLanguage,
+}) {
+  return (
+    <div className="space-y-4">
+      <FormCard>
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-sm font-bold text-slate-900">Certifications</h3>
+          <button type="button" onClick={addCertification} className="text-sm font-semibold text-emerald-700">
+            + Add
+          </button>
+        </div>
+        <div className="space-y-3">
+          {certifications.map((item) => (
+            <div key={item.id} className="rounded-xl border border-slate-200 p-3">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Field label="Certification" value={item.title} onChange={(value) => updateCertification(item.id, "title", value)} />
+                <Field label="Issuer" value={item.issuer} onChange={(value) => updateCertification(item.id, "issuer", value)} />
+                <Field label="Year" value={item.year} onChange={(value) => updateCertification(item.id, "year", value)} />
+              </div>
+              <button type="button" onClick={() => removeCertification(item.id)} className="mt-3 text-xs font-semibold text-rose-600">
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      </FormCard>
+
+      <FormCard>
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-sm font-bold text-slate-900">Languages</h3>
+          <button type="button" onClick={addLanguage} className="text-sm font-semibold text-emerald-700">
+            + Add
+          </button>
+        </div>
+        <div className="space-y-3">
+          {languages.map((item) => (
+            <div key={item.id} className="rounded-xl border border-slate-200 p-3">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Field label="Language" value={item.name} onChange={(value) => updateLanguage(item.id, "name", value)} />
+                <Field label="Proficiency" value={item.level} onChange={(value) => updateLanguage(item.id, "level", value)} />
+              </div>
+              <button type="button" onClick={() => removeLanguage(item.id)} className="mt-3 text-xs font-semibold text-rose-600">
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      </FormCard>
+    </div>
   );
 }
 

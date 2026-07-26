@@ -6,6 +6,7 @@ import TemplateWrapper from "../../Component/TemplateWrapper";
 import EditableText from "../../Component/EditableText";
 import EditableImage from "../../Component/EditableImage";
 import SectionControls from "../../Component/SectionControls";
+import ResumeAdditionalSections from "../../Component/ResumeAdditionalSections";
 
 const Resume1 = memo(function Resume1({ data: propData, theme, readOnly = false }) {
   const context = useResume();
@@ -182,6 +183,8 @@ const Resume1 = memo(function Resume1({ data: propData, theme, readOnly = false 
             </div>
           ))}
         </section>
+
+        <ResumeAdditionalSections data={data} accent={accent} readOnly={readOnly} />
       </main>
     </TemplateWrapper>
   );

@@ -1,6 +1,25 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/tempelate", label: "Templates" },
+  { href: "/examples", label: "Examples" },
+  { href: "/resources", label: "Resources" },
+];
 
 export default function Header() {
+  const pathname = usePathname();
+
+  const isActive = (href) => {
+    if (href === "/") {
+      return pathname === href;
+    }
+    return pathname.startsWith(href);
+  };
+
   return (
     <header className="fixed top-0 z-50 w-full bg-slate-50/70 shadow-sm backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-full items-center justify-between gap-3 px-4 tracking-tight sm:px-6 lg:px-8">
@@ -9,15 +28,22 @@ export default function Header() {
             ResumeArchitect
           </Link>
           <div className="hidden items-center gap-6 md:flex">
-            <Link href="/tempelate" className="border-b-2 border-slate-900 pb-1 text-slate-900 transition-colors hover:text-slate-900">
-              Templates
-            </Link>
-            <a className="text-slate-500 transition-colors hover:text-slate-900" href="#">
-              Examples
-            </a>
-            <a className="text-slate-500 transition-colors hover:text-slate-900" href="#">
-              Resources
-            </a>
+            {navItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`pb-1 text-sm font-semibold transition-colors ${active
+                    ? "border-b-2 border-slate-900 text-slate-900"
+                    : "text-slate-500 hover:text-slate-900"
+                    }`}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2 sm:gap-4">

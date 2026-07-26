@@ -11,6 +11,7 @@ export function ResumeProvider({ children }) {
     { id: "experience", label: "Experience", icon: <MdWork /> },
     { id: "education", label: "Education", icon: <MdSchool /> },
     { id: "skills", label: "Skills", icon: <MdBuild /> },
+    { id: "additional", label: "Certificates & Languages", icon: <MdBuild /> },
   ];
 
   const templateNames = {
@@ -97,6 +98,13 @@ export function ResumeProvider({ children }) {
       { id: "education-2", degree: "BA, Economics", school: "UCLA", year: "2013" },
     ],
     skills: ["Roadmap strategy", "User research", "Go-to-market", "SQL & analytics", "Stakeholder alignment", "Experimentation"],
+    certifications: [
+      { id: "cert-1", title: "Certified Scrum Product Owner", issuer: "Scrum Alliance", year: "2021" },
+    ],
+    languages: [
+      { id: "lang-1", name: "English", level: "Fluent" },
+      { id: "lang-2", name: "Spanish", level: "Intermediate" },
+    ],
   };
 
   const draftStorageKey = "resume-builder-draft-v1";
@@ -349,6 +357,104 @@ export function ResumeProvider({ children }) {
     [updateResumeData]
   );
 
+  const updateCertification = useCallback(
+    (id, field, value) => {
+      updateResumeData((current) => ({
+        ...current,
+        certifications: current.certifications.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
+      }));
+    },
+    [updateResumeData]
+  );
+
+  const addCertification = useCallback(
+    (index = null) => {
+      updateResumeData((current) => {
+        const newItem = { id: `cert-${Date.now()}`, title: "New Certification", issuer: "Issuer", year: "2024" };
+        if (index === null) return { ...current, certifications: [...current.certifications, newItem] };
+        const copy = [...current.certifications];
+        copy.splice(index + 1, 0, newItem);
+        return { ...current, certifications: copy };
+      });
+    },
+    [updateResumeData]
+  );
+
+  const removeCertification = useCallback(
+    (id) => {
+      updateResumeData((current) => ({
+        ...current,
+        certifications: current.certifications.filter((item) => item.id !== id),
+      }));
+    },
+    [updateResumeData]
+  );
+
+  const moveCertification = useCallback(
+    (id, direction) => {
+      updateResumeData((current) => {
+        const index = current.certifications.findIndex((item) => item.id === id);
+        if (index === -1) return current;
+        const targetIndex = direction === "up" ? index - 1 : index + 1;
+        if (targetIndex < 0 || targetIndex >= current.certifications.length) return current;
+        const copy = [...current.certifications];
+        const [item] = copy.splice(index, 1);
+        copy.splice(targetIndex, 0, item);
+        return { ...current, certifications: copy };
+      });
+    },
+    [updateResumeData]
+  );
+
+  const updateLanguage = useCallback(
+    (id, field, value) => {
+      updateResumeData((current) => ({
+        ...current,
+        languages: current.languages.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
+      }));
+    },
+    [updateResumeData]
+  );
+
+  const addLanguage = useCallback(
+    (index = null) => {
+      updateResumeData((current) => {
+        const newItem = { id: `lang-${Date.now()}`, name: "New Language", level: "Fluent" };
+        if (index === null) return { ...current, languages: [...current.languages, newItem] };
+        const copy = [...current.languages];
+        copy.splice(index + 1, 0, newItem);
+        return { ...current, languages: copy };
+      });
+    },
+    [updateResumeData]
+  );
+
+  const removeLanguage = useCallback(
+    (id) => {
+      updateResumeData((current) => ({
+        ...current,
+        languages: current.languages.filter((item) => item.id !== id),
+      }));
+    },
+    [updateResumeData]
+  );
+
+  const moveLanguage = useCallback(
+    (id, direction) => {
+      updateResumeData((current) => {
+        const index = current.languages.findIndex((item) => item.id === id);
+        if (index === -1) return current;
+        const targetIndex = direction === "up" ? index - 1 : index + 1;
+        if (targetIndex < 0 || targetIndex >= current.languages.length) return current;
+        const copy = [...current.languages];
+        const [item] = copy.splice(index, 1);
+        copy.splice(targetIndex, 0, item);
+        return { ...current, languages: copy };
+      });
+    },
+    [updateResumeData]
+  );
+
   // Load initial draft from localStorage
   useEffect(() => {
     const storedDraft = readStoredDraft();
@@ -399,6 +505,14 @@ export function ResumeProvider({ children }) {
         addSkill,
         removeSkill,
         moveSkill,
+        updateCertification,
+        addCertification,
+        removeCertification,
+        moveCertification,
+        updateLanguage,
+        addLanguage,
+        removeLanguage,
+        moveLanguage,
       }}
     >
       {children}
