@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import Header from '../Component/Header'
 import Resume1 from "../tempelate/EachResume/Resume1";
 import Resume2 from "../tempelate/EachResume/Resume2";
@@ -19,13 +19,99 @@ import { useResume } from '../context/ResumeContext';
 
 const ExportPage = () => { 
 const {themeFont,resumeData} =  useResume();
+const [copied, setCopied] = useState(false);
+const [isDownloading, setIsDownloading] = useState(false);
+const previewRef = useRef(null);
 
     const templateComponents = { resume1: Resume1, resume2: Resume2, resume3: Resume3, resume4: Resume4, resume5: Resume5, resume6: Resume6, resume7: Resume7 };
       const searchParams = useSearchParams();
     const selectedTemplate = searchParams.get("template") || "resume1";
 
+    const shareUrl = useMemo(() => {
+      if (typeof window === 'undefined') return '';
+      return `${window.location.origin}/Editor?template=${selectedTemplate}`;
+    }, [selectedTemplate]);
 
     const SelectedResume = templateComponents[selectedTemplate] || Resume1;
+
+    const handleCopyLink = async () => {
+      if (!shareUrl) return;
+
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1800);
+      } catch {
+        window.prompt('Copy this link', shareUrl);
+      }
+    };
+
+    const handleDownloadPdf = async () => {
+      if (!previewRef.current) return;
+
+      setIsDownloading(true);
+      const previewNode = previewRef.current;
+      const originalStyles = [];
+
+      const nodes = previewNode.querySelectorAll('*');
+      nodes.forEach((node) => {
+        const style = window.getComputedStyle(node);
+
+        const color = style.color;
+        if (color && /lab\(|lch\(|oklab\(|oklch\(/i.test(color)) {
+          originalStyles.push({ node, property: 'color', value: node.style.color });
+          node.style.color = '#111827';
+        }
+
+        const backgroundColor = style.backgroundColor;
+        if (backgroundColor && /lab\(|lch\(|oklab\(|oklch\(/i.test(backgroundColor)) {
+          originalStyles.push({ node, property: 'backgroundColor', value: node.style.backgroundColor });
+          node.style.backgroundColor = 'transparent';
+        }
+
+        const borderColor = style.borderColor;
+        if (borderColor && /lab\(|lch\(|oklab\(|oklch\(/i.test(borderColor)) {
+          originalStyles.push({ node, property: 'borderColor', value: node.style.borderColor });
+          node.style.borderColor = '#d1d5db';
+        }
+      });
+
+      try {
+        const { default: html2canvas } = await import('html2canvas');
+        const { jsPDF } = await import('jspdf');
+
+        const canvas = await html2canvas(previewNode, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const marginX = 24;
+        const marginY = 24;
+        const availableWidth = pageWidth - marginX * 2;
+        const availableHeight = pageHeight - marginY * 2;
+        const imgWidth = availableWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const finalHeight = Math.min(imgHeight, availableHeight);
+        const finalWidth = (canvas.width * finalHeight) / canvas.height;
+
+        pdf.addImage(imgData, 'PNG', marginX, marginY, finalWidth, finalHeight, undefined, 'FAST');
+        pdf.save(`${selectedTemplate.replace(/resume/g, 'resume-').toLowerCase()}-resume.pdf`);
+      } catch (error) {
+        console.error('PDF export failed', error);
+        window.alert('PDF export failed. Please try again.');
+      } finally {
+        originalStyles.forEach(({ node, property, value }) => {
+          node.style[property] = value;
+        });
+        setIsDownloading(false);
+      }
+    };
     
   return (
     <>
@@ -43,13 +129,20 @@ const {themeFont,resumeData} =  useResume();
 <p className="text-sm leading-6 text-slate-600 sm:text-base">Review your editorial-grade resume and choose your preferred export format.</p>
 </div>
 <div className="flex flex-wrap items-center gap-3">
-<button className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">
+<button
+  onClick={handleCopyLink}
+  className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+>
 <span className="text-lg"><IoLinkOutline /></span>
-<span>Copy link</span>
+<span>{copied ? 'Copied!' : 'Copy link'}</span>
 </button>
-<button className="flex items-center gap-2 rounded-2xl bg-emerald-700 px-6 py-2.5 font-bold text-white shadow-lg shadow-emerald-700/20 transition hover:-translate-y-0.5 hover:bg-emerald-800">
+<button
+  onClick={handleDownloadPdf}
+  disabled={isDownloading}
+  className="flex items-center gap-2 rounded-2xl bg-emerald-700 px-6 py-2.5 font-bold text-white shadow-lg shadow-emerald-700/20 transition hover:-translate-y-0.5 hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-70"
+>
 <span className="text-lg"><FaFilePdf /></span>
-<span>Download PDF</span>
+<span>{isDownloading ? 'Preparing PDF...' : 'Download PDF'}</span>
 </button>
 </div>
 </div>
@@ -96,7 +189,7 @@ const {themeFont,resumeData} =  useResume();
 
 <div className="order-1 min-w-0 md:col-span-8 xl:col-span-9 xl:order-2">
 <div className="overflow-x-auto rounded-[28px] border border-slate-200 bg-slate-50/80 shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:p-5 ">
-<div className="mx-auto min-w-[280px] max-w-[920px] overflow-hidden  flex justify-center items-center p-1 sm:p-4 lg:p-4">
+<div ref={previewRef} className="mx-auto flex min-w-[280px] max-w-[920px] items-center justify-center overflow-hidden p-1 sm:p-4 lg:p-4">
 <SelectedResume data={resumeData}
               theme={{
                   // accent: themeAccent,

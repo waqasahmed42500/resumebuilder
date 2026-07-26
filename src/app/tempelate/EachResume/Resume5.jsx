@@ -4,7 +4,7 @@ const Resume5 = ({ data }) => {
   const experiences = data?.experiences?.length ? data.experiences : [{ id: "1", role: "Content Marketing Lead", company: "Lumen Commerce", startDate: "2022", endDate: "Present", description: "Own the content engine for a fast-growing marketplace." }, { id: "2", role: "Senior Content Strategist", company: "Tangent Studio", startDate: "2019", endDate: "2022", description: "Directed editorial strategy and campaign production." }];
   const education = data?.education?.length ? data.education : [{ id: "1", degree: "BA, English Literature", school: "LUMS", year: "2017" }];
   return (
-    <article className="min-h-[1123px] w-[794px] bg-slate-50 p-10 font-sans text-slate-700 shadow-2xl">
+    <article className="min-h-[1123px] w-[794px] bg-slate-50 p-0 font-sans text-slate-700 shadow-2xl">
       <div className="min-h-[1043px] bg-white px-10 py-11">
         <header className="flex items-start justify-between"><div><div className="mb-4 h-2 w-12 bg-sky-500" /><h1 className="text-5xl font-black tracking-tight text-slate-950">{contact.fullName}</h1><p className="mt-2 text-base font-medium text-sky-700">{contact.headline}</p></div><p className="text-right text-[10px] leading-5 text-slate-500">{contact.email}<br />{contact.phone}<br />{contact.location}<br />{contact.website}</p></header>
         <div className="mt-8 grid grid-cols-[1.55fr_0.85fr] gap-9 border-t border-slate-200 pt-8">

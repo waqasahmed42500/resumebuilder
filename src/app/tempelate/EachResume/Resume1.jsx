@@ -17,7 +17,7 @@ const Resume1 = ({ data, theme }) => {
 
   return (
     <article className="flex min-h-[1123px] w-[794px] overflow-hidden bg-white text-slate-700 shadow-2xl" style={{ fontFamily }}>
-      <aside className="w-[248px] shrink-0 bg-slate-900 px-8 py-12 text-slate-200">
+      <aside className="w-[248px] shrink-0 bg-slate-900 px-5 py-12 text-slate-200">
         <div className="mb-8 flex justify-center">
   {contact.photo ? (
     <img
@@ -60,7 +60,7 @@ const Resume1 = ({ data, theme }) => {
         </ResumeSection>
       </aside>
 
-      <main className="flex-1 px-12 py-12">
+      <main className="flex-1 px-6 py-12">
         <header className="border-b-2 mb-3 border-slate-900 pb-8">
           <p className="text-xs font-bold uppercase tracking-[0.32em]" style={{ color: accent }}>{contact.headline}</p>
           <h1 className="mt-3 text-5xl font-black tracking-tight text-slate-950">{contact.fullName}</h1>
