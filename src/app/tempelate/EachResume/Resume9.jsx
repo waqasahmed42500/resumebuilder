@@ -4,13 +4,12 @@ import React, { memo } from "react";
 import { useResume } from "../../context/ResumeContext";
 import TemplateWrapper from "../../Component/TemplateWrapper";
 import EditableText from "../../Component/EditableText";
-import EditableImage from "../../Component/EditableImage";
 import SectionControls from "../../Component/SectionControls";
 
-const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false }) {
+const Resume9 = memo(function Resume9({ data: propData, theme, readOnly = false }) {
   const context = useResume();
   const data = propData || context?.resumeData;
-  const accent = theme?.accent || context?.themeAccent || "#7c3aed";
+  const accent = theme?.accent || context?.themeAccent || "#047857";
 
   const contact = data?.contact || {};
   const skills = data?.skills || [];
@@ -35,68 +34,58 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
   } = context || {};
 
   return (
-    <TemplateWrapper theme={theme} readOnly={readOnly} className="min-h-[1123px] bg-slate-950 text-slate-100 flex flex-col">
-      <header className="px-10 py-10 border-b border-slate-800 flex justify-between items-center" style={{ borderTop: `4px solid ${accent}` }}>
-        <div className="flex items-center gap-6">
-          <EditableImage
-            src={contact.photo}
-            onChange={(val) => updateContact?.("photo", val)}
-            onRemove={() => updateContact?.("photo", "")}
-            name={contact.fullName}
-            accentColor={accent}
-            readOnly={readOnly}
-            className="h-20 w-20 rounded-xl"
-          />
-          <div>
-            <h1 className="text-3xl font-black tracking-tight text-white">
-              <EditableText value={contact.fullName} onChange={(val) => updateContact?.("fullName", val)} readOnly={readOnly} placeholder="Full Name" />
-            </h1>
-            <p className="mt-1 text-sm font-semibold" style={{ color: accent }}>
-              <EditableText value={contact.headline} onChange={(val) => updateContact?.("headline", val)} readOnly={readOnly} placeholder="Headline" />
-            </p>
-          </div>
+    <TemplateWrapper theme={theme} readOnly={readOnly} className="bg-white flex flex-col">
+      {/* Top Banner */}
+      <header className="px-10 py-8 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+            <EditableText value={contact.fullName} onChange={(val) => updateContact?.("fullName", val)} readOnly={readOnly} placeholder="Full Name" />
+          </h1>
+          <p className="mt-1 text-xs font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
+            <EditableText value={contact.headline} onChange={(val) => updateContact?.("headline", val)} readOnly={readOnly} placeholder="Headline" />
+          </p>
         </div>
-        <div className="text-right text-xs leading-5 text-slate-400 space-y-0.5">
+        <div className="text-right text-xs leading-5 text-slate-600 space-y-0.5">
           <p><EditableText value={contact.email} onChange={(val) => updateContact?.("email", val)} readOnly={readOnly} placeholder="Email" /></p>
           <p><EditableText value={contact.phone} onChange={(val) => updateContact?.("phone", val)} readOnly={readOnly} placeholder="Phone" /></p>
           <p><EditableText value={contact.location} onChange={(val) => updateContact?.("location", val)} readOnly={readOnly} placeholder="Location" /></p>
-          <p><EditableText value={contact.website} onChange={(val) => updateContact?.("website", val)} readOnly={readOnly} placeholder="Website" /></p>
         </div>
       </header>
 
-      <div className="grid grid-cols-[1.6fr_0.9fr] gap-10 px-10 py-10 flex-1">
+      {/* Main Grid */}
+      <div className="grid grid-cols-[1.5fr_0.9fr] gap-8 p-10 flex-1">
         <main>
-          <section className="mb-8">
-            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: accent }}>
-              Executive Summary
+          <section className="mb-6">
+            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
+              Profile Statement
             </h2>
-            <p className="text-sm leading-6 text-slate-300">
+            <p className="text-xs leading-6 text-slate-700">
               <EditableText value={data?.summary} onChange={(val) => updateSummary?.(val)} multiline readOnly={readOnly} placeholder="Summary..." />
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: accent }}>
-              Professional Experience
+          <section>
+            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
+              Experience
             </h2>
             {experiences.map((exp, index) => (
-              <div key={exp.id || index} className="group/item relative mb-6 border-l border-slate-800 pl-4 last:mb-0">
+              <div key={exp.id || index} className="group/item relative mb-6 last:mb-0">
                 <div className="flex justify-between items-baseline">
                   <div>
-                    <h3 className="text-sm font-bold text-white">
-                      <EditableText value={exp.role} onChange={(val) => updateExperience?.(exp.id, "role", val)} readOnly={readOnly} placeholder="Job Title" />
+                    <h3 className="text-xs font-bold text-slate-900">
+                      <EditableText value={exp.role} onChange={(val) => updateExperience?.(exp.id, "role", val)} readOnly={readOnly} placeholder="Role" />
                     </h3>
-                    <p className="mt-0.5 text-xs text-slate-400">
+                    <p className="text-[11px] font-semibold text-slate-500">
                       <EditableText value={exp.company} onChange={(val) => updateExperience?.(exp.id, "company", val)} readOnly={readOnly} placeholder="Company" />
                     </p>
                   </div>
-                  <p className="text-[10px] text-slate-500 flex gap-1">
+                  <p className="text-[10px] font-medium text-slate-400 flex gap-1">
                     <EditableText value={exp.startDate} onChange={(val) => updateExperience?.(exp.id, "startDate", val)} readOnly={readOnly} placeholder="Start" />
                     <span>-</span>
                     <EditableText value={exp.endDate} onChange={(val) => updateExperience?.(exp.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
                   </p>
                 </div>
-                <p className="mt-2 text-xs leading-5 text-slate-400">
+                <p className="mt-2 text-xs leading-5 text-slate-600">
                   <EditableText value={exp.description} onChange={(val) => updateExperience?.(exp.id, "description", val)} multiline readOnly={readOnly} placeholder="Responsibilities..." />
                 </p>
                 {!readOnly && (
@@ -116,15 +105,15 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
           </section>
         </main>
 
-        <aside className="border-l border-slate-800 pl-8">
-          <section className="mb-8">
-            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: accent }}>
-              Skills & Tech Stack
+        <aside className="border-l border-slate-200 pl-6">
+          <section className="mb-6">
+            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
+              Competencies
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {skills.map((skill, index) => (
                 <div key={index} className="group/item relative inline-flex items-center">
-                  <span className="rounded-lg bg-slate-900 border border-slate-800 px-3 py-1.5 text-[10px] font-medium text-slate-200">
+                  <span className="rounded border bg-slate-50 px-2.5 py-1 text-[10px] font-medium text-slate-800" style={{ borderColor: `${accent}40` }}>
                     <EditableText value={skill} onChange={(val) => updateSkill?.(index, val)} readOnly={readOnly} placeholder="Skill" />
                   </span>
                   {!readOnly && (
@@ -145,15 +134,15 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
           </section>
 
           <section>
-            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: accent }}>
+            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
               Education
             </h2>
             {education.map((entry, index) => (
-              <div key={entry.id || index} className="group/item relative mb-4 last:mb-0">
-                <p className="text-xs font-bold text-white">
+              <div key={entry.id || index} className="group/item relative mb-3 last:mb-0">
+                <p className="text-xs font-bold text-slate-900">
                   <EditableText value={entry.degree} onChange={(val) => updateEducation?.(entry.id, "degree", val)} readOnly={readOnly} placeholder="Degree" />
                 </p>
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-0.5 text-[11px] text-slate-500">
                   <EditableText value={entry.school} onChange={(val) => updateEducation?.(entry.id, "school", val)} readOnly={readOnly} placeholder="School" />
                   <span> · </span>
                   <EditableText value={entry.year} onChange={(val) => updateEducation?.(entry.id, "year", val)} readOnly={readOnly} placeholder="Year" />
@@ -179,4 +168,4 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
   );
 });
 
-export default Resume3;
+export default Resume9;

@@ -1,199 +1,419 @@
 "use client";
 
-import { useState } from "react";
-import { IoSearchSharp } from "react-icons/io5";
+import { useState, useMemo } from "react";
+import { IoSearchSharp, IoCloseOutline } from "react-icons/io5";
+import { FiEye, FiCheck, FiArrowRight } from "react-icons/fi";
 import Header from "../Component/Header";
+import Image from "next/image";
 import Link from "next/link";
 
-const templateStyles = ["All", "Modern", "Professional", "Creative", "Minimalist"];
+const templateCategories = ["All", "Modern", "Professional", "Creative", "Minimalist"];
 
-const templates = [
+const templatesData = [
+  // Modern (5)
   {
     id: "resume1",
-    title: "Modernist",
-    subtitle: "High-impact tech roles",
-    style: "Modern",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCv3M-5jSTVgOfPw80x4GkiMhKtPy5EIYiKcyRISwYecZK8WofUTbhCXdqGUnEfODDgiNbbiybKEDOXj2By6oYX5-YObcdfyH9abzufiw6lmgxxEbu91df3CIyRZGFG2Y78OqpAxFq-au3Cx4l-pbP3lxOWcQM7sjLe97htcj6vxD84t34JmnV3lH9XOnQW-7VRp6KxaWX23F2tVF2bVZlazwu-Re1rwnFxKj78TY1TWSRoO2KMsiO70Yy3Uv7ZY1h5ZLKHmIc5Ekk",
-    label: "Top Pick",
+    title: "Nova",
+    subtitle: "High-impact split layout for tech & product leads",
+    category: "Modern",
+    badge: "Top Pick",
+    description: "Features a sleek dark sidebar, crisp typography, and teal accent badges. Ideal for software engineers and technology leaders.",
   },
   {
     id: "resume2",
-    title: "The Curator",
-    subtitle: "Product & strategy leaders",
-    style: "Professional",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuB_bh_uo4WmhZe_KDJ6EKubcbATqGi-oeBzoOAQ78Y5FWo2EJJ5MDJN-yfn4ujLjpxEE_UbUhFBGSUxwuq0HNSjI-Z2OIR7z2MqDGnw3S9Q1oA7kbTUEH-DmTXrrEI02z9pSlP4T_ICUTuiVz7460S2ixpOVWze0zwaJu8XeXWst80ZGV9x-eyQwQkhzXRWdUveSnHPeiTOWN2wLIiG1J98nx1nFYrJ4m_7jI1N6I7BUW_AppuTH4ZuRn2otLLKLUw0h1DWeQWAaBI",
+    title: "Horizon",
+    subtitle: "Top header banner with structured content cards",
+    category: "Modern",
+    badge: "Popular",
+    description: "Designed with a vibrant brand top banner and structured dual-column layout for product managers and strategic roles.",
   },
   {
     id: "resume3",
-    title: "Executive",
-    subtitle: "Banking & Management",
-    style: "Professional",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuC2FXmaOFcyXINFgWmN6e4HP8zb5XqWxfO59FGAb2WLis62aSg9lK_21Cj5qVKRNiynxZUqUMGaEKOeMpRu0S-XvjQLjpuNK3m3WriEfBLmBAha9Qv0z_DEI0Js1wiUFkma4ilh1AiWMaAMfEYTHCE6SbyB8-GHXGJrx4HIj7poimlshzTnrzS4QGGCytBnIFqrT9qRINYOF78kzfoPaodJtmKayKlkvhyeiAbPZYqFRRIVDNM4gPzDdVwLCBib_SLVMxZ4Um9wcwk",
+    title: "Elevate",
+    subtitle: "Tech-forward dark mode layout with contrast sidebar",
+    category: "Modern",
+    badge: "Featured",
+    description: "High-contrast dark mode design system with accent progress indicators and clean grid hierarchy.",
   },
   {
     id: "resume4",
-    title: "Zenith",
-    subtitle: "Focus on content",
-    style: "Minimalist",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuB71Z6Afn4KWaoDoSkMAqcCxQykxehhVbwaCyBxnSH3QZ3YsAEWox1JbWtKUWeQ2gP4LlIi1JU8SkXUzp-NXxvwiJ14XS8WVyI6x0OME1zFRqVxNJPowQxxlKWI7bt73HRBUKPdrYAO9413RHe3HDod-wkXYT8E12lajozLYsXT0NRM7i8jhiDCLpoGugzr3xluvyBO-tVqxAuWQackRNwGReu6C-mNowx0H1wOpqOT7NvBzA8lO841m7IbdD4Xb8MpghwdtlNM7JY",
+    title: "Pulse",
+    subtitle: "Timeline-based career flow for dynamic roles",
+    category: "Modern",
+    badge: "Trending",
+    description: "Connects your career progression along a clean vertical timeline. Perfect for showcasing rapid growth and achievements.",
   },
   {
     id: "resume5",
-    title: "The Blueprint",
-    subtitle: "Architecture & Engineering",
-    style: "Professional",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuC1lctFEzKoryEXkOS-6mUhI2ynilFgBXeaDBzJTWNo3dQX0BqsIfvXHf9YfDZ-0px3ZMt2h2Wwd_agDsrYNda8h39N9ph0d1u1YISQQ0h1Eem7rihjMyDXrgcM3K_ARZ2B1w6rMTpqqiiQtU_dCNHtRS0RJXk34d2CttE-HDYcOjIeivty8Xyn13C3gu_EAwbrXuh4HvigTSIJWRc9Aa-VrbjYPHZHoNpf0uBmJpWaIrEoC8jXeZyG5Y5Z_zy44Yjk1QS4720NIa0",
+    title: "Vertex",
+    subtitle: "Asymmetric layout with modern geometric header",
+    category: "Modern",
+    badge: "ATS 100%",
+    description: "Asymmetric content arrangement with subtle color accents and spacious card boundaries for clarity.",
   },
+
+  // Professional (5)
   {
     id: "resume6",
-    title: "Helvetica",
-    subtitle: "Bold and direct",
-    style: "Modern",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuA_XpsYfbPrGgtGay0HzsIW0hfnPldXzBw7n91YtKESm4GVOzzwcDXNprshAXop6ezCjIYktERHTi8nNphbyVgvg3-qQBbrMWOKUerLXNI3aPuOK26aAnedbUFwmldd2ic0qMoeo_5ZxSlc0Js35LT7Gy2UZwCCTDnpIhnD-KCyKWhV_Pchsxrrw6fo3ml1b2zmz2T4C7q5ljUNu1wVGW-yzz8l_2QDoVX5AgBfqBSppT4TzxPoa5OvxD0LFK413xmDEGgpgfqDk",
+    title: "Executive",
+    subtitle: "Formal corporate header for C-suite & senior directors",
+    category: "Professional",
+    badge: "Recruiter Pick",
+    description: "Classic double-line border divider with centralized executive header. Highly recommended for executive & management roles.",
   },
   {
     id: "resume7",
-    title: "Northstar",
-    subtitle: "Balanced and polished",
-    style: "Professional",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCVBOLq1nq6dIzc4v0eLua42wLpMZfNqvPr3feJ8f_B0kTWc6d3i7u4z7g0bKCu6PnC0Lr6r0B3vG9lt3uNq2b0mZ5YxScOpaQ2z4B8MF4hV9qNQ7D7gJ7m5aOjt6Umk3wFI9K_25s1kN11vNqJ5wWp3kk6Gd8gF99TjA",
+    title: "Prestige",
+    subtitle: "Traditional recruiter-grade corporate template",
+    category: "Professional",
+    badge: "Corporate",
+    description: "Traditional corporate formatting with Georgia typography, subtle margins, and formal section dividers.",
+  },
+  {
+    id: "resume8",
+    title: "Legacy",
+    subtitle: "High-ATS single column layout for maximum compatibility",
+    category: "Professional",
+    badge: "ATS Best",
+    description: "Strictly single-column, recruiter-tested layout guaranteed to parse effortlessly through all ATS scanners.",
+  },
+  {
+    id: "resume9",
+    title: "Summit",
+    subtitle: "Corporate sidebar with top contact info banner",
+    category: "Professional",
+    badge: "Featured",
+    description: "Combines a clean top contact header with structured side columns for finance, HR, and consulting professionals.",
+  },
+  {
+    id: "resume10",
+    title: "Sterling",
+    subtitle: "Sleek business grid system for management & operations",
+    category: "Professional",
+    badge: "Popular",
+    description: "Structured border grid presentation giving a polished, highly organized appearance to long career histories.",
+  },
+
+  // Creative (5)
+  {
+    id: "resume11",
+    title: "Canvas",
+    subtitle: "Bold portfolio header with vibrant accent tags",
+    category: "Creative",
+    badge: "Designer Pick",
+    description: "Vibrant header with floating skill pills and portfolio callouts tailored for UI/UX designers and art directors.",
+  },
+  {
+    id: "resume12",
+    title: "Mosaic",
+    subtitle: "Multi-block modular grid layout for creatives",
+    category: "Creative",
+    badge: "Featured",
+    description: "Modular card-based grid layout that presents work history, portfolio highlights, and skillsets in distinct cards.",
+  },
+  {
+    id: "resume13",
+    title: "Prism",
+    subtitle: "Dual-tone color-block sidebar for brand leaders",
+    category: "Creative",
+    badge: "Creative",
+    description: "Dual-tone color block layout providing immediate visual impact without compromising ATS scannability.",
+  },
+  {
+    id: "resume14",
+    title: "Inspire",
+    subtitle: "Editorial magazine-style layout with large typography",
+    category: "Creative",
+    badge: "Editorial",
+    description: "Editorial magazine layout with prominent summary quotes, serif typography, and elegant spacing.",
+  },
+  {
+    id: "resume15",
+    title: "Vision",
+    subtitle: "Modern visual identity style with dark accent hero",
+    category: "Creative",
+    badge: "New",
+    description: "Sophisticated dark theme visual identity system with high contrast text and highlighted metric callouts.",
+  },
+
+  // Minimalist (5)
+  {
+    id: "resume16",
+    title: "Pure",
+    subtitle: "Ultra-clean whitespace focus with single-column type",
+    category: "Minimalist",
+    badge: "Minimalist",
+    description: "Maximum whitespace, refined single-column hierarchy, and zero clutter for a timeless, elegant presentation.",
+  },
+  {
+    id: "resume17",
+    title: "Essence",
+    subtitle: "Balanced minimalist design with subtle left accent line",
+    category: "Minimalist",
+    badge: "Popular",
+    description: "Frame your narrative along a delicate vertical accent line with lightweight headings and crisp margins.",
+  },
+  {
+    id: "resume18",
+    title: "Mono",
+    subtitle: "High-contrast monochrome code & design aesthetic",
+    category: "Minimalist",
+    badge: "Monochrome",
+    description: "Monochrome aesthetic with bold black header block, slash dividers, and high-contrast typography.",
+  },
+  {
+    id: "resume19",
+    title: "Slate",
+    subtitle: "Muted slate palette with light section dividers",
+    category: "Minimalist",
+    badge: "Sleek",
+    description: "Muted slate palette with soft borders, rounded container cards, and subtle typography hierarchy.",
+  },
+  {
+    id: "resume20",
+    title: "Zenith",
+    subtitle: "Timeless typography-first layout for maximum clarity",
+    category: "Minimalist",
+    badge: "Classic",
+    description: "Centered minimalist header with clean body text alignment. Built for timeless readability across all industries.",
   },
 ];
 
 export default function TemplatePage() {
-  const [selectedStyle, setSelectedStyle] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchValue, setSearchValue] = useState("");
+  const [sortBy, setSortBy] = useState("featured");
+  const [previewTemplate, setPreviewTemplate] = useState(null);
 
-  const filteredTemplates = templates.filter((template) => {
-    const matchesStyle = selectedStyle === "All" || template.style === selectedStyle;
-    const searchTerm = searchValue.trim().toLowerCase();
+  const filteredTemplates = useMemo(() => {
+    let result = templatesData.filter((template) => {
+      const matchesCategory = selectedCategory === "All" || template.category === selectedCategory;
+      const searchTerm = searchValue.trim().toLowerCase();
 
-    const matchesSearch =
-      searchTerm === "" ||
-      template.title.toLowerCase().includes(searchTerm) ||
-      template.subtitle.toLowerCase().includes(searchTerm) ||
-      template.style.toLowerCase().includes(searchTerm);
+      const matchesSearch =
+        searchTerm === "" ||
+        template.title.toLowerCase().includes(searchTerm) ||
+        template.subtitle.toLowerCase().includes(searchTerm) ||
+        template.category.toLowerCase().includes(searchTerm) ||
+        template.description.toLowerCase().includes(searchTerm);
 
-    return matchesStyle && matchesSearch;
-  });
+      return matchesCategory && matchesSearch;
+    });
+
+    if (sortBy === "alphabetical") {
+      result = [...result].sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === "category") {
+      result = [...result].sort((a, b) => a.category.localeCompare(b.category));
+    }
+
+    return result;
+  }, [selectedCategory, searchValue, sortBy]);
+
+  const categoryColor = (cat) => {
+    switch (cat) {
+      case "Modern":
+        return "bg-teal-50 text-teal-700 border-teal-200";
+      case "Professional":
+        return "bg-slate-100 text-slate-800 border-slate-300";
+      case "Creative":
+        return "bg-rose-50 text-rose-700 border-rose-200";
+      case "Minimalist":
+        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+      default:
+        return "bg-slate-100 text-slate-700 border-slate-200";
+    }
+  };
 
   return (
     <>
       <Header />
-      <main className="mx-auto bg-gray-200 max-w-7xl px-6 pb-20 pt-24 md:px-12 lg:px-24">
-        <header className="mb-16">
-          <div className="mb-4 flex items-start gap-4">
-            <div className="h-12 w-1 bg-sky-600"></div>
-            <h1 className="text-5xl font-extrabold tracking-tighter text-slate-900 md:text-6xl">
-              Templates
-            </h1>
-          </div>
-          <p className="max-w-2xl text-lg leading-relaxed text-slate-600">
-            Select a foundation for your professional narrative. Each template is architected to prioritize clarity, hierarchy, and editorial impact.
-          </p>
-        </header>
-
-        <section className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-center">
-          <div className="flex flex-wrap gap-2">
-            {templateStyles.map((style) => {
-              const isActive = selectedStyle === style;
-              return (
-                <button
-                  key={style}
-                  type="button"
-                  onClick={() => setSelectedStyle(style)}
-                  className={`rounded-full px-6 py-2 text-sm font-medium shadow-sm transition-colors ${
-                    isActive ? "bg-slate-900 text-white" : "bg-white text-slate-700 hover:bg-slate-100"
-                  }`}
-                >
-                  {style}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="group relative w-full md:w-80">
-            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-              <IoSearchSharp />
-            </span>
-           <input
-  value={searchValue}
-  onChange={(event) => setSearchValue(event.target.value)}
-  className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-12 pr-4 text-slate-700 ..."
-  placeholder="Search templates..."
-  type="text"
-/>
-          </div>
-        </section>
-
-        <section className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
-          {filteredTemplates.length === 0 ? (
-            <div className="col-span-full rounded-3xl border border-slate-200 bg-white p-12 text-center text-slate-600 shadow-sm">
-              <p className="text-xl font-semibold">No templates match your search.</p>
-              <p className="mt-3 text-sm">Try a different style or keyword.</p>
+      <main className="mx-auto min-h-screen bg-slate-50 px-4 pb-24 pt-24 sm:px-6 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          {/* Header Banner */}
+          <header className="mb-12 border-b border-slate-200 pb-8">
+            <div className="mb-3 flex items-center gap-3">
+              <span className="h-8 w-1.5 rounded-full bg-emerald-600" />
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-700">
+                20 Premium Templates
+              </p>
             </div>
-          ) : (
-            filteredTemplates.map((template) => (
-              <article
-                key={template.title}
-                className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                <div className="relative aspect-[3/4] bg-slate-50 p-6">
-                  <img
-                    className="h-full w-full rounded-sm object-cover shadow-lg transition-transform duration-500 group-hover:scale-[1.02]"
-                    alt={`${template.title} template preview`}
-                    src={template.image}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-sky-900/30 opacity-0 backdrop-blur-[2px] transition-opacity group-hover:opacity-100">
-                    <Link
-                      href={`/Editor?template=${template.id}`}
-                      className="rounded-xl bg-white px-8 py-3 font-bold text-sky-700 shadow-xl transition-all active:scale-95"
-                    >
-                      Use {template.title}
-                    </Link>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between bg-white p-6">
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-900">{template.title}</h3>
-                    <p className="text-sm text-slate-600">{template.subtitle}</p>
-                  </div>
-                  {template.label ? (
-                    <span className="rounded bg-sky-100 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-sky-700">
-                      {template.label}
-                    </span>
-                  ) : null}
-                </div>
-              </article>
-            ))
-          )}
-        </section>
-
-        <section className="relative mt-20 flex flex-col items-center gap-8 overflow-hidden rounded-3xl bg-sky-700 p-12 md:flex-row">
-          <div className="relative z-10 flex-1">
-            <h2 className="mb-4 text-4xl font-extrabold tracking-tighter text-white">
-              Not sure where to start?
-            </h2>
-            <p className="mb-6 max-w-lg text-sky-100">
-              Our AI-assisted builder can recommend a template based on your industry and years of experience.
+            <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
+              Template Gallery
+            </h1>
+            <p className="mt-3 max-w-2xl text-base text-slate-600 leading-relaxed">
+              Explore 20 editorially crafted, ATS-optimized resume designs across Modern, Professional, Creative, and Minimalist styles.
             </p>
-            <button className="rounded-xl bg-white px-8 py-4 font-bold text-sky-700 shadow-lg transition-all hover:scale-105 active:scale-95">
-              Start AI Assistant
-            </button>
-          </div>
-          <div className="relative z-10 flex h-64 w-full items-center justify-center md:w-64">
-            <span className="material-symbols-outlined text-9xl text-sky-200/40">psychology</span>
-          </div>
+          </header>
 
-          <div className="absolute -bottom-20 -right-20 h-96 w-96 rounded-full bg-sky-400/40 blur-[120px]"></div>
-        </section>
+          {/* Filter & Search Bar */}
+          <section className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            {/* Category Tabs */}
+            <div className="flex flex-wrap gap-2">
+              {templateCategories.map((cat) => {
+                const isActive = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`rounded-full px-5 py-2 text-xs font-bold transition-all shadow-sm ${
+                      isActive
+                        ? "bg-slate-900 text-white shadow-slate-900/20"
+                        : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Search & Sort Controls */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="relative flex-1 sm:w-72">
+                <IoSearchSharp className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
+                <input
+                  value={searchValue}
+                  onChange={(event) => setSearchValue(event.target.value)}
+                  className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white"
+                  placeholder="Search templates..."
+                  type="text"
+                />
+              </div>
+
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-medium text-slate-700 outline-none focus:border-emerald-500 cursor-pointer"
+              >
+                <option value="featured">Featured First</option>
+                <option value="alphabetical">Alphabetical (A-Z)</option>
+                <option value="category">Group by Category</option>
+              </select>
+            </div>
+          </section>
+
+          {/* Grid of Templates */}
+          <section className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {filteredTemplates.length === 0 ? (
+              <div className="col-span-full rounded-3xl border border-slate-200 bg-white p-12 text-center text-slate-600 shadow-sm">
+                <p className="text-xl font-bold text-slate-900">No templates match your search.</p>
+                <p className="mt-2 text-sm">Try clearing your filters or searching for another title.</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedCategory("All");
+                    setSearchValue("");
+                  }}
+                  className="mt-4 rounded-xl bg-slate-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-slate-800"
+                >
+                  Reset Filters
+                </button>
+              </div>
+            ) : (
+              filteredTemplates.map((template,i) => (
+                <article key={i} className="group overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+
+  {/* Resume Preview */}
+  <Link href={`/Editor?template=${template.id}`}>
+    <div className="relative bg-slate-100 p-5">
+      <div className="overflow-hidden rounded-md bg-white shadow-lg">
+        <Image
+          src={`/templates/${template.id}.png`}
+          
+          alt={template.title}
+          width={500}
+          height={700}
+          className="h-auto w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+        />
+      </div>
+    </div>
+  </Link>
+
+  {/* Footer */}
+  <div className="flex items-start justify-between border-t border-slate-100 px-5 py-4">
+
+    <div>
+      <h3 className="text-2xl font-bold text-slate-900">
+        {template.title}
+      </h3>
+
+      <p className="mt-1 text-sm text-slate-500">
+        {template.subtitle}
+      </p>
+    </div>
+
+    {template.badge === "Top Pick" && (
+      <span className="rounded bg-sky-100 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-sky-700">
+        TOP PICK
+      </span>
+    )}
+
+  </div>
+
+</article>
+              ))
+            )}
+          </section>
+        </div>
+
+        {/* Modal Quick Preview */}
+        {previewTemplate && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+            <div className="relative w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl sm:p-8 animate-in fade-in zoom-in duration-200">
+              <button
+                type="button"
+                onClick={() => setPreviewTemplate(null)}
+                className="absolute right-4 top-4 rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+              >
+                <IoCloseOutline className="text-2xl" />
+              </button>
+
+              <div className="mb-4">
+                <span className={`inline-block rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${categoryColor(previewTemplate.category)}`}>
+                  {previewTemplate.category}
+                </span>
+                <h3 className="mt-3 text-2xl font-black text-slate-900">{previewTemplate.title}</h3>
+                <p className="mt-1 text-sm font-medium text-slate-600">{previewTemplate.subtitle}</p>
+              </div>
+
+              <p className="mb-6 text-xs leading-6 text-slate-600 border-t border-slate-100 pt-4">
+                {previewTemplate.description}
+              </p>
+
+              <div className="mb-6 space-y-2 rounded-2xl bg-slate-50 p-4 text-xs font-medium text-slate-700">
+                <div className="flex items-center gap-2">
+                  <FiCheck className="text-emerald-600" />
+                  <span>Fully editable inline text preview</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FiCheck className="text-emerald-600" />
+                  <span>100% ATS & recruiter friendly format</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FiCheck className="text-emerald-600" />
+                  <span>Dynamic font & color theme customization</span>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setPreviewTemplate(null)}
+                  className="rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                >
+                  Close
+                </button>
+                <Link
+                  href={`/Editor?template=${previewTemplate.id}`}
+                  className="rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-bold text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700"
+                >
+                  Use {previewTemplate.title} Template
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );

@@ -155,11 +155,58 @@ body {
   }
 }
 
-@media print {
-  @page { size: A4; margin: 0; }
+/* Editable Text Fields */
+.editable-text-field {
+  transition: all 0.15s ease-in-out;
+  cursor: text;
+  border-radius: 4px;
+  padding: 1px 3px;
+  margin: -1px -3px;
+  outline: 1.5px dashed transparent;
+}
 
-  body { background: white; }
-  header, .editor-sidebar, .editor-panel { display: none !important; }
-  .editor-preview { display: block !important; padding: 0 !important; border: 0 !important; background: white !important; }
-  .resume-preview-document { width: 794px !important; zoom: 1 !important; }
+.editable-text-field:hover {
+  outline: 1.5px dashed rgba(16, 185, 129, 0.5);
+  background-color: rgba(16, 185, 129, 0.04);
+}
+
+.editable-text-field:focus,
+.editable-focused {
+  outline: 2px solid #059669 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+  z-index: 10;
+}
+
+.editable-text-field[placeholder]:empty:before {
+  content: attr(placeholder);
+  color: #94a3b8;
+  opacity: 0.7;
+}
+
+/* Hide editable field indicators during export and print */
+.export-mode .editable-hover-badge,
+.export-mode .section-controls-toolbar {
+  display: none !important;
+}
+
+.export-mode .editable-text-field {
+  outline: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  cursor: default !important;
+}
+
+@media print {
+  .editable-text-field {
+    outline: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    cursor: default !important;
+  }
+  .editable-hover-badge,
+  .section-controls-toolbar {
+    display: none !important;
+  }
 }

@@ -1,34 +1,173 @@
-const Resume5 = ({ data }) => {
-  const contact = data?.contact ?? { fullName: "Sara Hamid", headline: "Content Marketing Lead", email: "sara.hamid@email.com", location: "Lahore, Pakistan", website: "sarahamid.co" };
-  const skills = data?.skills?.length ? data.skills : ["Content strategy", "SEO", "Editorial planning", "Copywriting", "Email lifecycle", "GA4"];
-  const experiences = data?.experiences?.length ? data.experiences : [{ id: "1", role: "Content Marketing Lead", company: "Lumen Commerce", startDate: "2022", endDate: "Present", description: "Own the content engine for a fast-growing marketplace." }, { id: "2", role: "Senior Content Strategist", company: "Tangent Studio", startDate: "2019", endDate: "2022", description: "Directed editorial strategy and campaign production." }];
-  const education = data?.education?.length ? data.education : [{ id: "1", degree: "BA, English Literature", school: "LUMS", year: "2017" }];
+"use client";
+
+import React, { memo } from "react";
+import { useResume } from "../../context/ResumeContext";
+import TemplateWrapper from "../../Component/TemplateWrapper";
+import EditableText from "../../Component/EditableText";
+import SectionControls from "../../Component/SectionControls";
+
+const Resume5 = memo(function Resume5({ data: propData, theme, readOnly = false }) {
+  const context = useResume();
+  const data = propData || context?.resumeData;
+  const accent = theme?.accent || context?.themeAccent || "#0284c7";
+
+  const contact = data?.contact || {};
+  const skills = data?.skills || [];
+  const experiences = data?.experiences || [];
+  const education = data?.education || [];
+
+  const {
+    updateContact,
+    updateSummary,
+    updateExperience,
+    addExperience,
+    removeExperience,
+    moveExperience,
+    updateEducation,
+    addEducation,
+    removeEducation,
+    moveEducation,
+    updateSkill,
+    addSkill,
+    removeSkill,
+    moveSkill,
+  } = context || {};
+
   return (
-    <article className="min-h-[1123px] w-[794px] bg-slate-50 p-0 font-sans text-slate-700 shadow-2xl">
-      <div className="min-h-[1043px] bg-white px-10 py-11">
-        <header className="flex items-start justify-between"><div><div className="mb-4 h-2 w-12 bg-sky-500" /><h1 className="text-5xl font-black tracking-tight text-slate-950">{contact.fullName}</h1><p className="mt-2 text-base font-medium text-sky-700">{contact.headline}</p></div><p className="text-right text-[10px] leading-5 text-slate-500">{contact.email}<br />{contact.phone}<br />{contact.location}<br />{contact.website}</p></header>
-        <div className="mt-8 grid grid-cols-[1.55fr_0.85fr] gap-9 border-t border-slate-200 pt-8">
+    <TemplateWrapper theme={theme} readOnly={readOnly} className="bg-slate-50 p-8">
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+        <header className="flex justify-between items-start border-b border-slate-200 pb-6">
+          <div>
+            <div className="mb-3 h-2 w-16 rounded-full" style={{ backgroundColor: accent }} />
+            <h1 className="text-4xl font-black tracking-tight text-slate-900">
+              <EditableText value={contact.fullName} onChange={(val) => updateContact?.("fullName", val)} readOnly={readOnly} placeholder="Full Name" />
+            </h1>
+            <p className="mt-1 text-sm font-semibold" style={{ color: accent }}>
+              <EditableText value={contact.headline} onChange={(val) => updateContact?.("headline", val)} readOnly={readOnly} placeholder="Headline" />
+            </p>
+          </div>
+          <div className="text-right text-xs leading-5 text-slate-500 space-y-0.5">
+            <p><EditableText value={contact.email} onChange={(val) => updateContact?.("email", val)} readOnly={readOnly} placeholder="Email" /></p>
+            <p><EditableText value={contact.phone} onChange={(val) => updateContact?.("phone", val)} readOnly={readOnly} placeholder="Phone" /></p>
+            <p><EditableText value={contact.location} onChange={(val) => updateContact?.("location", val)} readOnly={readOnly} placeholder="Location" /></p>
+            <p><EditableText value={contact.website} onChange={(val) => updateContact?.("website", val)} readOnly={readOnly} placeholder="Website" /></p>
+          </div>
+        </header>
+
+        <div className="mt-6 grid grid-cols-[1.5fr_0.9fr] gap-8">
           <main>
-            <CleanSection title="Profile"><p className="text-sm leading-6">{data?.summary || "Content strategist who combines editorial craft with performance insight to build useful brand stories and sustainable growth engines."}</p></CleanSection>
-            <CleanSection title="Experience">
-              {experiences.map((experience) => <CleanRole key={experience.id} role={experience.role} company={experience.company} dates={[experience.startDate, experience.endDate].filter(Boolean).join(" - ")} text={experience.description} />)}
-            </CleanSection>
-            <CleanSection title="Campaign highlights"><div className="grid grid-cols-2 gap-4"><Metric number="72%" label="organic growth" /><Metric number="3.4x" label="newsletter revenue" /><Metric number="48" label="articles shipped / quarter" /><Metric number="11" label="markets localized" /></div></CleanSection>
+            <section className="mb-6">
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
+                Profile Summary
+              </h2>
+              <p className="text-xs leading-6 text-slate-700">
+                <EditableText value={data?.summary} onChange={(val) => updateSummary?.(val)} multiline readOnly={readOnly} placeholder="Summary..." />
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
+                Experience
+              </h2>
+              {experiences.map((exp, index) => (
+                <div key={exp.id || index} className="group/item relative mb-5 last:mb-0">
+                  <div className="flex justify-between items-baseline">
+                    <div>
+                      <h3 className="text-xs font-bold text-slate-900">
+                        <EditableText value={exp.role} onChange={(val) => updateExperience?.(exp.id, "role", val)} readOnly={readOnly} placeholder="Role" />
+                      </h3>
+                      <p className="text-[11px] font-semibold text-slate-500">
+                        <EditableText value={exp.company} onChange={(val) => updateExperience?.(exp.id, "company", val)} readOnly={readOnly} placeholder="Company" />
+                      </p>
+                    </div>
+                    <p className="text-[10px] text-slate-400 flex gap-1">
+                      <EditableText value={exp.startDate} onChange={(val) => updateExperience?.(exp.id, "startDate", val)} readOnly={readOnly} placeholder="Start" />
+                      <span>-</span>
+                      <EditableText value={exp.endDate} onChange={(val) => updateExperience?.(exp.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
+                    </p>
+                  </div>
+                  <p className="mt-1.5 text-xs leading-5 text-slate-600">
+                    <EditableText value={exp.description} onChange={(val) => updateExperience?.(exp.id, "description", val)} multiline readOnly={readOnly} placeholder="Responsibilities..." />
+                  </p>
+                  {!readOnly && (
+                    <SectionControls
+                      className="absolute top-0 right-0"
+                      onMoveUp={() => moveExperience?.(exp.id, "up")}
+                      onMoveDown={() => moveExperience?.(exp.id, "down")}
+                      onAdd={() => addExperience?.(index)}
+                      onDelete={() => removeExperience?.(exp.id)}
+                      canMoveUp={index > 0}
+                      canMoveDown={index < experiences.length - 1}
+                      canDelete={experiences.length > 1}
+                    />
+                  )}
+                </div>
+              ))}
+            </section>
           </main>
-          <aside>
-            <CleanSection title="Core skills"><Pills items={skills} /></CleanSection>
-            <CleanSection title="Education">{education.map((entry) => <div key={entry.id} className="mb-3"><p className="text-xs font-bold text-slate-900">{entry.degree}</p><p className="mt-1 text-xs text-slate-500">{entry.school} · {entry.year}</p></div>)}</CleanSection>
-            <CleanSection title="Selected tools"><p className="text-xs leading-6">Ahrefs<br />Google Analytics<br />HubSpot<br />Notion<br />Figma</p></CleanSection>
+
+          <aside className="border-l border-slate-100 pl-6">
+            <section className="mb-6">
+              <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
+                Core Skills
+              </h2>
+              <div className="flex flex-wrap gap-1.5">
+                {skills.map((skill, index) => (
+                  <div key={index} className="group/item relative inline-flex items-center">
+                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-medium text-slate-800">
+                      <EditableText value={skill} onChange={(val) => updateSkill?.(index, val)} readOnly={readOnly} placeholder="Skill" />
+                    </span>
+                    {!readOnly && (
+                      <SectionControls
+                        className="absolute -top-7 right-0"
+                        onMoveUp={() => moveSkill?.(index, "left")}
+                        onMoveDown={() => moveSkill?.(index, "right")}
+                        onAdd={() => addSkill?.("New Skill")}
+                        onDelete={() => removeSkill?.(index)}
+                        canMoveUp={index > 0}
+                        canMoveDown={index < skills.length - 1}
+                        canDelete={skills.length > 1}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
+                Education
+              </h2>
+              {education.map((entry, index) => (
+                <div key={entry.id || index} className="group/item relative mb-3 last:mb-0">
+                  <p className="text-xs font-bold text-slate-900">
+                    <EditableText value={entry.degree} onChange={(val) => updateEducation?.(entry.id, "degree", val)} readOnly={readOnly} placeholder="Degree" />
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-slate-500">
+                    <EditableText value={entry.school} onChange={(val) => updateEducation?.(entry.id, "school", val)} readOnly={readOnly} placeholder="School" />
+                    <span> · </span>
+                    <EditableText value={entry.year} onChange={(val) => updateEducation?.(entry.id, "year", val)} readOnly={readOnly} placeholder="Year" />
+                  </p>
+                  {!readOnly && (
+                    <SectionControls
+                      className="absolute top-0 right-0"
+                      onMoveUp={() => moveEducation?.(entry.id, "up")}
+                      onMoveDown={() => moveEducation?.(entry.id, "down")}
+                      onAdd={() => addEducation?.(index)}
+                      onDelete={() => removeEducation?.(entry.id)}
+                      canMoveUp={index > 0}
+                      canMoveDown={index < education.length - 1}
+                      canDelete={education.length > 1}
+                    />
+                  )}
+                </div>
+              ))}
+            </section>
           </aside>
         </div>
       </div>
-    </article>
+    </TemplateWrapper>
   );
-};
-
-function CleanSection({ title, children }) { return <section className="mb-8"><h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.25em] text-sky-700">{title}</h2>{children}</section>; }
-function CleanRole({ role, company, dates, text }) { return <div className="mb-6"><div className="flex justify-between gap-4"><div><h3 className="text-sm font-bold text-slate-950">{role}</h3><p className="mt-1 text-xs text-slate-500">{company}</p></div><p className="shrink-0 text-[10px] text-slate-500">{dates}</p></div><p className="mt-2 text-xs leading-5">{text}</p></div>; }
-function Pills({ items }) { return <div className="flex flex-wrap gap-2">{items.map((item) => <span key={item} className="rounded-full bg-sky-50 px-2.5 py-1 text-[10px] font-medium text-sky-800">{item}</span>)}</div>; }
-function Metric({ number, label }) { return <div className="border-l-2 border-sky-400 pl-3"><p className="text-xl font-bold text-slate-900">{number}</p><p className="mt-1 text-[10px] uppercase tracking-wide text-slate-500">{label}</p></div>; }
+});
 
 export default Resume5;
