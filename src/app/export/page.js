@@ -188,8 +188,8 @@ const previewRef = useRef(null);
 </div>
 
 <div className="order-1 min-w-0 md:col-span-8 xl:col-span-9 xl:order-2">
-<div className="overflow-x-auto rounded-[28px] border border-slate-200 bg-slate-50/80 shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:p-5 ">
-<div ref={previewRef} className="mx-auto flex min-w-[280px] max-w-[920px] items-center justify-center overflow-hidden p-1 sm:p-4 lg:p-4">
+<div className="overflow-x-auto rounded-[18px] border border-slate-200 bg-slate-50/80 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm p-2">
+<div ref={previewRef} className="mx-auto flex min-w-[280px] max-w-[920px] items-center justify-center overflow-hidden  ">
 <SelectedResume data={resumeData}
               theme={{
                   // accent: themeAccent,
