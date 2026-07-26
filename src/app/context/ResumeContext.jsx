@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { MdBuild, MdPermContactCalendar, MdSchool, MdWork } from "react-icons/md";
 
 const ResumeContext = createContext();
@@ -85,26 +85,27 @@ export function ResumeProvider({ children }) {
     }
   }
   
-  const storedDraft = readStoredDraft()
-  const [themeFont, setThemeFont] = useState(storedDraft?.themeFont || "Inter, sans-serif");
+  const [themeFont, setThemeFont] = useState("Inter, sans-serif");
+  const [themeAccent, setThemeAccent] = useState("#0f766e");
+  const [resumeData, setResumeData] = useState(initialCuratorData);
 
-    const [themeAccent, setThemeAccent] = useState("#0f766e");
-    
-function readStoredDraft() {
-  if (typeof window === "undefined") return null;
+  useEffect(() => {
+    const storedDraft = readStoredDraft();
 
-  try {
-    const rawDraft = window.localStorage.getItem(draftStorageKey);
-    return rawDraft ? JSON.parse(rawDraft) : null;
-  } catch (error) {
-    console.warn("Unable to read saved draft", error);
-    return null;
-  }
-}
+    if (!storedDraft) return;
 
+    if (storedDraft.resumeData) {
+      setResumeData(storedDraft.resumeData);
+    }
 
-const [resumeData, setResumeData] = useState(storedDraft?.resumeData || initialCuratorData);
+    if (storedDraft.themeFont) {
+      setThemeFont(storedDraft.themeFont);
+    }
 
+    if (storedDraft.themeAccent) {
+      setThemeAccent(storedDraft.themeAccent);
+    }
+  }, []);
 
   return (
     <ResumeContext.Provider
@@ -114,10 +115,13 @@ const [resumeData, setResumeData] = useState(storedDraft?.resumeData || initialC
         themeAccent,
         setThemeAccent,
         themeFont,
-        setThemeFont,templateNames,
+        setThemeFont,
+        templateNames,
         readStoredDraft,
+        writeStoredDraft,
         editorSections,
-        accentPresets 
+        accentPresets,
+        fontOptions
       }}
     >
       {children}

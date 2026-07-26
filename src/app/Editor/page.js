@@ -38,22 +38,20 @@ themeFont,
 setThemeFont,
 setThemeAccent,
 readStoredDraft,
+writeStoredDraft,
 templateNames,
 editorSections,
-accentPresets 
+accentPresets,
+fontOptions,
 } = useResume();
   
-  const storedDraft = readStoredDraft();
-  const [activeSection, setActiveSection] = useState(storedDraft?.activeSection || "contact");
-  
-  const [skillInput, setSkillInput] = useState(storedDraft?.skillInput || "");
-  const [targetKeywords, setTargetKeywords] = useState(storedDraft?.targetKeywords || "");
-  const [showAtsScore, setShowAtsScore] = useState(Boolean(storedDraft?.showAtsScore));
-  
-  
+  const [activeSection, setActiveSection] = useState("contact");
+  const [skillInput, setSkillInput] = useState("");
+  const [targetKeywords, setTargetKeywords] = useState("");
+  const [showAtsScore, setShowAtsScore] = useState(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
-  const [draftStatus, setDraftStatus] = useState(storedDraft ? "Draft restored" : "Auto-saves locally");
-  const [draftSavedAt, setDraftSavedAt] = useState(storedDraft?.updatedAt ? new Date(storedDraft.updatedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "");
+  const [draftStatus, setDraftStatus] = useState("Auto-saves locally");
+  const [draftSavedAt, setDraftSavedAt] = useState("");
   const previewRef = useRef(null);
   
   const templateComponents = { resume1: Resume1, resume2: Resume2, resume3: Resume3, resume4: Resume4, resume5: Resume5, resume6: Resume6, resume7: Resume7 };
@@ -99,6 +97,24 @@ accentPresets
   
   const [sideBarHOver, setsideBarHOver] = useState(false)
   const [ShowResumeScore, setShowResumeScore] = useState(false)
+
+  useEffect(() => {
+    const storedDraft = readStoredDraft();
+
+    if (!storedDraft) return;
+
+    setActiveSection(storedDraft.activeSection || "contact");
+    setSkillInput(storedDraft.skillInput || "");
+    setTargetKeywords(storedDraft.targetKeywords || "");
+    setShowAtsScore(Boolean(storedDraft.showAtsScore));
+    setDraftStatus("Draft restored");
+    setDraftSavedAt(
+      storedDraft.updatedAt
+        ? new Date(storedDraft.updatedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+        : ""
+    );
+  }, []);
+
   useEffect(() => {
     persistDraft("Auto-saved locally");
   }, [resumeData, skillInput, targetKeywords, activeSection, showAtsScore, themeAccent, themeFont]);
@@ -281,6 +297,8 @@ const canvas = await html2canvas(previewRef.current, {
       font={themeFont}
       setFont={setThemeFont}
       setShowResumeScore={setShowResumeScore}
+      accentPresets={accentPresets}
+      fontOptions={fontOptions}
     />
   </div>
 
@@ -435,7 +453,7 @@ function buildAtsAnalysis(data, keywordInput) {
   return { score, checks, jobKeywords, matchedKeywords };
 }
 
-function ThemeControls({setShowResumeScore, accent, setAccent, font, setFont }) {
+function ThemeControls({setShowResumeScore, accent, setAccent, font, setFont, accentPresets, fontOptions }) {
   return (
     <section className="mb-3 flex max-h-[150px] items-center justify-between md:gap-3 gap-2 rounded-b-2xl border -mt-6 border-slate-200 bg-white md:px-3 px-2 py-3  shadow-sm">
       <div className="  xl:flex items-center gap-2">

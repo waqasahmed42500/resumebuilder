@@ -9,9 +9,9 @@ export default function Header() {
             ResumeArchitect
           </Link>
           <div className="hidden items-center gap-6 md:flex">
-            <a className="border-b-2 border-slate-900 pb-1 text-slate-900 transition-colors hover:text-slate-900" href="#">
+            <Link href="/tempelate" className="border-b-2 border-slate-900 pb-1 text-slate-900 transition-colors hover:text-slate-900">
               Templates
-            </a>
+            </Link>
             <a className="text-slate-500 transition-colors hover:text-slate-900" href="#">
               Examples
             </a>
