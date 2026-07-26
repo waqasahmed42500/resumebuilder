@@ -23,6 +23,40 @@ const [copied, setCopied] = useState(false);
 const [isDownloading, setIsDownloading] = useState(false);
 const previewRef = useRef(null);
 
+const buildPlainTextResume = () => {
+  const contact = resumeData.contact || {};
+  const sections = [
+    `${contact.fullName || 'Your Name'}`,
+    contact.headline || '',
+    [contact.email, contact.phone, contact.location, contact.website].filter(Boolean).join(' | '),
+    '',
+    resumeData.summary || '',
+    '',
+    'Experience',
+    ...resumeData.experiences.map((item) => `${item.role || ''} at ${item.company || ''} (${item.startDate || ''} - ${item.endDate || ''})\n${item.description || ''}`),
+    '',
+    'Education',
+    ...resumeData.education.map((item) => `${item.degree || ''} - ${item.school || ''} (${item.year || ''})`),
+    '',
+    'Skills',
+    resumeData.skills.join(', '),
+  ].filter(Boolean);
+
+  return sections.join('\n\n');
+};
+
+const downloadTextFile = (content, filename, type) => {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
     const templateComponents = { resume1: Resume1, resume2: Resume2, resume3: Resume3, resume4: Resume4, resume5: Resume5, resume6: Resume6, resume7: Resume7 };
       const searchParams = useSearchParams();
     const selectedTemplate = searchParams.get("template") || "resume1";
@@ -43,6 +77,39 @@ const previewRef = useRef(null);
         window.setTimeout(() => setCopied(false), 1800);
       } catch {
         window.prompt('Copy this link', shareUrl);
+      }
+    };
+
+    const handleExportText = () => {
+      downloadTextFile(buildPlainTextResume(), `${selectedTemplate}-resume.txt`, 'text/plain;charset=utf-8');
+    };
+
+    const handleExportJson = () => {
+      downloadTextFile(JSON.stringify(resumeData, null, 2), `${selectedTemplate}-resume.json`, 'application/json;charset=utf-8');
+    };
+
+    const handleSendEmail = async () => {
+      try {
+        const response = await fetch('/api/send-resume', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: 'your-email@example.com',
+            subject: `Resume export - ${selectedTemplate}`,
+            text: `Hi,\n\nPlease find my resume export here:\n${shareUrl}`,
+            html: `<p>Hi,</p><p>Please find my resume export here:</p><p><a href="${shareUrl}">${shareUrl}</a></p>`,
+          }),
+        });
+
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || 'Unable to send email.');
+        }
+
+        window.alert('Email sent successfully.');
+      } catch (error) {
+        console.error('Send email failed', error);
+        window.alert(error.message || 'Unable to send email.');
       }
     };
 
@@ -152,21 +219,21 @@ const previewRef = useRef(null);
 <section className="rounded-[24px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
 <h3 className="border-l-4 border-emerald-600 pl-3 text-xs font-bold uppercase tracking-[0.3em] text-slate-600">Export Options</h3>
 <div className="mt-5 space-y-3">
-<button className="group flex w-full items-center justify-between rounded-2xl border border-slate-200 p-3 text-left transition hover:bg-slate-50">
+<button onClick={handleExportText} className="group flex w-full items-center justify-between rounded-2xl border border-slate-200 p-3 text-left transition hover:bg-slate-50">
 <div className="flex items-center gap-3">
 <span className="text-xl text-slate-600"><TbFileDescription /></span>
 <span className="font-semibold text-slate-800">Plain Text (.txt)</span>
 </div>
 <span className="text-sm text-slate-400 opacity-0 transition group-hover:opacity-100">download</span>
 </button>
-<button className="group flex w-full items-center justify-between rounded-2xl border border-slate-200 p-3 text-left transition hover:bg-slate-50">
+<button onClick={handleExportJson} className="group flex w-full items-center justify-between rounded-2xl border border-slate-200 p-3 text-left transition hover:bg-slate-50">
 <div className="flex items-center gap-3">
 <span className="text-xl text-slate-600"><FiGrid /></span>
 <span className="font-semibold text-slate-800">JSON Format</span>
 </div>
 <span className="text-sm text-slate-400 opacity-0 transition group-hover:opacity-100">code</span>
 </button>
-<button className="group flex w-full items-center justify-between rounded-2xl border border-slate-200 p-3 text-left transition hover:bg-slate-50">
+<button onClick={handleSendEmail} className="group flex w-full items-center justify-between rounded-2xl border border-slate-200 p-3 text-left transition hover:bg-slate-50">
 <div className="flex items-center gap-3">
 <span className="text-xl text-slate-600"><MdOutlineMailOutline /></span>
 <span className="font-semibold text-slate-800">Send to Email</span>
