@@ -8,7 +8,7 @@ import { HiMenu, HiX } from "react-icons/hi";
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/builder", label: "Resume Builder" },
-  { href: "/templates", label: "Templates" },
+  { href: "/tempelate", label: "Templates" },
   { href: "/ats-resume-builder", label: "ATS Resume Builder" },
   { href: "/examples", label: "Examples" },
   { href: "/resources", label: "Resources" },

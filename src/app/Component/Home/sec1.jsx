@@ -25,7 +25,7 @@ export default function Sec1() {
               Build My Resume Now
             </Link>
             <Link
-              href="/templates"
+              href="/tempelate"
               className="rounded-xl bg-slate-200 px-6 py-3.5 text-base font-bold text-slate-800 transition-all hover:bg-slate-300 sm:px-8 sm:text-lg"
               aria-label="Explore free professional resume templates"
             >

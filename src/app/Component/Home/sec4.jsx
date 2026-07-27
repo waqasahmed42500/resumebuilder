@@ -19,7 +19,7 @@ export default function Sec4() {
             Create My Free Resume Now
           </Link>
           <Link
-            href="/templates"
+            href="/tempelate"
             className="rounded-xl border border-slate-700 bg-slate-800/50 px-8 py-4 text-lg font-bold text-white transition-all hover:bg-slate-800"
             aria-label="View all free resume templates"
           >

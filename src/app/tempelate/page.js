@@ -1,4 +1,5 @@
-import TemplateGalleryClient, { templatesData } from "./TemplateGalleryClient";
+import TemplateGalleryClient from "./TemplateGalleryClient";
+import { templatesData } from "./templatesData";
 import JsonLd from "../Component/SEO/JsonLd";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://resumearchitect.com";
