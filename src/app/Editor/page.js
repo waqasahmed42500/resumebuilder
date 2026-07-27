@@ -382,15 +382,15 @@ function EditorContent() {
                       {draftSavedAt ? ` • ${draftSavedAt}` : ""}
                     </p>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleDownloadPdf}
+                  <Link
+                    
+                    href={`/export?template=${selectedTemplate}`}
                     disabled={isExportingPdf}
                     className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:opacity-70 flex items-center gap-1.5"
                   >
                     <IoMdDownload />
-                    <span>Download PDF</span>
-                  </button>
+                    <span>Export PDF</span>
+                  </Link>
                 </div>
 
                 <div className="mb-5 flex gap-2 overflow-x-auto pb-1 md:hidden">
