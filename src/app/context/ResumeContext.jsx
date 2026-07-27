@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { MdBuild, MdPermContactCalendar, MdSchool, MdWork } from "react-icons/md";
+import { RiCertificate2Line } from "react-icons/ri";
 
 const ResumeContext = createContext();
 
@@ -11,7 +12,7 @@ export function ResumeProvider({ children }) {
     { id: "experience", label: "Experience", icon: <MdWork /> },
     { id: "education", label: "Education", icon: <MdSchool /> },
     { id: "skills", label: "Skills", icon: <MdBuild /> },
-    { id: "additional", label: "Certificates & Languages", icon: <MdBuild /> },
+    { id: "additional", label: "Certificates & Languages", icon: <RiCertificate2Line /> },
   ];
 
   const templateNames = {

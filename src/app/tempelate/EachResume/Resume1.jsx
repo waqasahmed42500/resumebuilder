@@ -154,7 +154,7 @@ const Resume1 = memo(function Resume1({ data: propData, theme, readOnly = false 
           ))}
         </section>
 
-        <section>
+        <section className="mb-8">
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-slate-900 border-l-2 pl-3" style={{ borderColor: accent }}>
             Education
           </h2>

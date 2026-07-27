@@ -343,6 +343,24 @@ export default function TemplatePage() {
                       <span className="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold rounded">TOP PICK</span>
                     </div>
                   </div>
+                  <div className="flex gap-2 p-3 md:hidden">
+  <Link
+    href={`/Editor?template=${templates.id}`}
+    className="flex-1 rounded-lg bg-emerald-600 text-white py-2 text-center font-semibold"
+  >
+    Use
+  </Link>
+
+  <button
+    onClick={() => {
+      setOpenPreview(true);
+      setPreviewTemplate(templates);
+    }}
+    className="flex-1 rounded-lg border border-slate-500 text-slate-600 py-2 font-semibold"
+  >
+    Preview
+  </button>
+</div>
                 </article>
               ))
             )}
