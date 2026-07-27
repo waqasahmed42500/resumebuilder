@@ -138,7 +138,7 @@ export default function TemplateGalleryClient() {
                   key={template.id}
                   className="group relative flex flex-col overflow-hidden rounded-xl bg-slate-200 transition-all duration-300 hover:shadow-2xl"
                 >
-                  <div className="relative aspect-[3/4] p-2">
+                  <div className="relative  p-2">
                     <Image
                       className="h-full w-full rounded-sm object-cover shadow-md transition-transform duration-500 group-hover:scale-[1.02]"
                       src={`/templates/${template.id}.png`}
