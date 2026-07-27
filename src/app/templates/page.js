@@ -1,4 +1,4 @@
-import TemplateGalleryClient, { templatesData } from "./TemplateGalleryClient";
+import TemplateGalleryClient, { templatesData } from "../tempelate/TemplateGalleryClient";
 import JsonLd from "../Component/SEO/JsonLd";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://resumearchitect.com";
@@ -6,7 +6,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://resumearchitect.com
 export const metadata = {
   title: "20+ Free ATS Resume Templates & Professional CV Designs",
   description:
-    "Explore 20 recruiter-tested, ATS-optimized free resume templates. Designed for software engineers, marketing managers, executives, and creative professionals.",
+    "Browse 20 recruiter-tested, ATS-friendly resume templates. Designed for software engineers, marketing managers, executives, and creative professionals.",
   alternates: {
     canonical: "/templates",
   },
@@ -18,7 +18,7 @@ export const metadata = {
   },
 };
 
-export default function TempelatePage() {
+export default function TemplatesPage() {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -32,7 +32,7 @@ export default function TempelatePage() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Resume Templates",
+        name: "Templates",
         item: `${siteUrl}/templates`,
       },
     ],

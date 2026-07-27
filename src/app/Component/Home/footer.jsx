@@ -1,54 +1,131 @@
+import Link from "next/link";
+import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
+
 export default function Footer() {
   return (
-    <footer className="border-t-0 bg-slate-100 px-8 py-16 text-slate-700 md:px-20">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-12 md:grid-cols-4 lg:grid-cols-5">
+    <footer className="bg-slate-100 px-4 py-16 text-slate-700 sm:px-8 md:px-16 lg:px-20">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 md:grid-cols-4 lg:grid-cols-5">
         <div className="col-span-2">
-          <span className="mb-6 block text-2xl font-bold text-slate-900">ResumeArchitect</span>
-          <p className="mb-8 max-w-xs leading-relaxed text-slate-600">
-            Elevating professional identities through architectural design principles and editorial excellence.
+          <Link href="/" className="mb-4 inline-block text-2xl font-black text-slate-900">
+            Resume<span className="text-sky-700">Architect</span>
+          </Link>
+          <p className="mb-6 max-w-xs text-sm leading-relaxed text-slate-600">
+            Free ATS resume builder helping job seekers build recruiter-approved professional resumes, CVs, and cover letters.
           </p>
-          <div className="flex gap-4">
-            <a className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-sky-600 hover:text-white" href="#">
-              <span className="material-symbols-outlined text-xl">share</span>
+          <div className="flex gap-3">
+            <a
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200 text-slate-700 transition-all hover:bg-slate-900 hover:text-white"
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter Page"
+            >
+              <FaTwitter size={16} />
             </a>
-            <a className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-sky-600 hover:text-white" href="#">
-              <span className="material-symbols-outlined text-xl">language</span>
+            <a
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200 text-slate-700 transition-all hover:bg-slate-900 hover:text-white"
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn Page"
+            >
+              <FaLinkedin size={16} />
+            </a>
+            <a
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200 text-slate-700 transition-all hover:bg-slate-900 hover:text-white"
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub Repository"
+            >
+              <FaGithub size={16} />
             </a>
           </div>
         </div>
+
         <div>
-          <h5 className="mb-6 font-bold text-slate-900">Product</h5>
-          <ul className="space-y-4 text-sm font-medium text-slate-600">
-            <li><a className="transition-colors hover:text-sky-700" href="#">Templates</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Resume Builder</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Cover Letters</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Pricing</a></li>
+          <p className="mb-4 font-bold text-slate-900">Resume Builder</p>
+          <ul className="space-y-3 text-sm font-medium text-slate-600">
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/builder">
+                Online Resume Builder
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/ats-resume-builder">
+                ATS Resume Builder
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/templates">
+                Resume Templates
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/examples">
+                Resume Examples
+              </Link>
+            </li>
           </ul>
         </div>
+
         <div>
-          <h5 className="mb-6 font-bold text-slate-900">Support</h5>
-          <ul className="space-y-4 text-sm font-medium text-slate-600">
-            <li><a className="transition-colors hover:text-sky-700" href="#">Help Center</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Guidebook</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Contact Us</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Privacy</a></li>
+          <p className="mb-4 font-bold text-slate-900">Resources</p>
+          <ul className="space-y-3 text-sm font-medium text-slate-600">
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/resources">
+                Resume Writing Guides
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/ats-resume-builder">
+                ATS Checklist
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/resources">
+                Cover Letter Advice
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/export">
+                PDF Export
+              </Link>
+            </li>
           </ul>
         </div>
+
         <div>
-          <h5 className="mb-6 font-bold text-slate-900">Company</h5>
-          <ul className="space-y-4 text-sm font-medium text-slate-600">
-            <li><a className="transition-colors hover:text-sky-700" href="#">About Us</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Careers</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Blog</a></li>
-            <li><a className="transition-colors hover:text-sky-700" href="#">Press Kit</a></li>
+          <p className="mb-4 font-bold text-slate-900">Company</p>
+          <ul className="space-y-3 text-sm font-medium text-slate-600">
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/resources">
+                Career Tips
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/resources">
+                Contact Us
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
-      <div className="mx-auto mt-16 flex max-w-7xl flex-col justify-between gap-4 border-t border-slate-200 pt-8 text-xs font-bold uppercase tracking-widest text-slate-500 md:flex-row">
-        <p>© 2024 ResumeArchitect. All Rights Reserved.</p>
-        <div className="flex gap-8">
-          <a href="#" className="hover:text-sky-700">Terms of Service</a>
-          <a href="#" className="hover:text-sky-700">Cookies Policy</a>
+
+      <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-4 border-t border-slate-200 pt-8 text-xs font-semibold uppercase tracking-wider text-slate-500 md:flex-row">
+        <p>© {new Date().getFullYear()} ResumeArchitect. All Rights Reserved.</p>
+        <div className="flex gap-6">
+          <Link href="/resources" className="hover:text-sky-700">
+            Terms of Service
+          </Link>
+          <Link href="/resources" className="hover:text-sky-700">
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>

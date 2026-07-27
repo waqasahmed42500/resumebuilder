@@ -2,8 +2,6 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
 import Header from "../Component/Header";
 
 import Resume1 from "../tempelate/EachResume/Resume1";
@@ -233,6 +231,9 @@ function EditorContent() {
 
     try {
       controls?.classList.add("hidden");
+
+      const html2canvas = (await import("html2canvas")).default;
+      const { jsPDF } = await import("jspdf");
 
       const canvas = await html2canvas(previewRef.current, {
         scale: 2,
