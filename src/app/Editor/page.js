@@ -68,12 +68,28 @@ function EditorContent() {
     redo,
     canUndo,
     canRedo,
+    updateCertification,
+    addCertification,
+    removeCertification,
+    updateLanguage,
+    addLanguage,
+    removeLanguage,
+    updateAward,
+    addAward,
+    removeAward,
+    updateProject,
+    addProject,
+    removeProject,
+    updatePortfolio,
+    addPortfolio,
+    removePortfolio,
+    updateTool,
+    addTool,
+    removeTool,
   } = useResume();
 
   const [activeSection, setActiveSection] = useState("contact");
   const [skillInput, setSkillInput] = useState("");
-  const [targetKeywords, setTargetKeywords] = useState("");
-  const [showAtsScore, setShowAtsScore] = useState(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [draftStatus, setDraftStatus] = useState("Auto-saves locally");
   const [draftSavedAt, setDraftSavedAt] = useState("");
@@ -109,7 +125,6 @@ function EditorContent() {
   const selectedName = templateNames[selectedTemplate] || "Resume Builder";
   const activeIndex = editorSections.findIndex((section) => section.id === activeSection);
   const section = editorSections[activeIndex] || editorSections[0];
-  const atsAnalysis = buildAtsAnalysis(resumeData, targetKeywords);
 
   const updateContact = (field, value) =>
     setResumeData((current) => ({ ...current, contact: { ...current.contact, [field]: value } }));
@@ -117,41 +132,41 @@ function EditorContent() {
   const updateCollection = (collection, id, field, value) =>
     setResumeData((current) => ({
       ...current,
-      [collection]: current[collection].map((item) => (item.id === id ? { ...item, [field]: value } : item)),
+      [collection]: (current[collection] || []).map((item) => (item.id === id ? { ...item, [field]: value } : item)),
     }));
   const addExperience = () =>
     setResumeData((current) => ({
       ...current,
       experiences: [
-        ...current.experiences,
+        ...(current.experiences || []),
         { id: `experience-${Date.now()}`, role: "", company: "", startDate: "", endDate: "", description: "" },
       ],
     }));
   const addEducation = () =>
     setResumeData((current) => ({
       ...current,
-      education: [...current.education, { id: `education-${Date.now()}`, degree: "", school: "", year: "" }],
+      education: [...(current.education || []), { id: `education-${Date.now()}`, degree: "", school: "", year: "" }],
     }));
   const removeItem = (collection, id) =>
     setResumeData((current) =>
-      current[collection].length > 1 ? { ...current, [collection]: current[collection].filter((item) => item.id !== id) } : current
+      (current[collection] || []).length > 1
+        ? { ...current, [collection]: current[collection].filter((item) => item.id !== id) }
+        : current
     );
   const addSkill = () => {
     const skill = skillInput.trim();
-    if (!skill || resumeData.skills.some((item) => item.toLowerCase() === skill.toLowerCase())) return;
-    setResumeData((current) => ({ ...current, skills: [...current.skills, skill] }));
+    if (!skill || (resumeData.skills || []).some((item) => item.toLowerCase() === skill.toLowerCase())) return;
+    setResumeData((current) => ({ ...current, skills: [...(current.skills || []), skill] }));
     setSkillInput("");
   };
   const removeSkill = (skill) =>
-    setResumeData((current) => ({ ...current, skills: current.skills.filter((item) => item !== skill) }));
+    setResumeData((current) => ({ ...current, skills: (current.skills || []).filter((item) => item !== skill) }));
 
   const persistDraft = (statusMessage = "Auto-saved locally") => {
     const payload = {
       resumeData,
       skillInput,
-      targetKeywords,
       activeSection,
-      showAtsScore,
       themeAccent,
       themeFont,
       updatedAt: Date.now(),
@@ -193,8 +208,6 @@ function EditorContent() {
 
     setActiveSection(storedDraft.activeSection || "contact");
     setSkillInput(storedDraft.skillInput || "");
-    setTargetKeywords(storedDraft.targetKeywords || "");
-    setShowAtsScore(Boolean(storedDraft.showAtsScore));
     setDraftStatus("Draft restored");
     setDraftSavedAt(
       storedDraft.updatedAt
@@ -205,53 +218,53 @@ function EditorContent() {
 
   useEffect(() => {
     persistDraft("Auto-saved locally");
-  }, [resumeData, skillInput, targetKeywords, activeSection, showAtsScore, themeAccent, themeFont]);
+  }, [resumeData, skillInput, activeSection, themeAccent, themeFont]);
 
   const handleSaveDraft = () => {
     persistDraft("Draft saved");
   };
 
-  // const handleDownloadPdf = async () => {
-  //   if (!previewRef.current) return;
+  const handleDownloadPdf = async () => {
+    if (!previewRef.current) return;
 
-  //   setIsExportingPdf(true);
-  //   const controls = document.querySelector(".theme-controls");
-  //   previewRef.current.classList.add("export-mode");
+    setIsExportingPdf(true);
+    const controls = document.querySelector(".theme-controls");
+    previewRef.current.classList.add("export-mode");
 
-  //   try {
-  //     controls?.classList.add("hidden");
+    try {
+      controls?.classList.add("hidden");
 
-  //     const canvas = await html2canvas(previewRef.current, {
-  //       scale: 2,
-  //       useCORS: true,
-  //       backgroundColor: "#ffffff",
-  //       logging: false,
-  //     });
+      const canvas = await html2canvas(previewRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
 
-  //     const imgData = canvas.toDataURL("image/png");
-  //     const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
-  //     const pageWidth = pdf.internal.pageSize.getWidth();
-  //     const pageHeight = pdf.internal.pageSize.getHeight();
-  //     const marginX = 24;
-  //     const marginY = 24;
-  //     const availableWidth = pageWidth - marginX * 2;
-  //     const availableHeight = pageHeight - marginY * 2;
-  //     const imgWidth = availableWidth;
-  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  //     const finalHeight = Math.min(imgHeight, availableHeight);
-  //     const finalWidth = (canvas.width * finalHeight) / canvas.height;
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const marginX = 24;
+      const marginY = 24;
+      const availableWidth = pageWidth - marginX * 2;
+      const availableHeight = pageHeight - marginY * 2;
+      const imgWidth = availableWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const finalHeight = Math.min(imgHeight, availableHeight);
+      const finalWidth = (canvas.width * finalHeight) / canvas.height;
 
-  //     pdf.addImage(imgData, "PNG", marginX, marginY, finalWidth, finalHeight, undefined, "FAST");
-  //     pdf.save(`${selectedName.replace(/\s+/g, "-").toLowerCase()}-resume.pdf`);
-  //   } catch (error) {
-  //     console.error("PDF export failed", error);
-  //     window.print();
-  //   } finally {
-  //     setIsExportingPdf(false);
-  //     controls?.classList.remove("hidden");
-  //     previewRef.current?.classList.remove("export-mode");
-  //   }
-  // };
+      pdf.addImage(imgData, "PNG", marginX, marginY, finalWidth, finalHeight, undefined, "FAST");
+      pdf.save(`${selectedName.replace(/\s+/g, "-").toLowerCase()}-resume.pdf`);
+    } catch (error) {
+      console.error("PDF export failed", error);
+      window.print();
+    } finally {
+      setIsExportingPdf(false);
+      controls?.classList.remove("hidden");
+      previewRef.current?.classList.remove("export-mode");
+    }
+  };
 
   return (
     <>
@@ -267,10 +280,9 @@ function EditorContent() {
           <aside
             onMouseEnter={() => setsideBarHOver(true)}
             onMouseLeave={() => setsideBarHOver(false)}
-            className="editor-sidebar group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-gray-200 p-2 md:flex"
+            className="editor-sidebar group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-blue-100 p-2 md:flex overflow-y-auto"
           >
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
-              {/* Circle Progress */}
               <div className="flex justify-center group-hover:hidden">
                 <div className="relative h-10 w-10">
                   <svg className="h-10 w-10 -rotate-90">
@@ -293,13 +305,12 @@ function EditorContent() {
                 </div>
               </div>
 
-              {/* Expanded Card */}
               <div className="hidden group-hover:block">
-                <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-500">Resume Progress</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-500">Progress</p>
                 <h2 className="mt-1 text-base font-semibold text-slate-900">{selectedName}</h2>
                 <div className="mt-4 h-1.5 rounded-full bg-slate-200">
                   <div
-                    className="h-full rounded-full bg-slate-900"
+                    className="h-full rounded-full bg-emerald-600"
                     style={{
                       width: `${((activeIndex + 1) / editorSections.length) * 100}%`,
                     }}
@@ -308,33 +319,33 @@ function EditorContent() {
               </div>
             </div>
 
-            <nav className="mt-6 space-y-2">
+            <nav className="mt-4 space-y-1.5">
               {editorSections.map((item) => (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => setActiveSection(item.id)}
-                  className={`flex w-full hover:cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
+                  className={`flex w-full hover:cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium transition ${
                     activeSection === item.id
-                      ? "bg-slate-900 text-white shadow-sm"
+                      ? "bg-emerald-700 text-white shadow-sm"
                       : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                   }`}
                 >
-                  <span className="text-2xl text-center font-bold">{item.icon}</span>
-                  <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto xl:w-auto group-hover:opacity-100 xl:opacity-100">
+                  <span className="text-xl text-center font-bold">{item.icon}</span>
+                  <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto group-hover:opacity-100">
                     {item.label}
                   </span>
                 </button>
               ))}
             </nav>
 
-            <div className="mt-auto space-y-3">
+            <div className="mt-auto space-y-2 pt-4">
               <Link
                 href={`/export?template=${selectedTemplate}`}
-                className="w-full rounded-xl bg-slate-900 px-3 py-3 text-xs font-semibold text-white flex items-center gap-2 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 xl:text-sm"
+                className="w-full rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white flex items-center gap-2 transition hover:bg-slate-800"
               >
                 <span>
-                  <IoMdDownload className="text-xl" />
+                  <IoMdDownload className="text-lg" />
                 </span>
                 <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto group-hover:opacity-100">
                   Export Resume
@@ -343,9 +354,9 @@ function EditorContent() {
               <button
                 type="button"
                 onClick={handleSaveDraft}
-                className="flex items-center gap-2 hover:cursor-pointer w-full rounded-xl border border-slate-200 px-3 py-3 text-xs font-semibold text-slate-600"
+                className="flex items-center gap-2 hover:cursor-pointer w-full rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-600"
               >
-                <span className="text-xl text-center font-bold">
+                <span className="text-lg text-center font-bold">
                   <VscSaveAs />
                 </span>
                 <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto group-hover:opacity-100">
@@ -365,15 +376,20 @@ function EditorContent() {
                     <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
                       {section.label}
                     </h1>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">
-                      Click text directly in the resume preview to edit instantly!
-                    </p>
-                    <p className="mt-2 text-xs font-medium text-slate-900">
+                    <p className="mt-2 text-xs font-medium text-emerald-700">
                       {draftStatus}
                       {draftSavedAt ? ` • ${draftSavedAt}` : ""}
                     </p>
                   </div>
-                  
+                  <button
+                    type="button"
+                    onClick={handleDownloadPdf}
+                    disabled={isExportingPdf}
+                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:opacity-70 flex items-center gap-1.5"
+                  >
+                    <IoMdDownload />
+                    <span>Download PDF</span>
+                  </button>
                 </div>
 
                 <div className="mb-5 flex gap-2 overflow-x-auto pb-1 md:hidden">
@@ -381,8 +397,8 @@ function EditorContent() {
                     <button
                       key={item.id}
                       onClick={() => setActiveSection(item.id)}
-                      className={`shrink-0 rounded-full px-3 py-2 text-xs font-semibold ${
-                        activeSection === item.id ? "bg-slate-900 text-white" : "bg-white text-slate-600"
+                      className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold ${
+                        activeSection === item.id ? "bg-emerald-700 text-white" : "bg-white text-slate-600"
                       }`}
                     >
                       {item.label}
@@ -400,7 +416,7 @@ function EditorContent() {
                 )}
                 {activeSection === "experience" && (
                   <ExperienceForm
-                    experiences={resumeData.experiences}
+                    experiences={resumeData.experiences || []}
                     update={updateCollection}
                     add={addExperience}
                     remove={removeItem}
@@ -408,67 +424,73 @@ function EditorContent() {
                 )}
                 {activeSection === "education" && (
                   <EducationForm
-                    education={resumeData.education}
+                    education={resumeData.education || []}
                     update={updateCollection}
                     add={addEducation}
                     remove={removeItem}
                   />
                 )}
                 {activeSection === "skills" && (
-                  <SkillsForm
-                    skills={resumeData.skills}
-                    value={skillInput}
-                    setValue={setSkillInput}
-                    add={addSkill}
-                    remove={removeSkill}
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="mb-4 text-lg font-bold text-slate-900">Professional Skills</h2>
+                      <SkillsForm
+                        skills={resumeData.skills || []}
+                        value={skillInput}
+                        setValue={setSkillInput}
+                        add={addSkill}
+                        remove={removeSkill}
+                      />
+                    </div>
+                    <div>
+                      <h2 className="mb-4 text-lg font-bold text-slate-900">Tools & Software</h2>
+                      <ToolsForm
+                        tools={resumeData.tools || []}
+                        update={updateTool}
+                        add={addTool}
+                        remove={removeTool}
+                      />
+                    </div>
+                  </div>
+                )}
+                {activeSection === "certifications" && (
+                  <CertificationsForm
+                    certifications={resumeData.certifications || []}
+                    update={updateCertification}
+                    add={addCertification}
+                    remove={removeCertification}
                   />
                 )}
-                {activeSection === "additional" && (
-                  <AdditionalSectionsForm
-                    certifications={resumeData.certifications || []}
+                {activeSection === "languages" && (
+                  <LanguagesForm
                     languages={resumeData.languages || []}
-                    updateCertification={(id, field, value) =>
-                      setResumeData((current) => ({
-                        ...current,
-                        certifications: (current.certifications || []).map((item) => (item.id === id ? { ...item, [field]: value } : item)),
-                      }))
-                    }
-                    addCertification={() =>
-                      setResumeData((current) => ({
-                        ...current,
-                        certifications: [
-                          ...(current.certifications || []),
-                          { id: `cert-${Date.now()}`, title: "New Certification", issuer: "Issuer", year: "2024" },
-                        ],
-                      }))
-                    }
-                    removeCertification={(id) =>
-                      setResumeData((current) => ({
-                        ...current,
-                        certifications: (current.certifications || []).filter((item) => item.id !== id),
-                      }))
-                    }
-                    updateLanguage={(id, field, value) =>
-                      setResumeData((current) => ({
-                        ...current,
-                        languages: (current.languages || []).map((item) => (item.id === id ? { ...item, [field]: value } : item)),
-                      }))
-                    }
-                    addLanguage={() =>
-                      setResumeData((current) => ({
-                        ...current,
-                        languages: [
-                          ...(current.languages || []),
-                          { id: `lang-${Date.now()}`, name: "New Language", level: "Fluent" },
-                        ],
-                      }))
-                    }
-                    removeLanguage={(id) =>
-                      setResumeData((current) => ({
-                        ...current,
-                        languages: (current.languages || []).filter((item) => item.id !== id),
-                      }))
-                    }
+                    update={updateLanguage}
+                    add={addLanguage}
+                    remove={removeLanguage}
+                  />
+                )}
+                {activeSection === "awards" && (
+                  <AwardsForm
+                    awards={resumeData.awards || []}
+                    update={updateAward}
+                    add={addAward}
+                    remove={removeAward}
+                  />
+                )}
+                {activeSection === "projects" && (
+                  <ProjectsForm
+                    projects={resumeData.projects || []}
+                    update={updateProject}
+                    add={addProject}
+                    remove={removeProject}
+                  />
+                )}
+                {activeSection === "portfolio" && (
+                  <PortfolioForm
+                    portfolio={resumeData.portfolio || []}
+                    update={updatePortfolio}
+                    add={addPortfolio}
+                    remove={removePortfolio}
                   />
                 )}
 
@@ -477,7 +499,7 @@ function EditorContent() {
                     type="button"
                     disabled={activeIndex === 0}
                     onClick={() => setActiveSection(editorSections[activeIndex - 1].id)}
-                    className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-500 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                    className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-500 transition hover:bg-white disabled:opacity-40"
                   >
                     Previous
                   </button>
@@ -488,9 +510,11 @@ function EditorContent() {
                         ? setActiveSection("contact")
                         : setActiveSection(editorSections[activeIndex + 1].id)
                     }
-                    className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                    className="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800"
                   >
-                    {activeIndex === editorSections.length - 1 ? "Review contact" : `Next: ${editorSections[activeIndex + 1].label}`}
+                    {activeIndex === editorSections.length - 1
+                      ? "Review contact"
+                      : `Next: ${editorSections[activeIndex + 1].label}`}
                   </button>
                 </div>
               </div>
@@ -537,14 +561,14 @@ function EditorContent() {
 
 function Field({ label, value, onChange, type = "text", textarea = false, placeholder = "" }) {
   const className =
-    "w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white";
+    "w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white";
   return (
     <label className="block">
-      <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">{label}</span>
+      <span className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">{label}</span>
       {textarea ? (
         <textarea
-          className={`${className} min-h-28 resize-y`}
-          value={value}
+          className={`${className} min-h-20 resize-y`}
+          value={value || ""}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
         />
@@ -552,7 +576,7 @@ function Field({ label, value, onChange, type = "text", textarea = false, placeh
         <input
           className={className}
           type={type}
-          value={value}
+          value={value || ""}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
         />
@@ -562,7 +586,7 @@ function Field({ label, value, onChange, type = "text", textarea = false, placeh
 }
 
 function FormCard({ children }) {
-  return <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">{children}</div>;
+  return <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">{children}</div>;
 }
 
 const PHOTO_ENABLED_TEMPLATES = ["resume1", "resume3", "resume11", "resume13"];
@@ -597,7 +621,7 @@ function ContactForm({ data, updateContact, updateSummary, selectedTemplate }) {
       {showPhotoUpload ? (
         <div className="mb-5 flex items-center gap-4">
           <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-50">
-            {data.contact.photo ? (
+            {data.contact?.photo ? (
               <img src={data.contact.photo} alt="Profile" className="h-full w-full object-cover" />
             ) : (
               <span className="text-[10px] font-semibold uppercase text-slate-400">No photo</span>
@@ -608,15 +632,15 @@ function ContactForm({ data, updateContact, updateSummary, selectedTemplate }) {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
               >
-                {data.contact.photo ? "Change photo" : "Upload photo"}
+                {data.contact?.photo ? "Change photo" : "Upload photo"}
               </button>
-              {data.contact.photo ? (
+              {data.contact?.photo ? (
                 <button
                   type="button"
                   onClick={handleRemovePhoto}
-                  className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-semibold text-rose-600 transition hover:bg-rose-50"
+                  className="rounded-xl border border-rose-200 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-50"
                 >
                   Remove
                 </button>
@@ -628,21 +652,21 @@ function ContactForm({ data, updateContact, updateSummary, selectedTemplate }) {
         </div>
       ) : null}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3.5 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <Field label="Full name" value={data.contact.fullName} onChange={(value) => updateContact("fullName", value)} />
+          <Field label="Full name" value={data.contact?.fullName} onChange={(value) => updateContact("fullName", value)} />
         </div>
         <div className="sm:col-span-2">
           <Field
             label="Professional headline"
-            value={data.contact.headline}
+            value={data.contact?.headline}
             onChange={(value) => updateContact("headline", value)}
           />
         </div>
-        <Field label="Email" type="email" value={data.contact.email} onChange={(value) => updateContact("email", value)} />
-        <Field label="Phone" type="tel" value={data.contact.phone} onChange={(value) => updateContact("phone", value)} />
-        <Field label="Location" value={data.contact.location} onChange={(value) => updateContact("location", value)} />
-        <Field label="Website or LinkedIn" value={data.contact.website} onChange={(value) => updateContact("website", value)} />
+        <Field label="Email" type="email" value={data.contact?.email} onChange={(value) => updateContact("email", value)} />
+        <Field label="Phone" type="tel" value={data.contact?.phone} onChange={(value) => updateContact("phone", value)} />
+        <Field label="Location" value={data.contact?.location} onChange={(value) => updateContact("location", value)} />
+        <Field label="Website or Portfolio" value={data.contact?.website} onChange={(value) => updateContact("website", value)} />
         <div className="sm:col-span-2">
           <Field label="Professional summary" textarea value={data.summary} onChange={updateSummary} />
         </div>
@@ -656,8 +680,8 @@ function ExperienceForm({ experiences, update, add, remove }) {
     <div className="space-y-4">
       {experiences.map((experience, index) => (
         <FormCard key={experience.id}>
-          <div className="mb-5 flex items-center justify-between">
-            <p className="text-sm font-bold text-slate-900">Role {index + 1}</p>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-slate-900">Role {index + 1}</p>
             <button
               type="button"
               onClick={() => remove("experiences", experience.id)}
@@ -667,7 +691,7 @@ function ExperienceForm({ experiences, update, add, remove }) {
               Remove
             </button>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <Field
                 label="Job title"
@@ -705,7 +729,7 @@ function ExperienceForm({ experiences, update, add, remove }) {
       <button
         type="button"
         onClick={add}
-        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-4 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-100"
+        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
       >
         + Add another role
       </button>
@@ -718,8 +742,8 @@ function EducationForm({ education, update, add, remove }) {
     <div className="space-y-4">
       {education.map((entry, index) => (
         <FormCard key={entry.id}>
-          <div className="mb-5 flex items-center justify-between">
-            <p className="text-sm font-bold text-slate-900">Education {index + 1}</p>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-slate-900">Education {index + 1}</p>
             <button
               type="button"
               onClick={() => remove("education", entry.id)}
@@ -729,7 +753,7 @@ function EducationForm({ education, update, add, remove }) {
               Remove
             </button>
           </div>
-          <div className="grid gap-4">
+          <div className="grid gap-3">
             <Field
               label="Degree or qualification"
               value={entry.degree}
@@ -751,7 +775,7 @@ function EducationForm({ education, update, add, remove }) {
       <button
         type="button"
         onClick={add}
-        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-4 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-100"
+        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
       >
         + Add education
       </button>
@@ -762,7 +786,7 @@ function EducationForm({ education, update, add, remove }) {
 function SkillsForm({ skills, value, setValue, add, remove }) {
   return (
     <FormCard>
-      <p className="mb-5 text-sm leading-6 text-slate-600">Add skills that are specific to the role you want.</p>
+      <p className="mb-4 text-xs leading-5 text-slate-600">Add skills that are relevant to your target role.</p>
       <div className="flex gap-2">
         <input
           value={value}
@@ -773,20 +797,20 @@ function SkillsForm({ skills, value, setValue, add, remove }) {
               add();
             }
           }}
-          className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none focus:border-emerald-500 focus:bg-white"
+          className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs outline-none focus:border-emerald-500 focus:bg-white"
           placeholder="e.g. Stakeholder management"
         />
-        <button type="button" onClick={add} className="rounded-xl bg-emerald-700 px-4 text-sm font-semibold text-white hover:bg-emerald-800">
+        <button type="button" onClick={add} className="rounded-xl bg-emerald-700 px-3.5 text-xs font-semibold text-white hover:bg-emerald-800">
           Add
         </button>
       </div>
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-wrap gap-2">
         {skills.map((skill) => (
           <button
             type="button"
             onClick={() => remove(skill)}
             key={skill}
-            className="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-900 transition hover:bg-rose-50 hover:text-rose-700"
+            className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900 transition hover:bg-rose-50 hover:text-rose-700"
           >
             {skill} <span aria-hidden="true">x</span>
           </button>
@@ -796,128 +820,288 @@ function SkillsForm({ skills, value, setValue, add, remove }) {
   );
 }
 
-function AdditionalSectionsForm({
-  certifications,
-  languages,
-  updateCertification,
-  addCertification,
-  removeCertification,
-  updateLanguage,
-  addLanguage,
-  removeLanguage,
-}) {
+function ToolsForm({ tools, update, add, remove }) {
+  const fileInputRefs = useRef({});
+
+  const handleImageChange = (id, event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) return;
+    if (file.size > 1 * 1024 * 1024) {
+      alert("Please choose an image under 1MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => update(id, "image", reader.result);
+    reader.readAsDataURL(file);
+    event.target.value = "";
+  };
+
   return (
     <div className="space-y-4">
-      <FormCard>
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-900">Certifications</h3>
-          <button type="button" onClick={addCertification} className="text-sm font-semibold text-emerald-700">
-            + Add
-          </button>
-        </div>
-        <div className="space-y-3">
-          {certifications.map((item) => (
-            <div key={item.id} className="rounded-xl border border-slate-200 p-3">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <Field label="Certification" value={item.title} onChange={(value) => updateCertification(item.id, "title", value)} />
-                <Field label="Issuer" value={item.issuer} onChange={(value) => updateCertification(item.id, "issuer", value)} />
-                <Field label="Year" value={item.year} onChange={(value) => updateCertification(item.id, "year", value)} />
+      {tools.map((tool, index) => (
+        <FormCard key={tool.id || index}>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-slate-900">Tool {index + 1}</p>
+            <button
+              type="button"
+              onClick={() => remove(tool.id)}
+              className="text-xs font-semibold text-rose-600"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="flex items-start gap-4">
+            <div className="flex flex-col items-center gap-2">
+               <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+                {tool.image ? (
+                  <img src={tool.image} alt={tool.name} className="h-full w-full object-contain p-1" />
+                ) : (
+                  <span className="text-[8px] font-semibold uppercase text-slate-400 text-center">No icon</span>
+                )}
               </div>
-              <button type="button" onClick={() => removeCertification(item.id)} className="mt-3 text-xs font-semibold text-rose-600">
-                Remove
+              <button
+                type="button"
+                onClick={() => fileInputRefs.current[tool.id]?.click()}
+                className="text-[10px] font-bold text-emerald-700 hover:underline"
+              >
+                Upload
               </button>
+              <input
+                ref={(el) => (fileInputRefs.current[tool.id] = el)}
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageChange(tool.id, e)}
+                className="hidden"
+              />
             </div>
-          ))}
-        </div>
-      </FormCard>
-
-      <FormCard>
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-900">Languages</h3>
-          <button type="button" onClick={addLanguage} className="text-sm font-semibold text-emerald-700">
-            + Add
-          </button>
-        </div>
-        <div className="space-y-3">
-          {languages.map((item) => (
-            <div key={item.id} className="rounded-xl border border-slate-200 p-3">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <Field label="Language" value={item.name} onChange={(value) => updateLanguage(item.id, "name", value)} />
-                <Field label="Proficiency" value={item.level} onChange={(value) => updateLanguage(item.id, "level", value)} />
-              </div>
-              <button type="button" onClick={() => removeLanguage(item.id)} className="mt-3 text-xs font-semibold text-rose-600">
-                Remove
-              </button>
+            <div className="flex-1">
+              <Field
+                label="Tool Name"
+                value={tool.name}
+                onChange={(val) => update(tool.id, "name", val)}
+                placeholder="e.g. Figma, VS Code"
+              />
             </div>
-          ))}
-        </div>
-      </FormCard>
+          </div>
+        </FormCard>
+      ))}
+      <button
+        type="button"
+        onClick={() => add()}
+        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
+      >
+        + Add Tool
+      </button>
     </div>
   );
 }
 
-function buildAtsAnalysis(data, keywordInput) {
-  const contactFields = [data.contact?.fullName, data.contact?.email, data.contact?.phone, data.contact?.location];
-  const completeContact = contactFields.filter(Boolean).length;
-  const summaryWords = (data.summary || "").trim().split(/\s+/).filter(Boolean).length;
-  const completeExperiences = (data.experiences || []).filter(
-    (item) => item.role && item.company && (item.description || "").trim().split(/\s+/).filter(Boolean).length >= 10
+function CertificationsForm({ certifications, update, add, remove }) {
+  return (
+    <div className="space-y-4">
+      {certifications.map((cert, index) => (
+        <FormCard key={cert.id}>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-slate-900">Certification {index + 1}</p>
+            <button
+              type="button"
+              onClick={() => remove(cert.id)}
+              className="text-xs font-semibold text-rose-600"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Field label="Certification Title" value={cert.name} onChange={(val) => update(cert.id, "name", val)} />
+            </div>
+            <Field label="Issuing Organization" value={cert.authority} onChange={(val) => update(cert.id, "authority", val)} />
+            <Field label="Issue Date / Year" value={cert.date} onChange={(val) => update(cert.id, "date", val)} />
+            <Field label="Credential ID (Optional)" value={cert.credentialId} onChange={(val) => update(cert.id, "credentialId", val)} />
+            <Field label="Credential URL (Optional)" value={cert.url} onChange={(val) => update(cert.id, "url", val)} />
+          </div>
+        </FormCard>
+      ))}
+      <button
+        type="button"
+        onClick={() => add()}
+        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
+      >
+        + Add Certification
+      </button>
+    </div>
   );
-  const completeEducation = (data.education || []).filter((item) => item.degree && item.school);
-  const jobKeywords = keywordInput
-    .split(",")
-    .map((keyword) => keyword.trim())
-    .filter(Boolean);
-  const resumeText = [
-    data.summary,
-    ...(data.skills || []),
-    ...(data.experiences || []).flatMap((item) => [item.role, item.company, item.description]),
-  ]
-    .join(" ")
-    .toLowerCase();
-  const matchedKeywords = jobKeywords.filter((keyword) => resumeText.includes(keyword.toLowerCase()));
-  const actionVerbs =
-    /\b(led|built|launched|improved|managed|created|increased|reduced|delivered|developed|owned|designed|coordinated|implemented)\b/i;
-  const hasResultsLanguage = (data.experiences || []).some(
-    (item) => actionVerbs.test(item.description || "") && /\d|%|\$/.test(item.description || "")
-  );
+}
 
-  const contactScore = completeContact * 4;
-  const summaryScore = summaryWords >= 25 ? 12 : summaryWords >= 12 ? 7 : 2;
-  const experienceScore = completeExperiences.length >= 2 ? 22 : completeExperiences.length === 1 ? 13 : 3;
-  const educationScore = completeEducation.length ? 10 : 2;
-  const skillsScore = (data.skills || []).length >= 6 ? 14 : (data.skills || []).length >= 4 ? 10 : (data.skills || []).length * 2;
-  const keywordScore = jobKeywords.length
-    ? Math.round((matchedKeywords.length / jobKeywords.length) * 14)
-    : Math.min((data.skills || []).length, 6) * 2;
-  const resultsScore = hasResultsLanguage ? 10 : 3;
-  const readabilityScore = 6;
-  const score = Math.min(
-    100,
-    contactScore + summaryScore + experienceScore + educationScore + skillsScore + keywordScore + resultsScore + readabilityScore
+function LanguagesForm({ languages, update, add, remove }) {
+  const levels = ["Native", "Fluent", "Professional", "Intermediate", "Basic"];
+
+  return (
+    <div className="space-y-4">
+      {languages.map((lang, index) => (
+        <FormCard key={lang.id}>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-slate-900">Language {index + 1}</p>
+            <button
+              type="button"
+              onClick={() => remove(lang.id)}
+              className="text-xs font-semibold text-rose-600"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label="Language Name" value={lang.name} onChange={(val) => update(lang.id, "name", val)} />
+            <label className="block">
+              <span className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                Proficiency Level
+              </span>
+              <select
+                value={lang.proficiency || "Fluent"}
+                onChange={(e) => update(lang.id, "proficiency", e.target.value)}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-800 outline-none focus:border-emerald-500 focus:bg-white"
+              >
+                {levels.map((lvl) => (
+                  <option key={lvl} value={lvl}>
+                    {lvl}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </FormCard>
+      ))}
+      <button
+        type="button"
+        onClick={() => add()}
+        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
+      >
+        + Add Language
+      </button>
+    </div>
   );
-  const checks = [
-    { label: "Contact details", detail: `${completeContact}/4 essential details`, passed: completeContact === 4 },
-    { label: "Professional summary", detail: summaryWords >= 25 ? `${summaryWords} words` : "Aim for 25+ words", passed: summaryWords >= 25 },
-    {
-      label: "Experience quality",
-      detail: completeExperiences.length >= 2 ? `${completeExperiences.length} complete roles` : "Add role, company, and impact",
-      passed: completeExperiences.length >= 2,
-    },
-    {
-      label: "Skills and keywords",
-      detail: jobKeywords.length ? `${matchedKeywords.length}/${jobKeywords.length} job keywords matched` : `${(data.skills || []).length} skills listed`,
-      passed: jobKeywords.length ? matchedKeywords.length >= Math.ceil(jobKeywords.length / 2) : (data.skills || []).length >= 4,
-    },
-    {
-      label: "Education",
-      detail: completeEducation.length ? `${completeEducation.length} qualification${completeEducation.length > 1 ? "s" : ""}` : "Add education",
-      passed: Boolean(completeEducation.length),
-    },
-    { label: "ATS-safe format", detail: "Clear headings and readable type", passed: true },
-    { label: "Results language", detail: hasResultsLanguage ? "Action verbs and metrics found" : "Add numbers or outcomes", passed: hasResultsLanguage },
-  ];
-  return { score, checks, jobKeywords, matchedKeywords };
+}
+
+function AwardsForm({ awards, update, add, remove }) {
+  return (
+    <div className="space-y-4">
+      {awards.map((award, index) => (
+        <FormCard key={award.id}>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-slate-900">Award / Achievement {index + 1}</p>
+            <button
+              type="button"
+              onClick={() => remove(award.id)}
+              className="text-xs font-semibold text-rose-600"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Field label="Award / Honor Title" value={award.title} onChange={(val) => update(award.id, "title", val)} />
+            </div>
+            <Field label="Granting Organization" value={award.issuer} onChange={(val) => update(award.id, "issuer", val)} />
+            <Field label="Year Awarded" value={award.year} onChange={(val) => update(award.id, "year", val)} />
+            <div className="sm:col-span-2">
+              <Field label="Description (Optional)" textarea value={award.description} onChange={(val) => update(award.id, "description", val)} />
+            </div>
+          </div>
+        </FormCard>
+      ))}
+      <button
+        type="button"
+        onClick={() => add()}
+        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
+      >
+        + Add Award or Achievement
+      </button>
+    </div>
+  );
+}
+
+function ProjectsForm({ projects, update, add, remove }) {
+  return (
+    <div className="space-y-4">
+      {projects.map((proj, index) => (
+        <FormCard key={proj.id}>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-slate-900">Project {index + 1}</p>
+            <button
+              type="button"
+              onClick={() => remove(proj.id)}
+              className="text-xs font-semibold text-rose-600"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Field label="Project Title" value={proj.title} onChange={(val) => update(proj.id, "title", val)} />
+            </div>
+            <Field label="Your Role" value={proj.role} onChange={(val) => update(proj.id, "role", val)} />
+            <Field label="Technologies Used" value={proj.tech} onChange={(val) => update(proj.id, "tech", val)} placeholder="React, Node.js, AWS" />
+            <Field label="Start Date" value={proj.startDate} onChange={(val) => update(proj.id, "startDate", val)} />
+            <Field label="End Date" value={proj.endDate} onChange={(val) => update(proj.id, "endDate", val)} />
+            <Field label="Live Demo URL (Optional)" value={proj.liveUrl} onChange={(val) => update(proj.id, "liveUrl", val)} />
+            <Field label="GitHub Repository URL (Optional)" value={proj.githubUrl} onChange={(val) => update(proj.id, "githubUrl", val)} />
+            <div className="sm:col-span-2">
+              <Field label="Project Description & Results" textarea value={proj.description} onChange={(val) => update(proj.id, "description", val)} />
+            </div>
+          </div>
+        </FormCard>
+      ))}
+      <button
+        type="button"
+        onClick={() => add()}
+        className="w-full rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
+      >
+        + Add Project
+      </button>
+    </div>
+  );
+}
+
+function PortfolioForm({ portfolio, update, add, remove }) {
+  const presetPlatforms = ["LinkedIn", "GitHub", "Dribbble", "Behance", "Twitter", "Medium", "Stack Overflow", "YouTube", "Portfolio Website"];
+
+  return (
+    <div className="space-y-4">
+      {portfolio.map((link, index) => (
+        <FormCard key={link.id}>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-slate-900">Social Link {index + 1}</p>
+            <button
+              type="button"
+              onClick={() => remove(link.id)}
+              className="text-xs font-semibold text-rose-600"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label="Platform Name" value={link.platform} onChange={(val) => update(link.id, "platform", val)} placeholder="e.g. LinkedIn" />
+            <Field label="Profile URL" value={link.url} onChange={(val) => update(link.id, "url", val)} placeholder="https://..." />
+          </div>
+        </FormCard>
+      ))}
+      <div className="flex flex-wrap gap-2">
+        {presetPlatforms.map((plat) => (
+          <button
+            key={plat}
+            type="button"
+            onClick={() => add(plat, "")}
+            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-emerald-50 hover:text-emerald-800"
+          >
+            + Add {plat}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function ThemeControls({
@@ -934,7 +1118,6 @@ function ThemeControls({
 }) {
   return (
     <section className="mb-3 flex max-h-[150px] items-center justify-between md:gap-3 gap-2 rounded-b-2xl border -mt-6 border-slate-200 bg-white md:px-3 px-2 py-3 shadow-sm">
-      {/* Undo / Redo */}
       <div className="flex items-center gap-1">
         <button
           type="button"

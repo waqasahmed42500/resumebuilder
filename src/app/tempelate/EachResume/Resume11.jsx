@@ -6,6 +6,7 @@ import TemplateWrapper from "../../Component/TemplateWrapper";
 import EditableText from "../../Component/EditableText";
 import EditableImage from "../../Component/EditableImage";
 import SectionControls from "../../Component/SectionControls";
+import SocialIcon from "../../Component/SocialIcon";
 
 const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = false }) {
   const context = useResume();
@@ -16,6 +17,11 @@ const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = fals
   const skills = data?.skills || [];
   const experiences = data?.experiences || [];
   const education = data?.education || [];
+  const certifications = data?.certifications || [];
+  const languages = data?.languages || [];
+  const awards = data?.awards || [];
+  const projects = data?.projects || [];
+  const portfolio = data?.portfolio || [];
 
   const {
     updateContact,
@@ -32,13 +38,33 @@ const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = fals
     addSkill,
     removeSkill,
     moveSkill,
+    updateCertification,
+    addCertification,
+    removeCertification,
+    moveCertification,
+    updateLanguage,
+    addLanguage,
+    removeLanguage,
+    moveLanguage,
+    updateAward,
+    addAward,
+    removeAward,
+    moveAward,
+    updateProject,
+    addProject,
+    removeProject,
+    moveProject,
+    updatePortfolio,
+    addPortfolio,
+    removePortfolio,
+    movePortfolio,
   } = context || {};
 
   return (
-    <TemplateWrapper theme={theme} readOnly={readOnly} className="bg-white">
+    <TemplateWrapper theme={theme} readOnly={readOnly} className="bg-white min-h-[1123px]">
       {/* Creative Header */}
-      <header className="p-10 text-white flex justify-between items-center" style={{ backgroundColor: accent }}>
-        <div className="flex items-center gap-6">
+      <header className="p-8 text-white flex justify-between items-center" style={{ backgroundColor: accent }}>
+        <div className="flex items-center gap-5">
           <EditableImage
             src={contact.photo}
             onChange={(val) => updateContact?.("photo", val)}
@@ -46,13 +72,13 @@ const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = fals
             name={contact.fullName}
             accentColor="#ffffff"
             readOnly={readOnly}
-            className="h-24 w-24 rounded-full border-4 border-white/40"
+            className="h-20 w-20 rounded-full border-4 border-white/40"
           />
           <div>
-            <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
+            <span className="inline-block rounded-full bg-white/20 px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider">
               <EditableText value={contact.headline} onChange={(val) => updateContact?.("headline", val)} readOnly={readOnly} placeholder="Headline" />
             </span>
-            <h1 className="mt-2 text-4xl font-black tracking-tight">
+            <h1 className="mt-1 text-3xl font-black tracking-tight">
               <EditableText value={contact.fullName} onChange={(val) => updateContact?.("fullName", val)} readOnly={readOnly} placeholder="Full Name" />
             </h1>
           </div>
@@ -61,33 +87,59 @@ const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = fals
           <p><EditableText value={contact.email} onChange={(val) => updateContact?.("email", val)} readOnly={readOnly} placeholder="Email" /></p>
           <p><EditableText value={contact.phone} onChange={(val) => updateContact?.("phone", val)} readOnly={readOnly} placeholder="Phone" /></p>
           <p><EditableText value={contact.location} onChange={(val) => updateContact?.("location", val)} readOnly={readOnly} placeholder="Location" /></p>
-          <p><EditableText value={contact.website} onChange={(val) => updateContact?.("website", val)} readOnly={readOnly} placeholder="Website" /></p>
         </div>
       </header>
 
-      <div className="grid grid-cols-[1.5fr_0.9fr] gap-8 p-10">
+      {/* Social Links Banner */}
+      {portfolio.length > 0 && (
+        <div className="bg-slate-900 px-8 py-2.5 flex flex-wrap gap-4 text-xs font-semibold text-white">
+          {portfolio.map((link, index) => (
+            <div key={link.id || index} className="group/item relative inline-flex items-center gap-1.5">
+              <SocialIcon platform={link.platform} url={link.url} className="text-sm" style={{ color: accent }} />
+              <a href={link.url || "#"} target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition">
+                <EditableText value={link.platform} onChange={(val) => updatePortfolio?.(link.id, "platform", val)} readOnly={readOnly} placeholder="Platform" />
+              </a>
+              {!readOnly && (
+                <SectionControls
+                  onMoveUp={() => movePortfolio?.(link.id, "left")}
+                  onMoveDown={() => movePortfolio?.(link.id, "right")}
+                  onAdd={() => addPortfolio?.("Dribbble", "")}
+                  onDelete={() => removePortfolio?.(link.id)}
+                  canMoveUp={index > 0}
+                  canMoveDown={index < portfolio.length - 1}
+                  canDelete={portfolio.length > 1}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="grid grid-cols-[1.5fr_0.9fr] gap-8 p-8">
         <main>
-          <section className="mb-8">
-            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-3" style={{ borderColor: accent }}>
+          {/* Summary */}
+          <section className="mb-6">
+            <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-2.5" style={{ borderColor: accent }}>
               Creative Bio
             </h2>
-            <p className="text-sm leading-6 text-slate-700">
+            <p className="text-xs leading-6 text-slate-700">
               <EditableText value={data?.summary} onChange={(val) => updateSummary?.(val)} multiline readOnly={readOnly} placeholder="Summary..." />
             </p>
           </section>
 
-          <section>
-            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-3" style={{ borderColor: accent }}>
+          {/* Featured Experience */}
+          <section className="mb-6">
+            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-2.5" style={{ borderColor: accent }}>
               Featured Experience
             </h2>
             {experiences.map((exp, index) => (
-              <div key={exp.id || index} className="group/item relative mb-6 last:mb-0">
+              <div key={exp.id || index} className="group/item relative mb-5 last:mb-0">
                 <div className="flex justify-between items-baseline">
                   <div>
-                    <h3 className="text-sm font-bold text-slate-900">
+                    <h3 className="text-xs font-bold text-slate-900">
                       <EditableText value={exp.role} onChange={(val) => updateExperience?.(exp.id, "role", val)} readOnly={readOnly} placeholder="Role" />
                     </h3>
-                    <p className="text-xs font-bold" style={{ color: accent }}>
+                    <p className="text-[11px] font-bold" style={{ color: accent }}>
                       <EditableText value={exp.company} onChange={(val) => updateExperience?.(exp.id, "company", val)} readOnly={readOnly} placeholder="Company" />
                     </p>
                   </div>
@@ -97,7 +149,7 @@ const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = fals
                     <EditableText value={exp.endDate} onChange={(val) => updateExperience?.(exp.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
                   </p>
                 </div>
-                <p className="mt-2 text-xs leading-5 text-slate-600">
+                <p className="mt-1.5 text-xs leading-5 text-slate-600">
                   <EditableText value={exp.description} onChange={(val) => updateExperience?.(exp.id, "description", val)} multiline readOnly={readOnly} placeholder="Impact..." />
                 </p>
                 {!readOnly && (
@@ -115,17 +167,97 @@ const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = fals
               </div>
             ))}
           </section>
+
+          {/* Portfolio Projects */}
+          {projects.length > 0 && (
+            <section className="mb-6">
+              <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-2.5" style={{ borderColor: accent }}>
+                Featured Projects
+              </h2>
+              {projects.map((proj, index) => (
+                <div key={proj.id || index} className="group/item relative mb-4 last:mb-0 rounded-xl bg-slate-50 p-3 border" style={{ borderColor: `${accent}30` }}>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="text-xs font-bold text-slate-900">
+                      <EditableText value={proj.title} onChange={(val) => updateProject?.(proj.id, "title", val)} readOnly={readOnly} placeholder="Project Title" />
+                      <span className="text-[10px] font-normal text-slate-500 ml-1">
+                        (<EditableText value={proj.tech} onChange={(val) => updateProject?.(proj.id, "tech", val)} readOnly={readOnly} placeholder="Tech Stack" />)
+                      </span>
+                    </h3>
+                    <p className="text-[10px] text-slate-400 flex gap-1">
+                      <EditableText value={proj.startDate} onChange={(val) => updateProject?.(proj.id, "startDate", val)} readOnly={readOnly} placeholder="Start" />
+                      <span>-</span>
+                      <EditableText value={proj.endDate} onChange={(val) => updateProject?.(proj.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
+                    </p>
+                  </div>
+                  <p className="mt-1 text-xs leading-5 text-slate-600">
+                    <EditableText value={proj.description} onChange={(val) => updateProject?.(proj.id, "description", val)} multiline readOnly={readOnly} placeholder="Details..." />
+                  </p>
+                  {!readOnly && (
+                    <SectionControls
+                      className="absolute top-1 right-1"
+                      onMoveUp={() => moveProject?.(proj.id, "up")}
+                      onMoveDown={() => moveProject?.(proj.id, "down")}
+                      onAdd={() => addProject?.(index)}
+                      onDelete={() => removeProject?.(proj.id)}
+                      canMoveUp={index > 0}
+                      canMoveDown={index < projects.length - 1}
+                      canDelete={projects.length > 1}
+                    />
+                  )}
+                </div>
+              ))}
+            </section>
+          )}
+
+          {/* Awards */}
+          {awards.length > 0 && (
+            <section>
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-2.5" style={{ borderColor: accent }}>
+                Honors & Awards
+              </h2>
+              {awards.map((award, index) => (
+                <div key={award.id || index} className="group/item relative mb-3 last:mb-0 text-xs">
+                  <div className="flex justify-between items-baseline">
+                    <p className="font-bold text-slate-900">
+                      <EditableText value={award.title} onChange={(val) => updateAward?.(award.id, "title", val)} readOnly={readOnly} placeholder="Award Title" />
+                      <span> — </span>
+                      <EditableText value={award.issuer} onChange={(val) => updateAward?.(award.id, "issuer", val)} readOnly={readOnly} placeholder="Issuer" />
+                    </p>
+                    <p className="text-[10px] text-slate-400">
+                      <EditableText value={award.year} onChange={(val) => updateAward?.(award.id, "year", val)} readOnly={readOnly} placeholder="Year" />
+                    </p>
+                  </div>
+                  <p className="mt-0.5 text-xs text-slate-600">
+                    <EditableText value={award.description} onChange={(val) => updateAward?.(award.id, "description", val)} multiline readOnly={readOnly} placeholder="Description..." />
+                  </p>
+                  {!readOnly && (
+                    <SectionControls
+                      className="absolute top-0 right-0"
+                      onMoveUp={() => moveAward?.(award.id, "up")}
+                      onMoveDown={() => moveAward?.(award.id, "down")}
+                      onAdd={() => addAward?.(index)}
+                      onDelete={() => removeAward?.(award.id)}
+                      canMoveUp={index > 0}
+                      canMoveDown={index < awards.length - 1}
+                      canDelete={awards.length > 1}
+                    />
+                  )}
+                </div>
+              ))}
+            </section>
+          )}
         </main>
 
-        <aside className="border-l border-slate-100 pl-8">
-          <section className="mb-8">
-            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-3" style={{ borderColor: accent }}>
+        <aside className="border-l border-slate-100 pl-6 space-y-6">
+          {/* Skillset & Craft */}
+          <section>
+            <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-2.5" style={{ borderColor: accent }}>
               Skillset & Craft
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {skills.map((skill, index) => (
                 <div key={index} className="group/item relative inline-flex items-center">
-                  <span className="rounded-full px-3 py-1 text-[10px] font-bold text-white shadow-sm" style={{ backgroundColor: accent }}>
+                  <span className="rounded-full px-2.5 py-0.5 text-[10px] font-bold text-white shadow-sm" style={{ backgroundColor: accent }}>
                     <EditableText value={skill} onChange={(val) => updateSkill?.(index, val)} readOnly={readOnly} placeholder="Skill" />
                   </span>
                   {!readOnly && (
@@ -145,16 +277,49 @@ const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = fals
             </div>
           </section>
 
+          {/* Languages */}
+          {languages.length > 0 && (
+            <section>
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-2.5" style={{ borderColor: accent }}>
+                Languages
+              </h2>
+              <div className="flex flex-wrap gap-1.5">
+                {languages.map((lang, index) => (
+                  <div key={lang.id || index} className="group/item relative inline-flex items-center">
+                    <span className="rounded-md border bg-slate-50 px-2 py-0.5 text-[10px] font-semibold text-slate-800" style={{ borderColor: `${accent}40` }}>
+                      <EditableText value={lang.name} onChange={(val) => updateLanguage?.(lang.id, "name", val)} readOnly={readOnly} placeholder="Lang" />
+                      <span className="text-slate-400 font-normal ml-1">
+                        (<EditableText value={lang.proficiency} onChange={(val) => updateLanguage?.(lang.id, "proficiency", val)} readOnly={readOnly} placeholder="Level" />)
+                      </span>
+                    </span>
+                    {!readOnly && (
+                      <SectionControls
+                        onMoveUp={() => moveLanguage?.(lang.id, "left")}
+                        onMoveDown={() => moveLanguage?.(lang.id, "right")}
+                        onAdd={() => addLanguage?.(index)}
+                        onDelete={() => removeLanguage?.(lang.id)}
+                        canMoveUp={index > 0}
+                        canMoveDown={index < languages.length - 1}
+                        canDelete={languages.length > 1}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Education */}
           <section>
-            <h2 className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-3" style={{ borderColor: accent }}>
+            <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-2.5" style={{ borderColor: accent }}>
               Education
             </h2>
             {education.map((entry, index) => (
-              <div key={entry.id || index} className="group/item relative mb-4 last:mb-0">
+              <div key={entry.id || index} className="group/item relative mb-3 last:mb-0">
                 <p className="text-xs font-bold text-slate-900">
                   <EditableText value={entry.degree} onChange={(val) => updateEducation?.(entry.id, "degree", val)} readOnly={readOnly} placeholder="Degree" />
                 </p>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-0.5 text-xs text-slate-500">
                   <EditableText value={entry.school} onChange={(val) => updateEducation?.(entry.id, "school", val)} readOnly={readOnly} placeholder="School" />
                   <span> · </span>
                   <EditableText value={entry.year} onChange={(val) => updateEducation?.(entry.id, "year", val)} readOnly={readOnly} placeholder="Year" />
@@ -174,6 +339,39 @@ const Resume11 = memo(function Resume11({ data: propData, theme, readOnly = fals
               </div>
             ))}
           </section>
+
+          {/* Certifications */}
+          {certifications.length > 0 && (
+            <section>
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-900 border-l-4 pl-2.5" style={{ borderColor: accent }}>
+                Certifications
+              </h2>
+              {certifications.map((cert, index) => (
+                <div key={cert.id || index} className="group/item relative mb-2 last:mb-0 text-xs">
+                  <p className="font-bold text-slate-900">
+                    <EditableText value={cert.name} onChange={(val) => updateCertification?.(cert.id, "name", val)} readOnly={readOnly} placeholder="Cert Title" />
+                  </p>
+                  <p className="text-[10px] text-slate-500">
+                    <EditableText value={cert.authority} onChange={(val) => updateCertification?.(cert.id, "authority", val)} readOnly={readOnly} placeholder="Issuer" />
+                    <span> · </span>
+                    <EditableText value={cert.date} onChange={(val) => updateCertification?.(cert.id, "date", val)} readOnly={readOnly} placeholder="Year" />
+                  </p>
+                  {!readOnly && (
+                    <SectionControls
+                      className="absolute top-0 right-0"
+                      onMoveUp={() => moveCertification?.(cert.id, "up")}
+                      onMoveDown={() => moveCertification?.(cert.id, "down")}
+                      onAdd={() => addCertification?.(index)}
+                      onDelete={() => removeCertification?.(cert.id)}
+                      canMoveUp={index > 0}
+                      canMoveDown={index < certifications.length - 1}
+                      canDelete={certifications.length > 1}
+                    />
+                  )}
+                </div>
+              ))}
+            </section>
+          )}
         </aside>
       </div>
     </TemplateWrapper>

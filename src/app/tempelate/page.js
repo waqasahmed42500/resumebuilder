@@ -314,7 +314,7 @@ export default function TemplatePage() {
               </div>
             ) : (
               filteredTemplates.map((templates, i) => (
-                <article key={i} className="group  relative flex flex-col bg-gray-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
+                <article key={i} style={{fontFamily:'arial'}} className="group  relative flex flex-col bg-gray-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
                   <div className="aspect-[3/4] p-2  bg-red-500-lowest  relative">
                     <img className="w-full h-full  shadow-lg group-hover:scale-[1.02] transition-transform duration-500 rounded-sm" data-alt="Clean and professional modern resume layout with sans-serif typography on premium white paper texture with blue accents" src={`/templates/${templates.id}.png`} alt={templates.title} />
                     <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-3 justify-center backdrop-blur-[2px]">
@@ -327,7 +327,7 @@ export default function TemplatePage() {
                       </Link>
                       <button
                         onClick={() => {setOpenPreview(true) ,setPreviewTemplate(templates)}}
-                        className="group bg-white flex items-center gap-2 text-black px-6 py-2 rounded-md font-bold shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                        className="group bg-white flex items-center gap-2 text-black px-6 py-2 rounded-md font-bold shadow-xl cursor-pointer   transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                       >
                         View Template
                         <FiEye className="transition-transform duration-300 group-hover:scale-110" />
@@ -336,12 +336,15 @@ export default function TemplatePage() {
                   </div>
                   <div className="p-5 flex justify-between items-center bg-gray-200 text-black">
                     <div>
-                      <h3 className="text-xl font-bold  font-headline">{templates.title}</h3>
-                      <p className="text-sm ">{templates.subtitle}</p>
+                      <h3 style={{fontFamily:'arial'}}   className="text-xl font-bold  font-headline">{templates.title}</h3>
+                      <p style={{fontFamily:'arial'}}  className="text-sm ">{templates.subtitle}</p>
                     </div>
-                    <div className="flex text-center gap-1">
+                    {
+templates.id == 'resume1' &&
+                      <div className="flex text-center gap-1">
                       <span className="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold rounded">TOP PICK</span>
                     </div>
+                    }
                   </div>
                   <div className="flex gap-2 p-3 md:hidden">
   <Link
