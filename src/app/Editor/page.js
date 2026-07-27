@@ -326,7 +326,7 @@ function EditorContent() {
                   key={item.id}
                   type="button"
                   onClick={() => setActiveSection(item.id)}
-                  className={`flex w-full hover:cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium transition ${
+                  className={`flex w-full hover:cursor-pointer items-center gap-3 rounded-xl md:px-2 xl:px-3 justify-start py-2.5 text-xs font-medium transition ${
                     activeSection === item.id
                       ? "bg-emerald-700 text-white shadow-sm"
                       : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
