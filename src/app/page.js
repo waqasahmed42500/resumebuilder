@@ -7,14 +7,14 @@ import Sec4 from "./Component/Home/sec4";
 import FaqSection from "./Component/Home/FaqSection";
 
 export const metadata = {
-  title: "Free Resume Builder & ATS Resume Maker | ResumeArchitect",
+  title: "Free Resume Builder & ATS Resume Maker | EasyResume",
   description:
-    "Build a job-winning, ATS-friendly resume online for free. Choose from 20+ recruiter-tested professional templates, customize font styles and accent colors, and export high-resolution PDFs instantly.",
+    "Build a job-winning, 100% free ATS resume in minutes. Pick from 20+ recruiter-approved templates, edit experience live, and download high-resolution PDFs.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Free Resume Builder & ATS Resume Maker | ResumeArchitect",
+    title: "Free Resume Builder & ATS Resume Maker | EasyResume",
     description:
       "Create professional, ATS-optimized resumes in minutes. 20+ designer templates, live PDF preview, 100% free export.",
     url: "/",

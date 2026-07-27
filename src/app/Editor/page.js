@@ -1118,8 +1118,8 @@ function ThemeControls({
   canRedo,
 }) {
   return (
-    <section className="mb-3 flex max-h-[150px] items-center justify-between md:gap-3 gap-2 rounded-b-2xl border -mt-6 border-slate-200 bg-white md:px-3 px-2 py-3 shadow-sm">
-      <div className="flex items-center gap-1">
+    <section className="mb-3 flex flex-wrap items-center justify-between gap-2.5 rounded-b-2xl border -mt-6 border-slate-200 bg-white px-3 py-3 shadow-sm max-w-full overflow-hidden">
+      <div className="flex items-center gap-1 shrink-0">
         <button
           type="button"
           onClick={undo}
@@ -1140,17 +1140,17 @@ function ThemeControls({
         </button>
       </div>
 
-      <div className="h-8 w-px bg-slate-200" />
+      <div className="hidden sm:block h-8 w-px bg-slate-200 shrink-0" />
 
-      <div className="flex items-center gap-2">
-        <span className="text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.18em] text-slate-500">Color</span>
-        <div className="flex xl:gap-1.5 gap-1">
+      <div className="flex items-center gap-2 min-w-0 max-w-full overflow-x-auto py-1 scrollbar-thin">
+        <span className="text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.18em] text-slate-500 shrink-0">Color</span>
+        <div className="flex xl:gap-1.5 gap-1 shrink-0">
           {accentPresets.map((preset) => (
             <button
               key={preset.value}
               type="button"
               onClick={() => setAccent(preset.value)}
-              className={`h-6 w-6 rounded-full border-2 transition cursor-pointer ${
+              className={`h-6 w-6 rounded-full border-2 transition cursor-pointer shrink-0 ${
                 accent === preset.value ? "border-slate-900 scale-110 shadow-sm" : "border-slate-200"
               }`}
               style={{ backgroundColor: preset.value }}
@@ -1160,9 +1160,9 @@ function ThemeControls({
         </div>
       </div>
 
-      <div className="h-8 w-px bg-slate-200" />
+      <div className="hidden sm:block h-8 w-px bg-slate-200 shrink-0" />
 
-      <label className="flex items-center gap-2">
+      <label className="flex items-center gap-2 shrink-0">
         <span className="text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.18em] text-slate-500">Font</span>
         <select
           value={font}

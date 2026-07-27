@@ -11,7 +11,7 @@ const faqs = [
       "An Applicant Tracking System (ATS) is software used by employers to screen job applications automatically before human recruiters review them. An ATS resume builder formats your resume with clean single/dual-column layouts, standard typography, clear heading tags, and readable text blocks so automated parsers correctly identify your work history, skills, and contact details without layout errors.",
   },
   {
-    question: "Is ResumeArchitect 100% free to use and download PDFs?",
+    question: "Is EasyResume 100% free to use and download PDFs?",
     answer:
       "Yes! You can choose any of our 20+ professional templates, customize font styles and accent colors, edit your experience, and download pixel-perfect high-resolution PDF resumes with zero hidden charges or credit card requirements.",
   },

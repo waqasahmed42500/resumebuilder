@@ -1,12 +1,12 @@
 export const metadata = {
-  title: "Export & Download Resume PDF",
+  title: "Export & Download Resume PDF | EasyResume",
   description:
-    "Download your ATS-friendly professional resume as a high-resolution vector PDF, copy plain text, or email your resume directly to recruiters.",
+    "Preview your formatted resume layout and download a vector PDF ready for job applications.",
   alternates: {
     canonical: "/export",
   },
   openGraph: {
-    title: "Export & Download Resume PDF | ResumeArchitect",
+    title: "Export & Download Resume PDF | EasyResume",
     description:
       "Download your ATS-friendly professional resume as a high-resolution vector PDF.",
     url: "/export",

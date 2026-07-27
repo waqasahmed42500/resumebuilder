@@ -15,13 +15,13 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://resumearchitect.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://easyresume.com";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Free Resume Builder & ATS Resume Maker | ResumeArchitect",
-    template: "%s | ResumeArchitect",
+    default: "Free Resume Builder & ATS Resume Maker | EasyResume",
+    template: "%s | EasyResume",
   },
   description:
     "Build job-winning, ATS-friendly resumes for free in minutes. Choose from 20+ recruiter-tested professional templates, customize online, and download pixel-perfect PDFs.",
@@ -37,9 +37,9 @@ export const metadata = {
     "Resume Download PDF",
     "ATS Friendly Resume",
   ],
-  authors: [{ name: "ResumeArchitect Team" }],
-  creator: "ResumeArchitect",
-  publisher: "ResumeArchitect",
+  authors: [{ name: "EasyResume Team" }],
+  creator: "EasyResume",
+  publisher: "EasyResume",
   formatDetection: {
     email: false,
     address: false,
@@ -49,11 +49,11 @@ export const metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Free Resume Builder & ATS Resume Maker | ResumeArchitect",
+    title: "Free Resume Builder & ATS Resume Maker | EasyResume",
     description:
       "Create professional, ATS-optimized resumes in minutes. 20+ designer templates, live PDF preview, 100% free export.",
     url: siteUrl,
-    siteName: "ResumeArchitect",
+    siteName: "EasyResume",
     locale: "en_US",
     type: "website",
     images: [
@@ -61,17 +61,17 @@ export const metadata = {
         url: "/home.png",
         width: 1200,
         height: 630,
-        alt: "ResumeArchitect - Free Online ATS Resume Builder",
+        alt: "EasyResume - Free Online ATS Resume Builder",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Resume Builder & ATS Resume Maker | ResumeArchitect",
+    title: "Free Resume Builder & ATS Resume Maker | EasyResume",
     description:
       "Create professional, ATS-optimized resumes in minutes. 20+ designer templates, live PDF preview, 100% free export.",
     images: ["/home.png"],
-    creator: "@resumearchitect",
+    creator: "@easyresume",
   },
   robots: {
     index: true,
@@ -100,21 +100,21 @@ export default function RootLayout({ children }) {
       {
         "@type": "Organization",
         "@id": `${siteUrl}/#organization`,
-        name: "ResumeArchitect",
+        name: "EasyResume",
         url: siteUrl,
         logo: `${siteUrl}/favicon.ico`,
         description:
-          "ResumeArchitect is an online platform for building recruiter-tested, ATS-friendly professional resumes and CVs.",
+          "EasyResume is an online platform for building recruiter-tested, ATS-friendly professional resumes and CVs.",
         sameAs: [
-          "https://twitter.com/resumearchitect",
-          "https://linkedin.com/company/resumearchitect",
+          "https://twitter.com/easyresume",
+          "https://linkedin.com/company/easyresume",
         ],
       },
       {
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
-        name: "ResumeArchitect",
+        name: "EasyResume",
         description: "Free ATS Resume Builder & Professional CV Creator",
         publisher: {
           "@id": `${siteUrl}/#organization`,
@@ -131,7 +131,7 @@ export default function RootLayout({ children }) {
       {
         "@type": "WebApplication",
         "@id": `${siteUrl}/#webapp`,
-        name: "ResumeArchitect Resume Builder",
+        name: "EasyResume Resume Builder",
         url: siteUrl,
         applicationCategory: "BusinessApplication",
         operatingSystem: "All",

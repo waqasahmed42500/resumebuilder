@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 md:grid-cols-4 lg:grid-cols-5">
         <div className="col-span-2">
           <Link href="/" className="mb-4 inline-block text-2xl font-black text-slate-900">
-            Resume<span className="text-sky-700">Architect</span>
+            Easy<span className="text-sky-700">Resume</span>
           </Link>
           <p className="mb-6 max-w-xs text-sm leading-relaxed text-slate-600">
             Free ATS resume builder helping job seekers build recruiter-approved professional resumes, CVs, and cover letters.
@@ -118,7 +118,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-4 border-t border-slate-200 pt-8 text-xs font-semibold uppercase tracking-wider text-slate-500 md:flex-row">
-        <p>© {new Date().getFullYear()} ResumeArchitect. All Rights Reserved.</p>
+        <p>© {new Date().getFullYear()} EasyResume. All Rights Reserved.</p>
         <div className="flex gap-6">
           <Link href="/resources" className="hover:text-sky-700">
             Terms of Service

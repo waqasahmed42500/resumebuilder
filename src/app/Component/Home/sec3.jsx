@@ -68,7 +68,7 @@ export default function Sec3() {
                 </div>
               </div>
               <p className="text-sm italic text-slate-600">
-                &quot;The editorial approach at ResumeArchitect helped me land my Senior Product role at a top-tier tech firm. The layout stood out immediately.&quot;
+                &quot;The editorial approach at EasyResume helped me land my Senior Product role at a top-tier tech firm. The layout stood out immediately.&quot;
               </p>
               <div className="mt-4 flex items-center gap-2">
                 <span className="text-sm font-bold">Sarah Jenkins</span>

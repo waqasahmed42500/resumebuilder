@@ -35,9 +35,9 @@ export default function Header() {
           <Link
             href="/"
             className="truncate text-lg font-extrabold text-slate-900 sm:text-xl"
-            aria-label="ResumeArchitect Home"
+            aria-label="EasyResume Home"
           >
-            Resume<span className="text-sky-600">Architect</span>
+            Easy<span className="text-sky-600">Resume</span>
           </Link>
           <div className="hidden items-center gap-5 lg:flex">
             {navItems.map((item) => {

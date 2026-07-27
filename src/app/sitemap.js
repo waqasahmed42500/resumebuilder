@@ -1,5 +1,5 @@
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resumearchitect.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.com';
   const currentDate = new Date().toISOString();
 
   const routes = [

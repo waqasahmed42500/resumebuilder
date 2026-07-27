@@ -1,7 +1,7 @@
 import Editor from "../Editor/page";
 import JsonLd from "../Component/SEO/JsonLd";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://resumearchitect.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://easyresume.com";
 
 export const metadata = {
   title: "Free Online Resume Builder & Professional CV Creator",
@@ -30,7 +30,7 @@ export default function BuilderPage() {
   const webAppSchema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "ResumeArchitect Online Resume Builder",
+    name: "EasyResume Online Resume Builder",
     url: `${siteUrl}/builder`,
     applicationCategory: "BusinessApplication",
     operatingSystem: "All",

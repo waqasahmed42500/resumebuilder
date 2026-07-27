@@ -1,7 +1,7 @@
 export default function manifest() {
   return {
-    name: 'ResumeArchitect | Free ATS Resume Builder & Professional CV Creator',
-    short_name: 'ResumeArchitect',
+    name: 'EasyResume | Free ATS Resume Builder & Professional CV Creator',
+    short_name: 'EasyResume',
     description:
       'Build ATS-friendly professional resumes online for free. Choose from 20+ recruiter-tested templates, customize designs, and export high-resolution PDFs.',
     start_url: '/',

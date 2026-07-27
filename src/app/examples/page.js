@@ -4,7 +4,7 @@ import Header from "../Component/Header";
 import Footer from "../Component/Home/footer";
 import JsonLd from "../Component/SEO/JsonLd";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://resumearchitect.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://easyresume.com";
 
 export const metadata = {
   title: "Professional Resume Examples & Samples by Industry",

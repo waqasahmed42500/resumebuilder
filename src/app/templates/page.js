@@ -2,7 +2,7 @@ import TemplateGalleryClient from "../tempelate/TemplateGalleryClient";
 import { templatesData } from "../tempelate/templatesData";
 import JsonLd from "../Component/SEO/JsonLd";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://resumearchitect.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://esayresume.com";
 
 export const metadata = {
   title: "20+ Free ATS Resume Templates & Professional CV Designs",
