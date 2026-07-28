@@ -15,10 +15,13 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://easyresume.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://esayresume.netlify.app";
 
 export const metadata = {
-  metadataBase: new URL(siteUrl),
+   metadataBase: new URL("https://esayresume.netlify.app"),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: "Free Resume Builder & ATS Resume Maker | EasyResume",
     template: "%s | EasyResume",
