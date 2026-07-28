@@ -29,7 +29,7 @@ export default function Header() {
     <header className="fixed top-0 z-50 w-full bg-slate-50/80 shadow-sm backdrop-blur-md">
       <nav
         aria-label="Main Navigation"
-        className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 tracking-tight sm:px-6 lg:px-8"
+        className="mx-auto flex xl:h-16 h-14 max-w-7xl items-center justify-between gap-3 px-4 tracking-tight sm:px-6 lg:px-8"
       >
         <div className="flex min-w-0 items-center gap-8">
           <Link

@@ -4,8 +4,8 @@ import React from "react";
 
 export default function Sec1() {
   return (
-    <section className="relative flex min-h-[85vh] items-center overflow-hidden bg-slate-50 px-4 py-20 sm:px-8 md:px-16 lg:px-20">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-2 xl:gap-16">
+    <section className="relative -mt-18  flex min-h-[85vh] items-center overflow-hidden bg-slate-50 px-4 xl:py-20 md:py-16 sm:px-8 md:px-16 lg:px-20 ">
+      <div className="mx-auto md:mt-10 grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-2 xl:gap-16">
         <div className="z-10 max-w-2xl">
           <span className="mb-4 inline-flex items-center rounded-full bg-sky-100 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-sky-800">
             Free Online ATS Resume Builder
