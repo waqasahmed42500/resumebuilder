@@ -66,51 +66,76 @@ export default function Footer() {
                 Resume Examples
               </Link>
             </li>
-          </ul>
-        </div>
-
-        <div>
-          <p className="mb-4 font-bold text-slate-900">Resources</p>
-          <ul className="space-y-3 text-sm font-medium text-slate-600">
             <li>
-              <Link className="transition-colors hover:text-sky-700" href="/resources">
-                Resume Writing Guides
+              <Link className="transition-colors hover:text-sky-700" href="/cover-letter">
+                Cover Letter Generator
               </Link>
             </li>
             <li>
-              <Link className="transition-colors hover:text-sky-700" href="/ats-resume-builder">
-                ATS Checklist
+              <Link className="transition-colors hover:text-sky-700" href="/country">
+                Regional Resume Standards (US/UK/CA/AU/IN)
               </Link>
             </li>
             <li>
-              <Link className="transition-colors hover:text-sky-700" href="/resources">
-                Cover Letter Advice
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-sky-700" href="/export">
-                PDF Export
+              <Link className="transition-colors hover:text-sky-700" href="/open-source">
+                Open Source JSON Schemas & Privacy
               </Link>
             </li>
           </ul>
         </div>
 
         <div>
-          <p className="mb-4 font-bold text-slate-900">Company</p>
+          <p className="mb-4 font-bold text-slate-900">Popular Industry Resumes</p>
           <ul className="space-y-3 text-sm font-medium text-slate-600">
             <li>
-              <Link className="transition-colors hover:text-sky-700" href="/">
-                About Us
+              <Link className="transition-colors hover:text-sky-700" href="/templates/software-engineer">
+                Software Engineer Resume
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/templates/registered-nurse">
+                Registered Nurse Resume
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/templates/teacher">
+                Teacher Resume
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/templates/accountant">
+                Accountant Resume
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/templates/data-analyst">
+                Data Analyst Resume
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p className="mb-4 font-bold text-slate-900">Resources & Blog</p>
+          <ul className="space-y-3 text-sm font-medium text-slate-600">
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/blog">
+                Career Blog & Guides
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/blog/how-to-pass-ats-resume-scanners-2026">
+                ATS Optimization Guide
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/blog/top-fonts-for-ats-resumes">
+                ATS Friendly Fonts
               </Link>
             </li>
             <li>
               <Link className="transition-colors hover:text-sky-700" href="/resources">
-                Career Tips
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-sky-700" href="/resources">
-                Contact Us
+                Career Advice
               </Link>
             </li>
           </ul>

@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://esayresume.netlify.app";
 
 export const metadata = {
-   metadataBase: new URL("https://esayresume.netlify.app"),
+  metadataBase: new URL(siteUrl),
   alternates: {
     canonical: "/",
   },
@@ -47,9 +47,6 @@ export const metadata = {
     email: false,
     address: false,
     telephone: false,
-  },
-  alternates: {
-    canonical: "/",
   },
   openGraph: {
     title: "Free Resume Builder & ATS Resume Maker | EasyResume",

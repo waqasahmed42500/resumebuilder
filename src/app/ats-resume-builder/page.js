@@ -3,7 +3,7 @@ import Footer from "../Component/Home/footer";
 import Link from "next/link";
 import JsonLd from "../Component/SEO/JsonLd";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://easyresume.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://esayresume.netlify.app";
 
 export const metadata = {
   title: "Free ATS Resume Builder | Pass Applicant Tracking Systems 100%",

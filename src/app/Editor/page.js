@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Header from "../Component/Header";
+import AtsScoreMeter from "../Component/SEO/AtsScoreMeter";
 
 import Resume1 from "../tempelate/EachResume/Resume1";
 import Resume2 from "../tempelate/EachResume/Resume2";
@@ -370,8 +371,10 @@ function EditorContent() {
           <div className="w-full md:ml-16 lg:flex">
             {/* Form Section Sidebar / Drawer */}
             <section className="editor-panel bg-slate-100 min-w-0 w-full p-4 sm:p-6 lg:w-[48%] lg:pb-12">
-              <div className="mx-auto max-w-xl">
-                <div className="mb-6 flex items-center justify-between gap-4">
+              <div className="mx-auto max-w-xl space-y-4">
+                <AtsScoreMeter resumeData={resumeData} selectedRole={searchParams.get("role")} />
+                
+                <div className="mb-6 flex items-center justify-between gap-4 border-b border-slate-200 pb-4">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-700">{selectedName}</p>
                     <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">

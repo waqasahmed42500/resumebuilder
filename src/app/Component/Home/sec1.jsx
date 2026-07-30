@@ -25,20 +25,31 @@ export default function Sec1() {
               Build My Resume Now
             </Link>
             <Link
-              href="/tempelate"
+              href="/templates"
               className="rounded-xl bg-slate-200 px-6 py-3.5 text-base font-bold text-slate-800 transition-all hover:bg-slate-300 sm:px-8 sm:text-lg"
               aria-label="Explore free professional resume templates"
             >
               Browse 20+ Templates
             </Link>
           </div>
-          <div className="mt-10 flex items-center gap-4 text-xs font-semibold text-slate-600 sm:text-sm">
+
+          {/* Privacy Trust Badges */}
+          <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-bold text-slate-700">
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-emerald-800">
+              🔒 100% Client-Side Privacy (Zero Server Storage)
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-sky-200 bg-sky-50 px-3 py-1.5 text-sky-800">
+              ⚡ Zero Paywall PDF Export
+            </span>
+          </div>
+
+          <div className="mt-6 flex items-center gap-4 text-xs font-semibold text-slate-600 sm:text-sm">
             <div className="flex -space-x-2">
               <div className="h-8 w-8 rounded-full border-2 border-white bg-slate-400" />
               <div className="h-8 w-8 rounded-full border-2 border-white bg-sky-500" />
               <div className="h-8 w-8 rounded-full border-2 border-white bg-emerald-500" />
             </div>
-            <span>Trusted by 50,000+ job seekers & professionals</span>
+            <span>Trusted by 50,000+ job seekers & professionals worldwide</span>
           </div>
         </div>
 
