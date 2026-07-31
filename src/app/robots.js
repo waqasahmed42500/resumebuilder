@@ -4,11 +4,13 @@ export default function robots() {
   return {
     rules: [
       {
+        // All standard search engine crawlers — full access except private/dynamic routes
         userAgent: '*',
-        allow: '/',
+        allow: ['/'],
         disallow: ['/api/', '/_next/', '/export/', '/builder?*'],
       },
       {
+        // Block AI training crawlers — they scrape content without providing link equity
         userAgent: [
           'GPTBot',
           'ChatGPT-User',
@@ -17,8 +19,10 @@ export default function robots() {
           'Google-Extended',
           'Bytespider',
           'CCBot',
+          'Amazonbot',
+          'anthropic-ai',
         ],
-        allow: '/',
+        disallow: ['/'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

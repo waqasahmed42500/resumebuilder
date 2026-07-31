@@ -27,18 +27,26 @@ export const metadata = {
     template: "%s | EasyResume",
   },
   description:
-    "Build job-winning, ATS-friendly resumes for free in minutes. Choose from 20+ recruiter-tested professional templates, customize online, and download pixel-perfect PDFs.",
+    "Build a free ATS resume in 5 minutes. Choose from 20+ professional resume templates, customize with our online resume maker, and download a pixel-perfect PDF — no credit card required.",
   keywords: [
     "Resume Builder",
     "Free Resume Builder",
     "ATS Resume Builder",
+    "Online Resume Maker",
+    "Professional Resume Builder",
+    "AI Resume Builder",
     "Resume Templates",
-    "Professional Resume Maker",
-    "Online Resume Builder",
     "CV Builder",
+    "Free CV Maker",
+    "ATS Resume Checker",
+    "Resume Generator",
     "Resume Creator",
-    "Resume Download PDF",
+    "Free Resume Download PDF",
     "ATS Friendly Resume",
+    "Resume Builder Free",
+    "Best Resume Builder",
+    "Online CV Maker",
+    "Resume Maker",
   ],
   authors: [{ name: "EasyResume Team" }],
   creator: "EasyResume",
@@ -51,7 +59,7 @@ export const metadata = {
   openGraph: {
     title: "Free Resume Builder & ATS Resume Maker | EasyResume",
     description:
-      "Create professional, ATS-optimized resumes in minutes. 20+ designer templates, live PDF preview, 100% free export.",
+      "Build a free ATS resume in 5 minutes. 20+ professional resume templates, live editor, instant PDF download — no paywall, no signup.",
     url: siteUrl,
     siteName: "EasyResume",
     locale: "en_US",
@@ -61,7 +69,7 @@ export const metadata = {
         url: "/home.png",
         width: 1200,
         height: 630,
-        alt: "EasyResume - Free Online ATS Resume Builder",
+        alt: "EasyResume — Free Online ATS Resume Builder with 20+ Professional Templates",
       },
     ],
   },
@@ -69,7 +77,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Free Resume Builder & ATS Resume Maker | EasyResume",
     description:
-      "Create professional, ATS-optimized resumes in minutes. 20+ designer templates, live PDF preview, 100% free export.",
+      "Build a free ATS resume in 5 minutes. 20+ professional resume templates, live editor, instant PDF download — no paywall, no signup.",
     images: ["/home.png"],
     creator: "@easyresume",
   },
@@ -102,9 +110,15 @@ export default function RootLayout({ children }) {
         "@id": `${siteUrl}/#organization`,
         name: "EasyResume",
         url: siteUrl,
-        logo: `${siteUrl}/favicon.ico`,
+        // Full ImageObject for logo — required for Google Knowledge Panel eligibility
+        logo: {
+          "@type": "ImageObject",
+          url: `${siteUrl}/icon.png`,
+          width: 512,
+          height: 512,
+        },
         description:
-          "EasyResume is an online platform for building recruiter-tested, ATS-friendly professional resumes and CVs.",
+          "EasyResume is a free online platform for building recruiter-tested, ATS-friendly professional resumes and CVs.",
         sameAs: [
           "https://twitter.com/easyresume",
           "https://linkedin.com/company/easyresume",
@@ -115,10 +129,11 @@ export default function RootLayout({ children }) {
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
         name: "EasyResume",
-        description: "Free ATS Resume Builder & Professional CV Creator",
+        description: "Free ATS Resume Builder & Professional CV Maker",
         publisher: {
           "@id": `${siteUrl}/#organization`,
         },
+        // SearchAction enables Google Sitelinks Search Box
         potentialAction: {
           "@type": "SearchAction",
           target: {
@@ -135,13 +150,23 @@ export default function RootLayout({ children }) {
         url: siteUrl,
         applicationCategory: "BusinessApplication",
         operatingSystem: "All",
+        browserRequirements: "Requires JavaScript. Requires HTML5.",
         offers: {
           "@type": "Offer",
           price: "0",
           priceCurrency: "USD",
+          description: "Free — no subscription, no credit card required",
         },
         description:
           "Free online resume builder with 20+ ATS-optimized templates, live custom styling, and PDF download.",
+        featureList: [
+          "20+ ATS-Optimized Resume Templates",
+          "Live Online Resume Editor",
+          "Free PDF Download — No Paywall",
+          "100% Client-Side Privacy",
+          "30+ Profession-Specific Resume Builders",
+          "Cover Letter Generator",
+        ],
       },
     ],
   };
@@ -153,6 +178,13 @@ export default function RootLayout({ children }) {
     >
       <head>
         <JsonLd data={globalSchema} />
+        {/* Preconnect to external image CDN used in hero + template cards — improves LCP */}
+        <link
+          rel="preconnect"
+          href="https://lh3.googleusercontent.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
       </head>
       <body className="flex min-h-full flex-col bg-slate-50 text-slate-900">
         <ResumeProvider>{children}</ResumeProvider>
