@@ -133,7 +133,7 @@ export default function AtsScoreMeter({ resumeData, selectedRole = null }) {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 transition-colors"
+          className="hover:cursor-pointer rounded-lg p-2 text-slate-500 hover:bg-slate-100 transition-colors"
           aria-label="Toggle ATS Score Checklist"
         >
           {isOpen ? <HiChevronUp size={20} /> : <HiChevronDown size={20} />}
@@ -149,25 +149,46 @@ export default function AtsScoreMeter({ resumeData, selectedRole = null }) {
       </div>
 
       {/* Actionable Feedback Breakdown Accordion */}
-      {isOpen && (
-        <div className="mt-4 border-t border-slate-100 pt-3 space-y-2 text-xs">
-          <p className="font-bold text-slate-900 flex items-center gap-1 mb-2">
-            <HiLightningBolt className="text-amber-500" size={14} /> Live ATS Parsing Checklist:
-          </p>
-          {checks.map((item, idx) => (
-            <div key={idx} className="flex items-start gap-2 text-slate-700">
-              {item.passed ? (
-                <HiCheckCircle className="text-emerald-500 shrink-0 mt-0.5" size={15} />
-              ) : (
-                <HiExclamationCircle className="text-amber-500 shrink-0 mt-0.5" size={15} />
-              )}
-              <span className={item.passed ? "text-slate-700 font-medium" : "text-slate-900 font-bold"}>
-                {item.text}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
+      <div
+  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+    isOpen
+      ? "max-h-[500px] opacity-100 mt-4 pt-3 border-t border-slate-100"
+      : "max-h-0 opacity-0 mt-0 pt-0 border-t border-transparent"
+  }`}
+>
+  <div className="space-y-2 text-xs">
+    <p className="font-bold text-slate-900 flex items-center gap-1 mb-2">
+      <HiLightningBolt className="text-amber-500" size={14} />
+      Live ATS Parsing Checklist:
+    </p>
+
+    {checks.map((item, idx) => (
+      <div key={idx} className="flex items-start gap-2 text-slate-700">
+        {item.passed ? (
+          <HiCheckCircle
+            className="text-emerald-500 shrink-0 mt-0.5"
+            size={15}
+          />
+        ) : (
+          <HiExclamationCircle
+            className="text-amber-500 shrink-0 mt-0.5"
+            size={15}
+          />
+        )}
+
+        <span
+          className={
+            item.passed
+              ? "text-slate-700 font-medium"
+              : "text-slate-900 font-bold"
+          }
+        >
+          {item.text}
+        </span>
+      </div>
+    ))}
+  </div>
+</div>
     </div>
   );
 }
