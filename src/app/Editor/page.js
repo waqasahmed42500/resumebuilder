@@ -227,44 +227,89 @@ function EditorContent() {
     if (!previewRef.current) return;
 
     setIsExportingPdf(true);
+    const el = previewRef.current;
     const controls = document.querySelector(".theme-controls");
-    previewRef.current.classList.add("export-mode");
+    el.classList.add("export-mode");
+
+    // Save current inline styles to restore later
+    const prevZoom = el.style.zoom;
+    const prevWidth = el.style.width;
+    const prevMinWidth = el.style.minWidth;
+    const prevOverflow = el.style.overflow;
 
     try {
       controls?.classList.add("hidden");
 
+      // Force full A4 size — override any CSS zoom so html2canvas captures at 100%
+      el.style.zoom = "1";
+      el.style.width = "794px";    // A4 width in px at 96dpi
+      el.style.minWidth = "794px";
+      el.style.overflow = "visible";
+
+      // Small delay for browser to repaint at new size
+      await new Promise((r) => setTimeout(r, 120));
+
       const html2canvas = (await import("html2canvas")).default;
       const { jsPDF } = await import("jspdf");
 
-      const canvas = await html2canvas(previewRef.current, {
+      const canvas = await html2canvas(el, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
         logging: false,
+        width: el.scrollWidth,
+        height: el.scrollHeight,
+        windowWidth: el.scrollWidth,
       });
 
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
-      const marginX = 24;
-      const marginY = 24;
-      const availableWidth = pageWidth - marginX * 2;
-      const availableHeight = pageHeight - marginY * 2;
-      const imgWidth = availableWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const finalHeight = Math.min(imgHeight, availableHeight);
-      const finalWidth = (canvas.width * finalHeight) / canvas.height;
 
-      pdf.addImage(imgData, "PNG", marginX, marginY, finalWidth, finalHeight, undefined, "FAST");
+      // Fit image width exactly to page (no side margins needed — resume already has its own padding)
+      const imgWidthPt = pageWidth;
+      const imgHeightPt = (canvas.height * imgWidthPt) / canvas.width;
+
+      // Multi-page: slice canvas into A4-height chunks
+      const pageHeightPx = (canvas.width * pageHeight) / pageWidth; // page height in canvas pixels
+      let yOffset = 0;
+      let pageIndex = 0;
+
+      while (yOffset < canvas.height) {
+        if (pageIndex > 0) pdf.addPage();
+
+        const sliceHeight = Math.min(pageHeightPx, canvas.height - yOffset);
+
+        // Create a temp canvas for this slice
+        const sliceCanvas = document.createElement("canvas");
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = sliceHeight;
+        const ctx = sliceCanvas.getContext("2d");
+        ctx.drawImage(canvas, 0, yOffset, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
+
+        const sliceData = sliceCanvas.toDataURL("image/png");
+        const sliceHeightPt = (sliceHeight * pageWidth) / canvas.width;
+        pdf.addImage(sliceData, "PNG", 0, 0, pageWidth, sliceHeightPt, undefined, "FAST");
+
+        yOffset += pageHeightPx;
+        pageIndex++;
+      }
+
       pdf.save(`${selectedName.replace(/\s+/g, "-").toLowerCase()}-resume.pdf`);
     } catch (error) {
       console.error("PDF export failed", error);
       window.print();
     } finally {
+      // Restore original styles
+      el.style.zoom = prevZoom;
+      el.style.width = prevWidth;
+      el.style.minWidth = prevMinWidth;
+      el.style.overflow = prevOverflow;
+
       setIsExportingPdf(false);
       controls?.classList.remove("hidden");
-      previewRef.current?.classList.remove("export-mode");
+      el.classList.remove("export-mode");
     }
   };
 

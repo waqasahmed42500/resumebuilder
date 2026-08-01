@@ -105,21 +105,44 @@ export default async function RoleResumeExamplePage({ params }) {
             <span className="font-semibold text-slate-800">{role.title} Sample</span>
           </nav>
 
-          {/* Header */}
+          {/* Header with Hero Image */}
           <header className="mb-12 border-b border-slate-200 pb-10">
-            <span className="mb-3 inline-block rounded-full bg-sky-100 px-4 py-1 text-xs font-extrabold uppercase tracking-widest text-sky-800">
-              Sample Resume & Writing Guide
-            </span>
-            <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
-              {role.title} Resume Example
-            </h1>
+            {role.heroImage && (
+              <div className="relative mb-8 w-full h-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg">
+                <img
+                  src={role.heroImage}
+                  alt={role.imageAlt || `${role.title} resume example`}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-transparent flex flex-col justify-end p-8">
+                  <span className="mb-2 inline-block rounded-full bg-sky-400/90 backdrop-blur-sm px-4 py-1 text-xs font-extrabold uppercase tracking-widest text-slate-900 w-fit">
+                    Sample Resume &amp; Writing Guide
+                  </span>
+                  <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white drop-shadow">
+                    {role.title} Resume Example
+                  </h1>
+                </div>
+              </div>
+            )}
+
+            {!role.heroImage && (
+              <>
+                <span className="mb-3 inline-block rounded-full bg-sky-100 px-4 py-1 text-xs font-extrabold uppercase tracking-widest text-sky-800">
+                  Sample Resume &amp; Writing Guide
+                </span>
+                <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
+                  {role.title} Resume Example
+                </h1>
+              </>
+            )}
+
             <p className="mt-4 text-lg text-slate-600 leading-relaxed">
               Use this verified {role.title} resume sample as a blueprint to format your own application. Designed according to modern ATS screening parameters and recruiter preferences.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
-                href={`/builder?role=${role.slug}`}
+                href={`/builder?role=${role.slug}&template=${role.template || 'resume1'}`}
                 className="rounded-xl bg-slate-900 px-8 py-4 text-base font-bold text-white shadow-md transition-all hover:bg-slate-800"
               >
                 Use This {role.title} Example →
@@ -220,7 +243,7 @@ export default async function RoleResumeExamplePage({ params }) {
               Edit online, test ATS compliance in real time, and export vector PDF for free.
             </p>
             <Link
-              href={`/builder?role=${role.slug}`}
+              href={`/builder?role=${role.slug}&template=${role.template || 'resume1'}`}
               className="inline-block rounded-xl bg-emerald-500 px-8 py-4 text-base font-bold text-slate-900 transition-all hover:bg-emerald-400"
             >
               Customize This Example Now

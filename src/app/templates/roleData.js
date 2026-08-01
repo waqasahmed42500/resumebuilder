@@ -1,6 +1,7 @@
 export const rolesData = [
   {
     slug: 'software-engineer',
+    template: 'resume1',
     title: 'Software Engineer',
     category: 'Technology & Engineering',
     experienceLevel: 'Mid to Senior',
@@ -70,6 +71,7 @@ Recruiters look beyond simple lists of programming languages. They look for how 
   },
   {
     slug: 'frontend-developer',
+    template: 'resume2',
     title: 'Frontend Developer',
     category: 'Technology & Web Development',
     experienceLevel: 'Mid-Level',
@@ -77,7 +79,7 @@ Recruiters look beyond simple lists of programming languages. They look for how 
     seoTitle: 'Free Frontend Developer Resume Builder & Sample (2026)',
     metaDescription: 'Create a recruiter-approved Frontend Developer resume with modern React, Vue, CSS, and web performance metrics. 100% free PDF download.',
     description: 'Craft an ATS-optimized Frontend Developer resume showcasing UI performance, web accessibility, and modern JavaScript frameworks.',
-    heroImage: '/images/hero/software-engineer.jpg',
+    heroImage: '/images/hero/frontend-developer.jpg',
     imageAlt: 'Frontend Developer creating responsive user interfaces and React component design systems',
     summary: 'Creative and detail-oriented Frontend Developer with 4+ years of experience building accessible, responsive, and pixel-perfect web applications. Proficient in HTML5, CSS3/Tailwind, TypeScript, React, and web performance optimization.',
     coverLetterSample: {
@@ -134,6 +136,7 @@ Recruiters evaluate Frontend Developer resumes based on web performance achievem
   },
   {
     slug: 'nurse',
+    template: 'resume3',
     title: 'Registered Nurse (RN)',
     category: 'Healthcare & Medical',
     experienceLevel: 'Mid-Level',
@@ -198,6 +201,7 @@ Hospital ATS systems scan Nursing resumes strictly for state RN license numbers,
   },
   {
     slug: 'teacher',
+    template: 'resume4',
     title: 'Teacher',
     category: 'Education & Teaching',
     experienceLevel: 'All Levels',
