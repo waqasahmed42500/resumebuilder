@@ -3,8 +3,7 @@
 import { useState, useMemo } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { FiEye, FiArrowRight } from "react-icons/fi";
-import Header from "../Component/Header";
-import Footer from "../Component/Home/footer";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -58,8 +57,7 @@ export default function TemplateGalleryClient() {
 
   return (
     <>
-      <Header />
-      <main className="mx-auto min-h-screen bg-slate-50 px-4 pb-24 pt-24 sm:px-6 lg:px-12">
+      <div className="mx-auto min-h-screen bg-slate-50 px-4 pb-24 pt-24 sm:px-6 lg:px-12">
         <div className="mx-auto max-w-7xl">
 
           {/* Header Banner */}
@@ -222,7 +220,7 @@ export default function TemplateGalleryClient() {
             <div className="mt-12 flex flex-col items-center gap-3">
               {!showAll && hiddenCount > 0 && (
                 <p className="text-sm text-slate-500 font-medium">
-                  +{hiddenCount} more templates available (Creative &amp; Minimalist)
+                  +{hiddenCount} {"more templates available (Creative & Minimalist)"}
                 </p>
               )}
               <button
@@ -288,8 +286,7 @@ export default function TemplateGalleryClient() {
             </div>
           </div>
         )}
-      </main>
-      <Footer />
+      </div>
     </>
   );
 }

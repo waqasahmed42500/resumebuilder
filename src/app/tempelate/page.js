@@ -1,6 +1,8 @@
 import TemplateGalleryClient from "./TemplateGalleryClient";
 import { templatesData } from "./templatesData";
 import JsonLd from "../Component/SEO/JsonLd";
+import Header from "../Component/Header";
+import Footer from "../Component/Home/footer";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://esayresume.com";
 
@@ -58,7 +60,11 @@ export default function TempelatePage() {
     <>
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={itemListSchema} />
-      <TemplateGalleryClient />
+      <Header />
+      <main className="pt-20">
+        <TemplateGalleryClient />
+      </main>
+      <Footer />
     </>
   );
 }

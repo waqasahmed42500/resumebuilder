@@ -26,12 +26,11 @@ import Resume19 from "../tempelate/EachResume/Resume19";
 import Resume20 from "../tempelate/EachResume/Resume20";
 
 import { IoMdDownload } from "react-icons/io";
-import { VscSaveAs } from "react-icons/vsc";
-import { MdUndo, MdRedo } from "react-icons/md";
-import { MdGridView, MdClose, MdCheckCircle } from "react-icons/md";
-import { HiChevronDown, HiEye, HiShare, HiTemplate } from "react-icons/hi";
+import { MdGridView, MdClose, MdCheckCircle, MdMonitor, MdPhoneIphone } from "react-icons/md";
+import { HiOutlineSave } from "react-icons/hi";
 import Link from "next/link";
 import { useResume } from "../context/ResumeContext";
+import Header from "../Component/Header";
 
 /* ──────────────────────────────────────────────
    Editor-Specific Top Bar Header
@@ -46,15 +45,14 @@ function EditorHeader({
   canRedo,
   onChangeTemplate,
   selectedTemplate,
-  isExportingPdf,
-  resumeData,
+  currentSection,
+  onToggleSidebar,
 }) {
-  const [titleDropdownOpen, setTitleDropdownOpen] = useState(false);
   const [shareTooltip, setShareTooltip] = useState(false);
 
   const handleShare = () => {
     if (navigator.share) {
-      navigator.share({ title: `${selectedName} Resume`, url: window.location.href });
+      navigator.share({ title: `Resume`, url: window.location.href });
     } else {
       navigator.clipboard.writeText(window.location.href);
       setShareTooltip(true);
@@ -62,142 +60,18 @@ function EditorHeader({
     }
   };
 
-  const displayTitle = resumeData?.contact?.name
-    ? resumeData.contact.name
-    : selectedName;
-
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between gap-2 border-b border-slate-200 bg-white/95 px-3 shadow-sm backdrop-blur-md sm:gap-4 sm:px-5"
-    >
-      {/* ── Left: Logo ── */}
-      <div className="flex shrink-0 items-center gap-3">
-        <Link
-          href="/"
-          className="text-base font-extrabold text-slate-900 sm:text-lg"
-          aria-label="EasyResume Home"
-        >
-          Easy<span className="text-sky-600">Resume</span>
-        </Link>
+    <Header
+    undo ={undo}
+    canUndo={canUndo}
+    redo={redo}
+    canRedo={canRedo}
+    onChangeTemplate={onChangeTemplate}
+    handleShare={handleShare}
+    shareTooltip={shareTooltip}
+    selectedTemplate={selectedTemplate}
 
-        {/* Divider */}
-        <div className="hidden h-5 w-px bg-slate-200 sm:block" />
-
-        {/* ── Resume Title*/}
-        <div className="relative hidden sm:block">
-          <button
-            type="button"
-            onClick={() => setTitleDropdownOpen((v) => !v)}
-            className=" rounded-lg px-2 py-1  text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
-          >
-            <span className=" max-w-[160px] leading-0.5 truncate">{displayTitle}</span>
-<p className="mt-2 text-xs font-medium leading-0.5 text-emerald-700">
-                        {draftStatus}
-                        {draftSavedAt ? ` • ${draftSavedAt}` : ""}
-                      </p>
-          </button>
-
-        
-        </div>
-      </div>
-
-      {/* ── Center: Draft Save Status ── */}
-      <div className="hidden flex-1 items-center justify-center gap-1 sm:flex">
-        <span className="text-xs text-slate-400">
-          {draftStatus}
-          {draftSavedAt ? (
-            <span className="ml-1 text-slate-300">• {draftSavedAt}</span>
-          ) : null}
-        </span>
-      </div>
-
-      {/* ── Right: Action Buttons ── */}
-      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-        {/* Undo / Redo */}
-        <div className="flex items-center rounded-lg border border-slate-200 bg-slate-50">
-          <button
-            type="button"
-            onClick={undo}
-            disabled={!canUndo}
-            title="Undo (Ctrl+Z)"
-            className="flex h-8 w-8 items-center justify-center rounded-l-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 disabled:opacity-30"
-          >
-            <MdUndo className="h-4 w-4" />
-          </button>
-          <div className="h-4 w-px bg-slate-200" />
-          <button
-            type="button"
-            onClick={redo}
-            disabled={!canRedo}
-            title="Redo (Ctrl+Y)"
-            className="flex h-8 w-8 items-center justify-center rounded-r-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 disabled:opacity-30"
-          >
-            <MdRedo className="h-4 w-4" />
-          </button>
-        </div>
-
-        {/* Change Template */}
-        <button
-          type="button"
-          onClick={onChangeTemplate}
-          className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:flex"
-          title="Change Template"
-        >
-          <MdGridView className="h-3.5 w-3.5" />
-          <span className="hidden md:inline">Template</span>
-        </button>
-
-        {/* Preview */}
-        <Link
-          href={`/export?template=${selectedTemplate}`}
-          className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:flex"
-          title="Preview Resume"
-        >
-          <HiEye className="h-3.5 w-3.5" />
-          <span className="hidden md:inline">Preview</span>
-        </Link>
-
-        {/* Share */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={handleShare}
-            className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:flex"
-            title="Share"
-          >
-            <HiShare className="h-3.5 w-3.5" />
-            <span className="hidden md:inline">Share</span>
-          </button>
-          {shareTooltip && (
-            <div className="absolute right-0 top-full mt-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-[11px] font-semibold text-white shadow-lg whitespace-nowrap">
-              Link copied!
-            </div>
-          )}
-        </div>
-
-<button
-                        type="button"
-                        onClick={() => onChangeTemplate()}
-                        className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-all"
-                      >
-                        <MdGridView className="text-base" />
-                        Change Template
-                      </button>
-        {/* Export PDF */}
-        <Link
-          href={`/export?template=${selectedTemplate}`}
-          className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-slate-700 active:scale-95"
-        >
-          <IoMdDownload className="h-3.5 w-3.5" />
-          <span>Export PDF</span>
-        </Link>
-
-        {/* User Avatar placeholder */}
-        <div className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 text-xs font-bold text-white shadow sm:flex">
-          {(resumeData?.contact?.name?.[0] || "U").toUpperCase()}
-        </div>
-      </div>
-    </header>
+    />
   );
 }
 
@@ -320,7 +194,13 @@ function EditorContent() {
   const [draftStatus, setDraftStatus] = useState("Auto-saves locally");
   const [draftSavedAt, setDraftSavedAt] = useState("");
   const [showTemplateSwitcher, setShowTemplateSwitcher] = useState(false);
+  const [previewZoom, setPreviewZoom] = useState(100);
+  const [previewDevice, setPreviewDevice] = useState("desktop"); // "desktop" | "mobile"
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const previewRef = useRef(null);
+
+  const zoomIn  = () => setPreviewZoom((z) => Math.min(200, z + 10));
+  const zoomOut = () => setPreviewZoom((z) => Math.max(50,  z - 10));
 
   const router = useRouter();
   const pathname = usePathname();
@@ -414,7 +294,6 @@ function EditorContent() {
     setDraftSavedAt(new Date(payload.updatedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }));
   };
 
-  const [sideBarHOver, setsideBarHOver] = useState(false);
 
   // Keyboard undo / redo listener
   useEffect(() => {
@@ -564,20 +443,24 @@ function EditorContent() {
         onChangeTemplate={() => setShowTemplateSwitcher(true)}
         selectedTemplate={selectedTemplate}
         isExportingPdf={isExportingPdf}
-        resumeData={resumeData}
+        currentSection={section.label}
+        onToggleSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)}
       />
-      <main className="min-h-screen bg-slate-100 pt-14">
-        <div className="flex">
+      <main className="min-h-screen bg-slate-100 pt-14 overflow-x-hidden">
+        <div className="flex flex-col lg:flex-row">
+          
+          {/* Mobile Overlay */}
           <div
-            className={`fixed left-0 top-0 z-20 h-screen w-full bg-black/60 pt-14 transition-all duration-300 ${
-              sideBarHOver ? "block" : "hidden"
+            className={`fixed inset-0 z-20 bg-slate-900/40 backdrop-blur-sm transition-opacity md:hidden ${
+              mobileSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
+            onClick={() => setMobileSidebarOpen(false)}
           />
 
           <aside
             onMouseEnter={() => setsideBarHOver(true)}
             onMouseLeave={() => setsideBarHOver(false)}
-            className="editor-sidebar group hover:w-55 fixed transition-[all_1s] h-[calc(100vh-3.5rem)] top-14 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-blue-100 p-2 md:flex overflow-y-auto"
+            className="editor-sidebar group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-blue-100 p-2 md:flex overflow-y-auto"
           >
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
               <div className="flex justify-center group-hover:hidden">
@@ -654,7 +537,7 @@ function EditorContent() {
                 className="flex items-center gap-2 hover:cursor-pointer w-full rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-600"
               >
                 <span className="text-lg text-center font-bold">
-                  <VscSaveAs />
+                  <HiOutlineSave className="h-4 w-4" />
                 </span>
                 <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:w-auto group-hover:opacity-100">
                   Save draft
@@ -663,16 +546,15 @@ function EditorContent() {
             </div>
           </aside>
 
-          <div className="w-full md:ml-16 lg:flex">
-            {/* Form Section Sidebar / Drawer */}
-            <section className="editor-panel  bg-slate-100 min-w-0 w-full p-4 sm:p-6 lg:w-[48%] lg:pb-12">
+          <div className="w-full md:ml-[72px] lg:flex lg:h-[calc(100vh-3.5rem)] flex-col lg:flex-row">
+            {/* Form Section */}
+            <section className="editor-panel bg-slate-100 min-w-0 w-full p-4 sm:p-6 lg:w-[48%] lg:h-full lg:overflow-y-auto lg:pb-12">
               <div className="mx-auto max-w-xl space-y-4">
-                <AtsScoreMeter resumeData={resumeData} selectedRole={searchParams.get("role")} />
                 
-                <div className="mb-6 border-b border-slate-200 pb-4">
+                <div className="mb-2 border-b border-slate-200 pb-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-700">{selectedName}</p>
+                      
                       <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
                         {section.label}
                       </h1>
@@ -816,82 +698,157 @@ function EditorContent() {
             {/* Live Interactive Resume Preview */}
             <section
               aria-label="Live resume preview"
-              className="editor-preview relative flex min-w-0 w-full flex-col border-t border-slate-100 bg-slate-100 lg:sticky lg:top-14 lg:h-[calc(100vh-3.5rem)] lg:w-[52%] lg:border-l lg:border-t-0"
+              className="editor-preview relative flex min-w-0 w-full flex-col border-t border-slate-200 bg-slate-200/60 h-[800px] lg:h-full lg:w-[52%] lg:border-l lg:border-t-0"
             >
-              {/* Scrollable preview area */}
-              <div className="flex-1 overflow-y-auto pb-16 px-3 pt-6 sm:px-6">
-                {/* Live Preview label */}
-                <p className="mb-3 text-center text-[10px] font-bold uppercase tracking-widest text-slate-400">Live Preview</p>
+              {/* ── Top Toolbar ── */}
+              <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-2.5">
+                {/* Left: Live Preview indicator */}
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Live Preview</span>
+                </div>
 
-                <div className="flex justify-center">
-                  <div ref={previewRef} className="resume-preview-document bg-white">
-                    <SelectedResume
-                      data={resumeData}
-                      theme={{
-                        accent: themeAccent,
-                        fontFamily: themeFont,
-                      }}
-                    />
+                {/* Center: Device Toggle */}
+                <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-0.5">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDevice("desktop")}
+                    title="Desktop view"
+                    className={`flex h-7 w-8 items-center justify-center rounded-lg text-sm transition ${
+                      previewDevice === "desktop"
+                        ? "bg-white text-slate-800 shadow-sm"
+                        : "text-slate-400 hover:text-slate-600"
+                    }`}
+                  >
+                    <MdMonitor className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDevice("mobile")}
+                    title="Mobile view"
+                    className={`flex h-7 w-8 items-center justify-center rounded-lg text-sm transition ${
+                      previewDevice === "mobile"
+                        ? "bg-white text-slate-800 shadow-sm"
+                        : "text-slate-400 hover:text-slate-600"
+                    }`}
+                  >
+                    <MdPhoneIphone className="h-4 w-4" />
+                  </button>
+                </div>
+
+                {/* Right: Zoom Controls */}
+                <div className="flex items-center gap-0 rounded-xl border border-slate-200 bg-slate-50">
+                  <button
+                    type="button"
+                    onClick={zoomOut}
+                    disabled={previewZoom <= 50}
+                    title="Zoom out"
+                    className="flex h-8 w-8 items-center justify-center rounded-l-xl text-base font-bold text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 disabled:opacity-30"
+                  >
+                    &#8722;
+                  </button>
+                  <span className="min-w-[3rem] text-center text-[11px] font-bold text-slate-700 select-none">
+                    {previewZoom}%
+                  </span>
+                  <button
+                    type="button"
+                    onClick={zoomIn}
+                    disabled={previewZoom >= 200}
+                    title="Zoom in"
+                    className="flex h-8 w-8 items-center justify-center rounded-r-xl text-base font-bold text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 disabled:opacity-30"
+                  >
+                    &#43;
+                  </button>
+                </div>
+              </div>
+
+              {/* Scrollable preview area */}
+              <div className="flex-1 overflow-y-auto pb-16 px-3 pt-5 sm:px-6">
+                <div className={`flex justify-center ${previewDevice === "mobile" ? "items-start" : ""}`}>
+                  <div
+                    className={`transition-all duration-200 ${
+                      previewDevice === "mobile"
+                        ? "w-[375px] rounded-[2.5rem] border-[6px] border-slate-700 shadow-2xl overflow-hidden"
+                        : ""
+                    }`}
+                    style={{
+                      transform: `scale(${previewZoom / 100})`,
+                      transformOrigin: "top center",
+                      marginBottom: `${-(100 - previewZoom)}%`,
+                    }}
+                  >
+                    <div ref={previewRef} className="resume-preview-document bg-white">
+                      <SelectedResume
+                        data={resumeData}
+                        theme={{ accent: themeAccent, fontFamily: themeFont }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* ── Fixed Bottom Theme Bar ── */}
-              <div className="absolute bottom-0 left-0 right-0 z-10 flex items-center justify-between gap-2 border-t border-slate-200 bg-white/95 px-3 py-2.5 backdrop-blur-md sm:px-4">
-                {/* Change Template */}
-                <button
-                  type="button"
-                  onClick={() => setShowTemplateSwitcher(true)}
-                  className="flex shrink-0 items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 active:scale-95"
-                >
-                  <MdGridView className="h-3.5 w-3.5" />
-                  <span>Change Template</span>
-                </button>
-
-                {/* Color Presets */}
-                <div className="flex items-center gap-1.5 overflow-x-auto">
-                  {accentPresets.map((preset) => (
-                    <button
-                      key={preset.value}
-                      type="button"
-                      onClick={() => setThemeAccent(preset.value)}
-                      className={`h-6 w-6 shrink-0 rounded-full border-2 transition-all cursor-pointer ${
-                        themeAccent === preset.value
-                          ? "border-slate-900 scale-125 shadow-md"
-                          : "border-transparent hover:border-slate-400 hover:scale-110"
-                      }`}
-                      style={{ backgroundColor: preset.value }}
-                      aria-label={`Use ${preset.label} accent`}
-                    />
-                  ))}
-                  {/* Add custom color */}
-                  <label
-                    className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 border-dashed border-slate-300 text-slate-400 hover:border-slate-500 transition"
-                    title="Custom color"
+              <div className="absolute bottom-0 left-0 right-0 z-10 flex items-center justify-center gap-4 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur-md">
+                
+                {/* Left: Template & Actions */}
+                <div className="flex   md:hidden  items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowTemplateSwitcher(true)}
+                    className="flex shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-slate-700 active:scale-95"
                   >
-                    <span className="text-xs font-bold leading-none">+</span>
-                    <input
-                      type="color"
-                      value={themeAccent}
-                      onChange={(e) => setThemeAccent(e.target.value)}
-                      className="sr-only"
-                    />
-                  </label>
+                    <MdGridView className="h-4 w-4 text-emerald-400" />
+                    <span className="hidden sm:inline">Template</span>
+                  </button>
+
+                  <div className="h-5 w-px bg-slate-200 mx-1 hidden sm:block" />
+
+                  
                 </div>
 
-                {/* Font Selector */}
-                <label className="flex shrink-0 items-center gap-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Aa</span>
-                  <select
-                    value={themeFont}
-                    onChange={(e) => setThemeFont(e.target.value)}
-                    className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5 text-xs font-semibold text-slate-800 outline-none focus:border-emerald-500 cursor-pointer"
-                  >
-                    {fontOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                {/* Right: Theme Controls */}
+                <div className="flex items-center gap-4">
+                  {/* Color Presets */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                    {accentPresets.map((preset) => (
+                      <button
+                        key={preset.value}
+                        type="button"
+                        onClick={() => setThemeAccent(preset.value)}
+                        className={`h-5 w-5 shrink-0 rounded-full transition-all cursor-pointer ${
+                          themeAccent === preset.value
+                            ? "ring-2 ring-slate-900 ring-offset-1 scale-110 shadow-sm"
+                            : "hover:scale-110"
+                        }`}
+                        style={{ backgroundColor: preset.value }}
+                        aria-label={`Use ${preset.label} accent`}
+                      />
                     ))}
-                  </select>
-                </label>
+                    <label className="flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full border border-dashed border-slate-300 text-slate-400 hover:border-slate-500 transition">
+                      <span className="text-[10px] font-bold leading-none">+</span>
+                      <input type="color" value={themeAccent} onChange={(e) => setThemeAccent(e.target.value)} className="sr-only" />
+                    </label>
+                  </div>
+
+                  <div className="h-5 w-px bg-slate-200" />
+
+                  {/* Font Selector */}
+                  <label className="flex shrink-0 items-center gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 hidden sm:inline">Font</span>
+                    <select
+                      value={themeFont}
+                      onChange={(e) => setThemeFont(e.target.value)}
+                      className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-semibold text-slate-800 outline-none focus:border-emerald-500 cursor-pointer hover:bg-white transition"
+                    >
+                      {fontOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
               </div>
 
               {/* Template Switcher Drawer */}
@@ -912,13 +869,13 @@ function EditorContent() {
 
 function Field({ label, value, onChange, type = "text", textarea = false, placeholder = "" }) {
   const className =
-    "w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white";
+    "w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-[13px] font-medium text-slate-900 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 hover:border-slate-300";
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">{label}</span>
+      <span className="mb-2 block text-[11px] font-bold tracking-wide text-slate-600">{label}</span>
       {textarea ? (
         <textarea
-          className={`${className} min-h-20 resize-y`}
+          className={`${className} min-h-24 resize-y leading-relaxed`}
           value={value || ""}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
@@ -936,8 +893,15 @@ function Field({ label, value, onChange, type = "text", textarea = false, placeh
   );
 }
 
-function FormCard({ children }) {
-  return <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">{children}</div>;
+function FormCard({ children, index = 0 }) {
+  return (
+    <div 
+      className="animate-slide-up rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] sm:p-6 transition-all hover:shadow-[0_6px_24px_rgba(0,0,0,0.06)] opacity-0 translate-y-4"
+      style={{ animationDelay: `${index * 50}ms` }}
+    >
+      {children}
+    </div>
+  );
 }
 
 const PHOTO_ENABLED_TEMPLATES = ["resume1", "resume3", "resume11", "resume13"];
@@ -1030,7 +994,7 @@ function ExperienceForm({ experiences, update, add, remove }) {
   return (
     <div className="space-y-4">
       {experiences.map((experience, index) => (
-        <FormCard key={experience.id}>
+        <FormCard key={experience.id} index={index}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-bold text-slate-900">Role {index + 1}</p>
             <button
@@ -1092,7 +1056,7 @@ function EducationForm({ education, update, add, remove }) {
   return (
     <div className="space-y-4">
       {education.map((entry, index) => (
-        <FormCard key={entry.id}>
+        <FormCard key={entry.id} index={index}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-bold text-slate-900">Education {index + 1}</p>
             <button
@@ -1193,7 +1157,7 @@ function ToolsForm({ tools, update, add, remove }) {
   return (
     <div className="space-y-4">
       {tools.map((tool, index) => (
-        <FormCard key={tool.id || index}>
+        <FormCard key={tool.id || index} index={index}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-bold text-slate-900">Tool {index + 1}</p>
             <button
@@ -1254,7 +1218,7 @@ function CertificationsForm({ certifications, update, add, remove }) {
   return (
     <div className="space-y-4">
       {certifications.map((cert, index) => (
-        <FormCard key={cert.id}>
+        <FormCard key={cert.id} index={index}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-bold text-slate-900">Certification {index + 1}</p>
             <button
@@ -1293,7 +1257,7 @@ function LanguagesForm({ languages, update, add, remove }) {
   return (
     <div className="space-y-4">
       {languages.map((lang, index) => (
-        <FormCard key={lang.id}>
+        <FormCard key={lang.id} index={index}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-bold text-slate-900">Language {index + 1}</p>
             <button
@@ -1340,7 +1304,7 @@ function AwardsForm({ awards, update, add, remove }) {
   return (
     <div className="space-y-4">
       {awards.map((award, index) => (
-        <FormCard key={award.id}>
+        <FormCard key={award.id} index={index}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-bold text-slate-900">Award / Achievement {index + 1}</p>
             <button
@@ -1378,7 +1342,7 @@ function ProjectsForm({ projects, update, add, remove }) {
   return (
     <div className="space-y-4">
       {projects.map((proj, index) => (
-        <FormCard key={proj.id}>
+        <FormCard key={proj.id} index={index}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-bold text-slate-900">Project {index + 1}</p>
             <button
@@ -1422,7 +1386,7 @@ function PortfolioForm({ portfolio, update, add, remove }) {
   return (
     <div className="space-y-4">
       {portfolio.map((link, index) => (
-        <FormCard key={link.id}>
+        <FormCard key={link.id} index={index}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-bold text-slate-900">Social Link {index + 1}</p>
             <button
@@ -1455,83 +1419,11 @@ function PortfolioForm({ portfolio, update, add, remove }) {
   );
 }
 
-function ThemeControls({
-  accent,
-  setAccent,
-  font,
-  setFont,
-  accentPresets,
-  fontOptions,
-  undo,
-  redo,
-  canUndo,
-  canRedo,
-}) {
-  return (
-    <section className="mb-3 flex flex-wrap items-center justify-between gap-2.5 rounded-b-2xl border -mt-6 border-slate-200 bg-white px-3 py-3 shadow-sm max-w-full overflow-hidden">
-      <div className="flex items-center gap-1 shrink-0">
-        <button
-          type="button"
-          onClick={undo}
-          disabled={!canUndo}
-          title="Undo (Ctrl+Z)"
-          className="rounded-lg border border-slate-200 p-2 text-slate-700 hover:bg-slate-100 transition disabled:opacity-30 disabled:hover:bg-transparent"
-        >
-          <MdUndo className="text-base" />
-        </button>
-        <button
-          type="button"
-          onClick={redo}
-          disabled={!canRedo}
-          title="Redo (Ctrl+Y)"
-          className="rounded-lg border border-slate-200 p-2 text-slate-700 hover:bg-slate-100 transition disabled:opacity-30 disabled:hover:bg-transparent"
-        >
-          <MdRedo className="text-base" />
-        </button>
-      </div>
-
-      <div className="hidden sm:block h-8 w-px bg-slate-200 shrink-0" />
-
-      <div className="flex items-center gap-2 min-w-0 max-w-full overflow-x-auto py-1 scrollbar-thin">
-        <span className="text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.18em] text-slate-500 shrink-0">Color</span>
-        <div className="flex xl:gap-1.5 gap-1 shrink-0">
-          {accentPresets.map((preset) => (
-            <button
-              key={preset.value}
-              type="button"
-              onClick={() => setAccent(preset.value)}
-              className={`h-6 w-6 rounded-full border-2 transition cursor-pointer shrink-0 ${
-                accent === preset.value ? "border-slate-900 scale-110 shadow-sm" : "border-slate-200"
-              }`}
-              style={{ backgroundColor: preset.value }}
-              aria-label={`Use ${preset.label} accent`}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="hidden sm:block h-8 w-px bg-slate-200 shrink-0" />
-
-      <label className="flex items-center gap-2 shrink-0">
-        <span className="text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.18em] text-slate-500">Font</span>
-        <select
-          value={font}
-          onChange={(event) => setFont(event.target.value)}
-          className="min-w-0 text-slate-900 font-medium cursor-pointer rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs outline-none focus:border-emerald-500"
-        >
-          {fontOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
-    </section>
-  );
-}
 
 // ── Template Switcher Drawer ────────────────────────────────────────────────
 function TemplateSwitcher({ current, onSelect, onClose }) {
+  const [searchTerm, setSearchTerm] = useState("");
+
   // Close on Escape key
   useEffect(() => {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -1540,123 +1432,109 @@ function TemplateSwitcher({ current, onSelect, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+    <div className="fixed inset-0 z-[100] flex justify-end">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      {/* Drawer */}
+      {/* Right Slide-over Panel */}
       <div
-        className="template-switcher-drawer relative z-10 w-full max-w-3xl flex flex-col rounded-t-3xl sm:rounded-3xl bg-white shadow-2xl overflow-hidden"
-        style={{ maxHeight: "85vh" }}
+        className="relative z-10 w-full max-w-md h-full bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out"
       >
+        
         {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid #f1f5f9", flexShrink: 0 }}>
+        <div className="flex shrink-0 items-center justify-between border-b border-slate-100 px-6 py-5">
           <div>
-            <h2 style={{ fontSize: "18px", fontWeight: 900, color: "#0f172a", margin: 0 }}>🎨 Choose Template</h2>
-            <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>20 professional designs — switch anytime</p>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">Templates</h2>
+            <p className="text-xs font-medium text-slate-500 mt-1">Select from 20 premium layouts</p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            style={{ padding: "8px", borderRadius: "10px", border: "none", background: "transparent", cursor: "pointer", color: "#64748b", display: "flex", alignItems: "center" }}
-            aria-label="Close"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition"
           >
-            <MdClose style={{ fontSize: "22px" }} />
+            <MdClose size={18} />
           </button>
         </div>
 
-        {/* Template Grid — scrollable */}
-        <div style={{ overflowY: "auto", padding: "20px 24px", display: "flex", flexDirection: "column", gap: "28px" }}>
-          {TEMPLATE_CATEGORIES.map((category) => (
-            <div key={category.label}>
-              {/* Category label */}
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-                <span style={{ ...category.badgeStyle, padding: "3px 12px", borderRadius: "999px", fontSize: "10px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", flexShrink: 0 }}>
-                  {category.label}
-                </span>
-                <div style={{ flex: 1, height: "1px", background: "#f1f5f9" }} />
-              </div>
+        {/* Search */}
+        <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+          <input 
+            type="text" 
+            placeholder="Search templates (e.g. Modern, Canvas)..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-800 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-slate-400"
+          />
+        </div>
 
-              {/* Templates grid */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
-                {category.templates.map((tpl) => {
-                  const isActive = current === tpl.id;
-                  return (
-                    <button
-                      key={tpl.id}
-                      type="button"
-                      onClick={() => onSelect(tpl.id)}
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: "8px",
-                        borderRadius: "16px",
-                        border: isActive ? `2px solid ${category.accentColor}` : "2px solid #e2e8f0",
-                        padding: "12px 8px",
-                        background: isActive ? "#f8fafc" : "#ffffff",
-                        cursor: "pointer",
-                        boxShadow: isActive ? "0 4px 12px rgba(0,0,0,0.10)" : "none",
-                        transform: isActive ? "scale(1.04)" : "scale(1)",
-                        transition: "all 0.15s ease",
-                      }}
-                    >
-                      {/* Mini resume mockup */}
-                      <div style={{ width: "100%", aspectRatio: "3/4", borderRadius: "8px", background: "linear-gradient(135deg, #f1f5f9, #e2e8f0)", overflow: "hidden", position: "relative", display: "flex", flexDirection: "column", padding: "8px", gap: "4px" }}>
-                        {/* Emoji icon centered */}
-                        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "24px" }}>
-                          {tpl.icon}
-                        </div>
-                        {/* Mini lines at bottom */}
-                        <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                          <div style={{ height: "3px", borderRadius: "4px", background: isActive ? category.accentColor : "#cbd5e1", width: "80%", opacity: 0.8 }} />
-                          <div style={{ height: "2px", borderRadius: "4px", background: "#cbd5e1", width: "60%" }} />
-                          <div style={{ height: "2px", borderRadius: "4px", background: "#cbd5e1", width: "70%" }} />
-                        </div>
-                        {/* Active checkmark overlay */}
-                        {isActive && (
-                          <div style={{ position: "absolute", top: "6px", right: "6px" }}>
-                            <MdCheckCircle style={{ fontSize: "18px", color: "#059669", filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.2))" }} />
+        {/* Template Grid */}
+        <div className="flex-1 overflow-y-auto px-6 py-6 custom-scrollbar">
+          <div className="flex flex-col gap-8">
+            {TEMPLATE_CATEGORIES.map((category) => {
+              const filteredTemplates = category.templates.filter(t => 
+                t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                category.label.toLowerCase().includes(searchTerm.toLowerCase())
+              );
+
+              if (filteredTemplates.length === 0) return null;
+
+              return (
+                <div key={category.label}>
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: category.accentColor }}>
+                      {category.label}
+                    </span>
+                    <div className="h-px flex-1 bg-slate-100" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    {filteredTemplates.map((tpl) => {
+                      const isActive = current === tpl.id;
+                      return (
+                        <button
+                          key={tpl.id}
+                          type="button"
+                          onClick={() => { onSelect(tpl.id); onClose(); }}
+                          className={`group flex flex-col items-center gap-3 rounded-2xl border-2 p-3 transition-all hover:scale-[1.02] ${
+                            isActive
+                              ? `bg-slate-50 shadow-md`
+                              : "border-slate-100 bg-white hover:border-slate-200 hover:shadow-lg hover:shadow-slate-200/50"
+                          }`}
+                          style={{ borderColor: isActive ? category.accentColor : undefined }}
+                        >
+                          {/* Mini resume mockup */}
+                          <div className="relative flex aspect-[3/4] w-full flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 p-3 shadow-inner">
+                            <span className="text-3xl drop-shadow-sm group-hover:scale-110 transition-transform duration-300">{tpl.icon}</span>
+                            
+                            <div className="mt-4 flex w-full flex-col gap-1.5 opacity-60">
+                              <div className="h-1.5 w-3/4 rounded-full" style={{ backgroundColor: isActive ? category.accentColor : "#94a3b8" }} />
+                              <div className="h-1 w-1/2 rounded-full bg-slate-400" />
+                              <div className="h-1 w-2/3 rounded-full bg-slate-400" />
+                            </div>
+
+                            {isActive && (
+                              <div className="absolute right-2 top-2 rounded-full bg-white p-0.5 shadow-sm">
+                                <MdCheckCircle size={18} color={category.accentColor} />
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
 
-                      {/* Name */}
-                      <span style={{ fontSize: "11px", fontWeight: 700, color: isActive ? "#0f172a" : "#475569", textAlign: "center", lineHeight: 1.2 }}>
-                        {tpl.name}
-                      </span>
-
-                      {isActive && (
-                        <span style={{ fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#059669" }}>
-                          Active
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Footer */}
-        <div style={{ flexShrink: 0, padding: "16px 24px", borderTop: "1px solid #f1f5f9", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <p style={{ fontSize: "12px", color: "#64748b", margin: 0 }}>
-            Current:{" "}
-            <span style={{ fontWeight: 700, color: "#0f172a" }}>
-              {TEMPLATE_CATEGORIES.flatMap(c => c.templates).find(t => t.id === current)?.name || current}
-            </span>
-          </p>
-          <button
-            type="button"
-            onClick={onClose}
-            style={{ borderRadius: "10px", background: "#0f172a", padding: "8px 20px", fontSize: "12px", fontWeight: 700, color: "#ffffff", border: "none", cursor: "pointer" }}
-          >
-            Done
-          </button>
+                          <div className="flex flex-col items-center gap-0.5">
+                            <span className={`text-sm font-bold ${isActive ? "text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>
+                              {tpl.name}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  HiShare, 
   HiMenu,
   HiX,
   HiChevronDown,
@@ -11,6 +12,7 @@ import {
   HiDocumentText,
   HiTemplate,
   HiLightningBolt,
+   
   HiClipboardCheck,
   HiBookOpen,
   HiGlobe,
@@ -29,7 +31,8 @@ import {
   HiViewGrid,
   HiEye,
 } from "react-icons/hi";
-
+import { MdRedo, MdUndo ,MdGridView, } from "react-icons/md";
+import { IoMdDownload } from "react-icons/io";
 /* ──────────────────────────────────────────────
    Navigation data structure
    ────────────────────────────────────────────── */
@@ -262,8 +265,9 @@ function MobileAccordion({ item, pathname, onNavigate }) {
    Main Header Component
    ────────────────────────────────────────────── */
 
-export default function Header() {
+export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handleShare,shareTooltip,selectedTemplate}) {
   const pathname = usePathname();
+  const isEditorRoute = ["/builder", "/editor"].includes(pathname.toLowerCase()) || pathname.toLowerCase().startsWith("/builder/") || pathname.toLowerCase().startsWith("/editor/");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
@@ -387,16 +391,79 @@ export default function Header() {
 
           {/* ── Right Section: CTA + Mobile Toggle ── */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <Link
-              href="/builder"
-              className={`rounded-xl bg-slate-900 font-bold text-white shadow-sm transition-all hover:bg-slate-800 active:scale-[0.97] ${
-                scrolled
-                  ? "px-4 py-1.5 text-xs sm:px-5 sm:text-sm"
-                  : "px-4 py-2 text-xs sm:px-5 sm:text-sm"
-              }`}
-            >
-              Build Resume Free
-            </Link>
+            {!isEditorRoute ? (
+              <Link
+                href="/builder"
+                className={`rounded-xl bg-slate-900 font-bold text-white shadow-sm transition-all hover:bg-slate-800 active:scale-[0.97] ${
+                  scrolled
+                    ? "px-4 py-1.5 text-xs sm:px-5 sm:text-sm"
+                    : "px-4 py-2 text-xs sm:px-5 sm:text-sm"
+                }`}
+              >
+                Build Resume Free
+              </Link>
+            ):<div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+        {/* Undo / Redo */}
+        <div className="flex items-center rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+          <button
+            type="button"
+            onClick={undo}
+            disabled={!canUndo}
+            title="Undo (Ctrl+Z)"
+            className="flex h-8 w-8 items-center justify-center text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition disabled:opacity-30 active:bg-slate-100"
+          >
+            <MdUndo className="h-4 w-4" />
+          </button>
+          <div className="h-4 w-px bg-slate-200" />
+          <button
+            type="button"
+            onClick={redo}
+            disabled={!canRedo}
+            title="Redo (Ctrl+Y)"
+            className="flex h-8 w-8 items-center justify-center text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition disabled:opacity-30 active:bg-slate-100"
+          >
+            <MdRedo className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Change Template */}
+        <button
+          type="button"
+          onClick={() => onChangeTemplate()}
+          className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition active:scale-95"
+          title="Change Template"
+        >
+          <MdGridView className="h-4 w-4 text-emerald-600" />
+          <span className="hidden sm:inline">Template</span>
+        </button>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={handleShare}
+            className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:flex"
+            title="Share"
+          >
+            <HiShare className="h-3.5 w-3.5" />
+            <span className="md:hidden inline ">Share</span>
+          </button>
+          {shareTooltip && (
+            <div className="absolute right-0 top-full mt-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-[11px] font-semibold text-white shadow-lg whitespace-nowrap">
+              Link copied!
+            </div>
+          )}
+        </div>
+
+        {/* Export PDF */}
+        <Link
+          href={`/export?template=${selectedTemplate}`}
+          className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition hover:shadow-md active:scale-95"
+        >
+          <IoMdDownload className="h-4 w-4" />
+          <span className="hidden  md:inline">Export PDF</span>
+        </Link>
+      </div>
+          
+          }
 
             <button
               type="button"
@@ -485,18 +552,20 @@ export default function Header() {
         </div>
 
         {/* Sticky CTA at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 border-t border-slate-200 bg-white p-4">
-          <Link
-            href="/builder"
-            onClick={closeMobile}
-            className="block w-full rounded-xl bg-slate-900 px-6 py-3.5 text-center text-base font-bold text-white shadow-md transition-all hover:bg-slate-800 active:scale-[0.98]"
-          >
-            Build Resume Free →
-          </Link>
-          <p className="mt-2 text-center text-xs text-slate-500">
-            🔒 100% Free · No Credit Card · Client-Side Privacy
-          </p>
-        </div>
+        {!isEditorRoute && (
+          <div className="absolute bottom-0 left-0 right-0 border-t border-slate-200 bg-white p-4">
+            <Link
+              href="/builder"
+              onClick={closeMobile}
+              className="block w-full rounded-xl bg-slate-900 px-6 py-3.5 text-center text-base font-bold text-white shadow-md transition-all hover:bg-slate-800 active:scale-[0.98]"
+            >
+              Build Resume Free →
+            </Link>
+            <p className="mt-2 text-center text-xs text-slate-500">
+              🔒 100% Free · No Credit Card · Client-Side Privacy
+            </p>
+          </div>
+        )}
       </div>
     </>
   );
