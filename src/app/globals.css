@@ -263,3 +263,17 @@ body {
   }
 }
 
+/* Editor Preview — smooth thin scrollbar */
+.editor-preview > div:first-child::-webkit-scrollbar {
+  width: 5px;
+}
+.editor-preview > div:first-child::-webkit-scrollbar-track {
+  background: transparent;
+}
+.editor-preview > div:first-child::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 99px;
+}
+.editor-preview > div:first-child::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

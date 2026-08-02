@@ -2,7 +2,6 @@
 
 import { Suspense, useEffect, useRef, useState, useCallback } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import Header from "../Component/Header";
 import AtsScoreMeter from "../Component/SEO/AtsScoreMeter";
 
 import Resume1 from "../tempelate/EachResume/Resume1";
@@ -30,8 +29,177 @@ import { IoMdDownload } from "react-icons/io";
 import { VscSaveAs } from "react-icons/vsc";
 import { MdUndo, MdRedo } from "react-icons/md";
 import { MdGridView, MdClose, MdCheckCircle } from "react-icons/md";
+import { HiChevronDown, HiEye, HiShare, HiTemplate } from "react-icons/hi";
 import Link from "next/link";
 import { useResume } from "../context/ResumeContext";
+
+/* ──────────────────────────────────────────────
+   Editor-Specific Top Bar Header
+   ────────────────────────────────────────────── */
+function EditorHeader({
+  selectedName,
+  draftStatus,
+  draftSavedAt,
+  undo,
+  redo,
+  canUndo,
+  canRedo,
+  onChangeTemplate,
+  selectedTemplate,
+  isExportingPdf,
+  resumeData,
+}) {
+  const [titleDropdownOpen, setTitleDropdownOpen] = useState(false);
+  const [shareTooltip, setShareTooltip] = useState(false);
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({ title: `${selectedName} Resume`, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      setShareTooltip(true);
+      setTimeout(() => setShareTooltip(false), 2000);
+    }
+  };
+
+  const displayTitle = resumeData?.contact?.name
+    ? resumeData.contact.name
+    : selectedName;
+
+  return (
+    <header
+      className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between gap-2 border-b border-slate-200 bg-white/95 px-3 shadow-sm backdrop-blur-md sm:gap-4 sm:px-5"
+    >
+      {/* ── Left: Logo ── */}
+      <div className="flex shrink-0 items-center gap-3">
+        <Link
+          href="/"
+          className="text-base font-extrabold text-slate-900 sm:text-lg"
+          aria-label="EasyResume Home"
+        >
+          Easy<span className="text-sky-600">Resume</span>
+        </Link>
+
+        {/* Divider */}
+        <div className="hidden h-5 w-px bg-slate-200 sm:block" />
+
+        {/* ── Resume Title*/}
+        <div className="relative hidden sm:block">
+          <button
+            type="button"
+            onClick={() => setTitleDropdownOpen((v) => !v)}
+            className=" rounded-lg px-2 py-1  text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
+          >
+            <span className=" max-w-[160px] leading-0.5 truncate">{displayTitle}</span>
+<p className="mt-2 text-xs font-medium leading-0.5 text-emerald-700">
+                        {draftStatus}
+                        {draftSavedAt ? ` • ${draftSavedAt}` : ""}
+                      </p>
+          </button>
+
+        
+        </div>
+      </div>
+
+      {/* ── Center: Draft Save Status ── */}
+      <div className="hidden flex-1 items-center justify-center gap-1 sm:flex">
+        <span className="text-xs text-slate-400">
+          {draftStatus}
+          {draftSavedAt ? (
+            <span className="ml-1 text-slate-300">• {draftSavedAt}</span>
+          ) : null}
+        </span>
+      </div>
+
+      {/* ── Right: Action Buttons ── */}
+      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+        {/* Undo / Redo */}
+        <div className="flex items-center rounded-lg border border-slate-200 bg-slate-50">
+          <button
+            type="button"
+            onClick={undo}
+            disabled={!canUndo}
+            title="Undo (Ctrl+Z)"
+            className="flex h-8 w-8 items-center justify-center rounded-l-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 disabled:opacity-30"
+          >
+            <MdUndo className="h-4 w-4" />
+          </button>
+          <div className="h-4 w-px bg-slate-200" />
+          <button
+            type="button"
+            onClick={redo}
+            disabled={!canRedo}
+            title="Redo (Ctrl+Y)"
+            className="flex h-8 w-8 items-center justify-center rounded-r-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 disabled:opacity-30"
+          >
+            <MdRedo className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Change Template */}
+        <button
+          type="button"
+          onClick={onChangeTemplate}
+          className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:flex"
+          title="Change Template"
+        >
+          <MdGridView className="h-3.5 w-3.5" />
+          <span className="hidden md:inline">Template</span>
+        </button>
+
+        {/* Preview */}
+        <Link
+          href={`/export?template=${selectedTemplate}`}
+          className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:flex"
+          title="Preview Resume"
+        >
+          <HiEye className="h-3.5 w-3.5" />
+          <span className="hidden md:inline">Preview</span>
+        </Link>
+
+        {/* Share */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={handleShare}
+            className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:flex"
+            title="Share"
+          >
+            <HiShare className="h-3.5 w-3.5" />
+            <span className="hidden md:inline">Share</span>
+          </button>
+          {shareTooltip && (
+            <div className="absolute right-0 top-full mt-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-[11px] font-semibold text-white shadow-lg whitespace-nowrap">
+              Link copied!
+            </div>
+          )}
+        </div>
+
+<button
+                        type="button"
+                        onClick={() => onChangeTemplate()}
+                        className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-all"
+                      >
+                        <MdGridView className="text-base" />
+                        Change Template
+                      </button>
+        {/* Export PDF */}
+        <Link
+          href={`/export?template=${selectedTemplate}`}
+          className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-slate-700 active:scale-95"
+        >
+          <IoMdDownload className="h-3.5 w-3.5" />
+          <span>Export PDF</span>
+        </Link>
+
+        {/* User Avatar placeholder */}
+        <div className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 text-xs font-bold text-white shadow sm:flex">
+          {(resumeData?.contact?.name?.[0] || "U").toUpperCase()}
+        </div>
+      </div>
+    </header>
+  );
+}
 
 // ── Template catalogue ─────────────────────────────────────────────────────
 const TEMPLATE_CATEGORIES = [
@@ -96,8 +264,14 @@ export default function Editor() {
 function EditorLoading() {
   return (
     <>
-      <Header />
-      <main className="min-h-screen bg-slate-100 pt-16" />
+      {/* Simple loading header */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between border-b border-slate-200 bg-white/95 px-5 shadow-sm backdrop-blur-md">
+        <span className="text-base font-extrabold text-slate-900">
+          Easy<span className="text-sky-600">Resume</span>
+        </span>
+        <div className="h-8 w-28 animate-pulse rounded-lg bg-slate-100" />
+      </header>
+      <main className="min-h-screen bg-slate-100 pt-14" />
     </>
   );
 }
@@ -292,7 +466,7 @@ function EditorContent() {
 
     setIsExportingPdf(true);
     const el = previewRef.current;
-    const controls = document.querySelector(".theme-controls");
+    const controls = document.querySelector(".editor-preview .absolute.bottom-0");
     el.classList.add("export-mode");
 
     // Save current inline styles to restore later
@@ -379,11 +553,23 @@ function EditorContent() {
 
   return (
     <>
-      <Header />
-      <main className="min-h-screen bg-slate-100 pt-16">
+      <EditorHeader
+        selectedName={selectedName}
+        draftStatus={draftStatus}
+        draftSavedAt={draftSavedAt}
+        undo={undo}
+        redo={redo}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        onChangeTemplate={() => setShowTemplateSwitcher(true)}
+        selectedTemplate={selectedTemplate}
+        isExportingPdf={isExportingPdf}
+        resumeData={resumeData}
+      />
+      <main className="min-h-screen bg-slate-100 pt-14">
         <div className="flex">
           <div
-            className={`fixed left-0 top-0 z-20 h-screen w-full bg-black/60 pt-16 transition-all duration-300 ${
+            className={`fixed left-0 top-0 z-20 h-screen w-full bg-black/60 pt-14 transition-all duration-300 ${
               sideBarHOver ? "block" : "hidden"
             }`}
           />
@@ -391,7 +577,7 @@ function EditorContent() {
           <aside
             onMouseEnter={() => setsideBarHOver(true)}
             onMouseLeave={() => setsideBarHOver(false)}
-            className="editor-sidebar group hover:w-55 fixed transition-[all_1s] h-[90vh] inset-y-16 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-blue-100 p-2 md:flex overflow-y-auto"
+            className="editor-sidebar group hover:w-55 fixed transition-[all_1s] h-[calc(100vh-3.5rem)] top-14 left-0 z-30 hidden w-16 flex-col border-r border-slate-300 bg-blue-100 p-2 md:flex overflow-y-auto"
           >
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
               <div className="flex justify-center group-hover:hidden">
@@ -479,7 +665,7 @@ function EditorContent() {
 
           <div className="w-full md:ml-16 lg:flex">
             {/* Form Section Sidebar / Drawer */}
-            <section className="editor-panel bg-slate-100 min-w-0 w-full p-4 sm:p-6 lg:w-[48%] lg:pb-12">
+            <section className="editor-panel  bg-slate-100 min-w-0 w-full p-4 sm:p-6 lg:w-[48%] lg:pb-12">
               <div className="mx-auto max-w-xl space-y-4">
                 <AtsScoreMeter resumeData={resumeData} selectedRole={searchParams.get("role")} />
                 
@@ -490,28 +676,11 @@ function EditorContent() {
                       <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
                         {section.label}
                       </h1>
-                      <p className="mt-2 text-xs font-medium text-emerald-700">
-                        {draftStatus}
-                        {draftSavedAt ? ` • ${draftSavedAt}` : ""}
-                      </p>
+                      
                     </div>
                     <div className="flex flex-col gap-2 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => setShowTemplateSwitcher(true)}
-                        className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-all"
-                      >
-                        <MdGridView className="text-base" />
-                        Change Template
-                      </button>
-                      <Link
-                        href={`/export?template=${selectedTemplate}`}
-                        disabled={isExportingPdf}
-                        className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:opacity-70 flex items-center gap-1.5"
-                      >
-                        <IoMdDownload />
-                        <span>Export PDF</span>
-                      </Link>
+                      
+                      
                     </div>
                   </div>
                 </div>
@@ -647,46 +816,82 @@ function EditorContent() {
             {/* Live Interactive Resume Preview */}
             <section
               aria-label="Live resume preview"
-              className="editor-preview flex min-w-0 w-full flex-col items-center border-t border-slate-100 bg-slate-100 px-3 py-6 sm:px-6 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:w-[52%] lg:border-l lg:border-t-0 lg:overflow-auto"
+              className="editor-preview relative flex min-w-0 w-full flex-col border-t border-slate-100 bg-slate-100 lg:sticky lg:top-14 lg:h-[calc(100vh-3.5rem)] lg:w-[52%] lg:border-l lg:border-t-0"
             >
-              <div className="mb-4 w-full max-w-2xl theme-controls">
-                <ThemeControls
-                  accent={themeAccent}
-                  setAccent={setThemeAccent}
-                  font={themeFont}
-                  setFont={setThemeFont}
-                  accentPresets={accentPresets}
-                  fontOptions={fontOptions}
-                  undo={undo}
-                  redo={redo}
-                  canUndo={canUndo}
-                  canRedo={canRedo}
-                />
+              {/* Scrollable preview area */}
+              <div className="flex-1 overflow-y-auto pb-16 px-3 pt-6 sm:px-6">
+                {/* Live Preview label */}
+                <p className="mb-3 text-center text-[10px] font-bold uppercase tracking-widest text-slate-400">Live Preview</p>
+
+                <div className="flex justify-center">
+                  <div ref={previewRef} className="resume-preview-document bg-white">
+                    <SelectedResume
+                      data={resumeData}
+                      theme={{
+                        accent: themeAccent,
+                        fontFamily: themeFont,
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
 
-              {/* Change Template Button */}
-              <div className="mb-3 w-full max-w-2xl flex items-center justify-between">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Live Preview</p>
+              {/* ── Fixed Bottom Theme Bar ── */}
+              <div className="absolute bottom-0 left-0 right-0 z-10 flex items-center justify-between gap-2 border-t border-slate-200 bg-white/95 px-3 py-2.5 backdrop-blur-md sm:px-4">
+                {/* Change Template */}
                 <button
                   type="button"
                   onClick={() => setShowTemplateSwitcher(true)}
-                  className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-all"
+                  className="flex shrink-0 items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 active:scale-95"
                 >
-                  <MdGridView className="text-base" />
-                  Change Template
+                  <MdGridView className="h-3.5 w-3.5" />
+                  <span>Change Template</span>
                 </button>
-              </div>
 
-              <div className="flex justify-center">
-                <div ref={previewRef} className="resume-preview-document bg-white">
-                  <SelectedResume
-                    data={resumeData}
-                    theme={{
-                      accent: themeAccent,
-                      fontFamily: themeFont,
-                    }}
-                  />
+                {/* Color Presets */}
+                <div className="flex items-center gap-1.5 overflow-x-auto">
+                  {accentPresets.map((preset) => (
+                    <button
+                      key={preset.value}
+                      type="button"
+                      onClick={() => setThemeAccent(preset.value)}
+                      className={`h-6 w-6 shrink-0 rounded-full border-2 transition-all cursor-pointer ${
+                        themeAccent === preset.value
+                          ? "border-slate-900 scale-125 shadow-md"
+                          : "border-transparent hover:border-slate-400 hover:scale-110"
+                      }`}
+                      style={{ backgroundColor: preset.value }}
+                      aria-label={`Use ${preset.label} accent`}
+                    />
+                  ))}
+                  {/* Add custom color */}
+                  <label
+                    className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 border-dashed border-slate-300 text-slate-400 hover:border-slate-500 transition"
+                    title="Custom color"
+                  >
+                    <span className="text-xs font-bold leading-none">+</span>
+                    <input
+                      type="color"
+                      value={themeAccent}
+                      onChange={(e) => setThemeAccent(e.target.value)}
+                      className="sr-only"
+                    />
+                  </label>
                 </div>
+
+                {/* Font Selector */}
+                <label className="flex shrink-0 items-center gap-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Aa</span>
+                  <select
+                    value={themeFont}
+                    onChange={(e) => setThemeFont(e.target.value)}
+                    className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5 text-xs font-semibold text-slate-800 outline-none focus:border-emerald-500 cursor-pointer"
+                  >
+                    {fontOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                </label>
               </div>
 
               {/* Template Switcher Drawer */}

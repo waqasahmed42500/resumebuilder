@@ -91,6 +91,8 @@ const navigation = [
    Desktop Dropdown Component
    ────────────────────────────────────────────── */
 
+
+
 function DesktopDropdown({ item, isOpen, onToggle, onClose, pathname }) {
   const dropdownRef = useRef(null);
 
@@ -343,6 +345,7 @@ export default function Header() {
           >
             Easy<span className="text-sky-600">Resume</span>
           </Link>
+
 
           {/* ── Desktop Navigation ── */}
           <div className="hidden items-center gap-0.5 lg:flex">
