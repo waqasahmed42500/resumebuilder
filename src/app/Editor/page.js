@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState, useCallback } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Header from "../Component/Header";
 import AtsScoreMeter from "../Component/SEO/AtsScoreMeter";
 
@@ -29,8 +29,61 @@ import Resume20 from "../tempelate/EachResume/Resume20";
 import { IoMdDownload } from "react-icons/io";
 import { VscSaveAs } from "react-icons/vsc";
 import { MdUndo, MdRedo } from "react-icons/md";
+import { MdGridView, MdClose, MdCheckCircle } from "react-icons/md";
 import Link from "next/link";
 import { useResume } from "../context/ResumeContext";
+
+// ── Template catalogue ─────────────────────────────────────────────────────
+const TEMPLATE_CATEGORIES = [
+  {
+    label: "Modern",
+    badgeStyle: { background: "#dbeafe", color: "#1e40af" },
+    accentColor: "#60a5fa",
+    templates: [
+      { id: "resume1",  name: "Nova",      icon: "🌟" },
+      { id: "resume2",  name: "Horizon",   icon: "🌅" },
+      { id: "resume3",  name: "Elevate",   icon: "🚀" },
+      { id: "resume4",  name: "Pulse",     icon: "⚡" },
+      { id: "resume5",  name: "Vertex",    icon: "🔷" },
+    ],
+  },
+  {
+    label: "Professional",
+    badgeStyle: { background: "#f1f5f9", color: "#334155" },
+    accentColor: "#64748b",
+    templates: [
+      { id: "resume6",  name: "Executive", icon: "💼" },
+      { id: "resume7",  name: "Prestige",  icon: "🏆" },
+      { id: "resume8",  name: "Legacy",    icon: "📋" },
+      { id: "resume9",  name: "Summit",    icon: "🏔️" },
+      { id: "resume10", name: "Sterling",  icon: "✨" },
+    ],
+  },
+  {
+    label: "Creative",
+    badgeStyle: { background: "#f3e8ff", color: "#7e22ce" },
+    accentColor: "#a855f7",
+    templates: [
+      { id: "resume11", name: "Canvas",    icon: "🎨" },
+      { id: "resume12", name: "Mosaic",    icon: "🧩" },
+      { id: "resume13", name: "Prism",     icon: "🌈" },
+      { id: "resume14", name: "Inspire",   icon: "💡" },
+      { id: "resume15", name: "Vision",    icon: "👁️" },
+    ],
+  },
+  {
+    label: "Minimalist",
+    badgeStyle: { background: "#d1fae5", color: "#065f46" },
+    accentColor: "#10b981",
+    templates: [
+      { id: "resume16", name: "Pure",      icon: "⬜" },
+      { id: "resume17", name: "Essence",   icon: "🍃" },
+      { id: "resume18", name: "Mono",      icon: "◼" },
+      { id: "resume19", name: "Slate",     icon: "🪨" },
+      { id: "resume20", name: "Zenith",    icon: "🔝" },
+    ],
+  },
+];
 
 export default function Editor() {
   return (
@@ -92,7 +145,11 @@ function EditorContent() {
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [draftStatus, setDraftStatus] = useState("Auto-saves locally");
   const [draftSavedAt, setDraftSavedAt] = useState("");
+  const [showTemplateSwitcher, setShowTemplateSwitcher] = useState(false);
   const previewRef = useRef(null);
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   const templateComponents = {
     resume1: Resume1,
@@ -119,6 +176,13 @@ function EditorContent() {
 
   const searchParams = useSearchParams();
   const selectedTemplate = searchParams.get("template") || "resume1";
+
+  const handleTemplateChange = useCallback((templateId) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("template", templateId);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    setShowTemplateSwitcher(false);
+  }, [searchParams, router, pathname]);
 
   const SelectedResume = templateComponents[selectedTemplate] || Resume1;
   const selectedName = templateNames[selectedTemplate] || "Resume Builder";
@@ -419,26 +483,37 @@ function EditorContent() {
               <div className="mx-auto max-w-xl space-y-4">
                 <AtsScoreMeter resumeData={resumeData} selectedRole={searchParams.get("role")} />
                 
-                <div className="mb-6 flex items-center justify-between gap-4 border-b border-slate-200 pb-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-700">{selectedName}</p>
-                    <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-                      {section.label}
-                    </h1>
-                    <p className="mt-2 text-xs font-medium text-emerald-700">
-                      {draftStatus}
-                      {draftSavedAt ? ` • ${draftSavedAt}` : ""}
-                    </p>
+                <div className="mb-6 border-b border-slate-200 pb-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-700">{selectedName}</p>
+                      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+                        {section.label}
+                      </h1>
+                      <p className="mt-2 text-xs font-medium text-emerald-700">
+                        {draftStatus}
+                        {draftSavedAt ? ` • ${draftSavedAt}` : ""}
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => setShowTemplateSwitcher(true)}
+                        className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-all"
+                      >
+                        <MdGridView className="text-base" />
+                        Change Template
+                      </button>
+                      <Link
+                        href={`/export?template=${selectedTemplate}`}
+                        disabled={isExportingPdf}
+                        className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:opacity-70 flex items-center gap-1.5"
+                      >
+                        <IoMdDownload />
+                        <span>Export PDF</span>
+                      </Link>
+                    </div>
                   </div>
-                  <Link
-                    
-                    href={`/export?template=${selectedTemplate}`}
-                    disabled={isExportingPdf}
-                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:opacity-70 flex items-center gap-1.5"
-                  >
-                    <IoMdDownload />
-                    <span>Export PDF</span>
-                  </Link>
                 </div>
 
                 <div className="mb-5 flex gap-2 overflow-x-auto pb-1 md:hidden">
@@ -589,6 +664,19 @@ function EditorContent() {
                 />
               </div>
 
+              {/* Change Template Button */}
+              <div className="mb-3 w-full max-w-2xl flex items-center justify-between">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Live Preview</p>
+                <button
+                  type="button"
+                  onClick={() => setShowTemplateSwitcher(true)}
+                  className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-all"
+                >
+                  <MdGridView className="text-base" />
+                  Change Template
+                </button>
+              </div>
+
               <div className="flex justify-center">
                 <div ref={previewRef} className="resume-preview-document bg-white">
                   <SelectedResume
@@ -600,6 +688,15 @@ function EditorContent() {
                   />
                 </div>
               </div>
+
+              {/* Template Switcher Drawer */}
+              {showTemplateSwitcher && (
+                <TemplateSwitcher
+                  current={selectedTemplate}
+                  onSelect={handleTemplateChange}
+                  onClose={() => setShowTemplateSwitcher(false)}
+                />
+              )}
             </section>
           </div>
         </div>
@@ -1227,3 +1324,137 @@ function ThemeControls({
     </section>
   );
 }
+
+// ── Template Switcher Drawer ────────────────────────────────────────────────
+function TemplateSwitcher({ current, onSelect, onClose }) {
+  // Close on Escape key
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Drawer */}
+      <div
+        className="template-switcher-drawer relative z-10 w-full max-w-3xl flex flex-col rounded-t-3xl sm:rounded-3xl bg-white shadow-2xl overflow-hidden"
+        style={{ maxHeight: "85vh" }}
+      >
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid #f1f5f9", flexShrink: 0 }}>
+          <div>
+            <h2 style={{ fontSize: "18px", fontWeight: 900, color: "#0f172a", margin: 0 }}>🎨 Choose Template</h2>
+            <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>20 professional designs — switch anytime</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            style={{ padding: "8px", borderRadius: "10px", border: "none", background: "transparent", cursor: "pointer", color: "#64748b", display: "flex", alignItems: "center" }}
+            aria-label="Close"
+          >
+            <MdClose style={{ fontSize: "22px" }} />
+          </button>
+        </div>
+
+        {/* Template Grid — scrollable */}
+        <div style={{ overflowY: "auto", padding: "20px 24px", display: "flex", flexDirection: "column", gap: "28px" }}>
+          {TEMPLATE_CATEGORIES.map((category) => (
+            <div key={category.label}>
+              {/* Category label */}
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
+                <span style={{ ...category.badgeStyle, padding: "3px 12px", borderRadius: "999px", fontSize: "10px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", flexShrink: 0 }}>
+                  {category.label}
+                </span>
+                <div style={{ flex: 1, height: "1px", background: "#f1f5f9" }} />
+              </div>
+
+              {/* Templates grid */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
+                {category.templates.map((tpl) => {
+                  const isActive = current === tpl.id;
+                  return (
+                    <button
+                      key={tpl.id}
+                      type="button"
+                      onClick={() => onSelect(tpl.id)}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "8px",
+                        borderRadius: "16px",
+                        border: isActive ? `2px solid ${category.accentColor}` : "2px solid #e2e8f0",
+                        padding: "12px 8px",
+                        background: isActive ? "#f8fafc" : "#ffffff",
+                        cursor: "pointer",
+                        boxShadow: isActive ? "0 4px 12px rgba(0,0,0,0.10)" : "none",
+                        transform: isActive ? "scale(1.04)" : "scale(1)",
+                        transition: "all 0.15s ease",
+                      }}
+                    >
+                      {/* Mini resume mockup */}
+                      <div style={{ width: "100%", aspectRatio: "3/4", borderRadius: "8px", background: "linear-gradient(135deg, #f1f5f9, #e2e8f0)", overflow: "hidden", position: "relative", display: "flex", flexDirection: "column", padding: "8px", gap: "4px" }}>
+                        {/* Emoji icon centered */}
+                        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "24px" }}>
+                          {tpl.icon}
+                        </div>
+                        {/* Mini lines at bottom */}
+                        <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+                          <div style={{ height: "3px", borderRadius: "4px", background: isActive ? category.accentColor : "#cbd5e1", width: "80%", opacity: 0.8 }} />
+                          <div style={{ height: "2px", borderRadius: "4px", background: "#cbd5e1", width: "60%" }} />
+                          <div style={{ height: "2px", borderRadius: "4px", background: "#cbd5e1", width: "70%" }} />
+                        </div>
+                        {/* Active checkmark overlay */}
+                        {isActive && (
+                          <div style={{ position: "absolute", top: "6px", right: "6px" }}>
+                            <MdCheckCircle style={{ fontSize: "18px", color: "#059669", filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.2))" }} />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Name */}
+                      <span style={{ fontSize: "11px", fontWeight: 700, color: isActive ? "#0f172a" : "#475569", textAlign: "center", lineHeight: 1.2 }}>
+                        {tpl.name}
+                      </span>
+
+                      {isActive && (
+                        <span style={{ fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#059669" }}>
+                          Active
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div style={{ flexShrink: 0, padding: "16px 24px", borderTop: "1px solid #f1f5f9", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <p style={{ fontSize: "12px", color: "#64748b", margin: 0 }}>
+            Current:{" "}
+            <span style={{ fontWeight: 700, color: "#0f172a" }}>
+              {TEMPLATE_CATEGORIES.flatMap(c => c.templates).find(t => t.id === current)?.name || current}
+            </span>
+          </p>
+          <button
+            type="button"
+            onClick={onClose}
+            style={{ borderRadius: "10px", background: "#0f172a", padding: "8px 20px", fontSize: "12px", fontWeight: 700, color: "#ffffff", border: "none", cursor: "pointer" }}
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
