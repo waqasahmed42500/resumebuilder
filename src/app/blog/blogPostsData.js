@@ -5,7 +5,7 @@ export const blogPostsData = [
     excerpt: 'Over 98% of Fortune 500 companies use ATS software to filter resumes automatically. Learn exact formatting, header setups, and keyword strategy to pass screening.',
     publishDate: '2026-07-28',
     category: 'ATS Optimization',
-    author: 'EasyResume Career Team',
+    author: 'EasyResume Career Team A',
     readTime: '7 min read',
     featuredImage: '/images/hero/ats-scanner-guide.jpg',
     imageAlt: 'Digital resume passing through green checkmark ATS scanner check illustration',
