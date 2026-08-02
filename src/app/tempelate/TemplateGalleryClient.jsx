@@ -11,6 +11,8 @@ import Link from "next/link";
 import { templateCategories, templatesData } from "./templatesData";
 export { templatesData };
 
+// Default visible categories when no filter is active
+const DEFAULT_CATEGORIES = ["Modern", "Professional"];
 
 export default function TemplateGalleryClient() {
   const [openPreview, setOpenPreview] = useState(false);
@@ -18,20 +20,22 @@ export default function TemplateGalleryClient() {
   const [searchValue, setSearchValue] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [previewTemplate, setPreviewTemplate] = useState(null);
+  const [showAll, setShowAll] = useState(false);
+
+  const isFiltering =
+    selectedCategory !== "All" || searchValue.trim() !== "";
 
   const filteredTemplates = useMemo(() => {
     let result = templatesData.filter((template) => {
       const matchesCategory =
         selectedCategory === "All" || template.category === selectedCategory;
       const searchTerm = searchValue.trim().toLowerCase();
-
       const matchesSearch =
         searchTerm === "" ||
         template.title.toLowerCase().includes(searchTerm) ||
         template.subtitle.toLowerCase().includes(searchTerm) ||
         template.category.toLowerCase().includes(searchTerm) ||
         template.description.toLowerCase().includes(searchTerm);
-
       return matchesCategory && matchesSearch;
     });
 
@@ -44,11 +48,20 @@ export default function TemplateGalleryClient() {
     return result;
   }, [selectedCategory, searchValue, sortBy]);
 
+  // When no filter active: show only Modern + Professional by default
+  const visibleTemplates =
+    isFiltering || showAll
+      ? filteredTemplates
+      : filteredTemplates.filter((t) => DEFAULT_CATEGORIES.includes(t.category));
+
+  const hiddenCount = filteredTemplates.length - visibleTemplates.length;
+
   return (
     <>
       <Header />
       <main className="mx-auto min-h-screen bg-slate-50 px-4 pb-24 pt-24 sm:px-6 lg:px-12">
         <div className="mx-auto max-w-7xl">
+
           {/* Header Banner */}
           <header className="mb-12 border-b border-slate-200 pb-8">
             <div className="mb-3 flex items-center gap-3">
@@ -58,7 +71,7 @@ export default function TemplateGalleryClient() {
               </p>
             </div>
             <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
-              Free ATS Resume Templates & Professional CV Designs
+              Free ATS Resume Templates &amp; Professional CV Designs
             </h1>
             <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-600">
               Browse 20 editorially crafted, ATS-tested resume templates designed for tech, marketing, corporate leadership, and creative careers. Select a template and start building instantly for free.
@@ -75,7 +88,10 @@ export default function TemplateGalleryClient() {
                   <button
                     key={cat}
                     type="button"
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setShowAll(false); // reset show-all when category changes
+                    }}
                     className={`rounded-full px-5 py-2 text-xs font-bold transition-all hover:cursor-pointer shadow-sm ${
                       isActive
                         ? "bg-slate-900 text-white shadow-slate-900/20"
@@ -101,7 +117,6 @@ export default function TemplateGalleryClient() {
                   aria-label="Search resume templates"
                 />
               </div>
-
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -117,7 +132,7 @@ export default function TemplateGalleryClient() {
 
           {/* Grid of Templates */}
           <section className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredTemplates.length === 0 ? (
+            {visibleTemplates.length === 0 ? (
               <div className="col-span-full rounded-3xl border border-slate-200 bg-white p-12 text-center text-slate-600 shadow-sm">
                 <p className="text-xl font-bold text-slate-900">No templates match your search.</p>
                 <p className="mt-2 text-sm">Try clearing your filters or searching for another title.</p>
@@ -133,12 +148,12 @@ export default function TemplateGalleryClient() {
                 </button>
               </div>
             ) : (
-              filteredTemplates.map((template) => (
+              visibleTemplates.map((template) => (
                 <article
                   key={template.id}
                   className="group relative flex flex-col overflow-hidden rounded-xl bg-slate-200 transition-all duration-300 hover:shadow-2xl"
                 >
-                  <div className="relative  p-2">
+                  <div className="relative p-2">
                     <Image
                       className="h-full w-full rounded-sm object-cover shadow-md transition-transform duration-500 group-hover:scale-[1.02]"
                       src={`/templates/${template.id}.png`}
@@ -201,6 +216,25 @@ export default function TemplateGalleryClient() {
               ))
             )}
           </section>
+
+          {/* ── Show All / Show Less button (only in default "All" view) ── */}
+          {!isFiltering && (
+            <div className="mt-12 flex flex-col items-center gap-3">
+              {!showAll && hiddenCount > 0 && (
+                <p className="text-sm text-slate-500 font-medium">
+                  +{hiddenCount} more templates available (Creative &amp; Minimalist)
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => setShowAll((prev) => !prev)}
+                className="inline-flex items-center gap-2 rounded-2xl border-2 border-emerald-600 bg-white px-8 py-3 text-sm font-bold text-emerald-700 shadow-sm transition-all duration-200 hover:bg-emerald-600 hover:text-white hover:shadow-lg active:scale-95"
+              >
+                {showAll ? "↑  Show Less Templates" : "✦  Show All Templates"}
+              </button>
+            </div>
+          )}
+
         </div>
 
         {/* Modal Preview */}
@@ -226,7 +260,6 @@ export default function TemplateGalleryClient() {
                   ✕
                 </button>
               </div>
-
               <div className="flex max-h-[70vh] justify-center overflow-auto bg-slate-100 p-6">
                 <div className="relative h-[650px] w-[500px]">
                   <Image
@@ -237,7 +270,6 @@ export default function TemplateGalleryClient() {
                   />
                 </div>
               </div>
-
               <div className="flex items-center justify-end gap-3 border-t p-5">
                 <button
                   type="button"

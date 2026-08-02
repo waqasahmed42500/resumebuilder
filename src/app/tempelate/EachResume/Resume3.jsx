@@ -87,7 +87,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
             </p>
           </div>
         </div>
-        <div className="text-right text-xs leading-5 text-slate-400 space-y-0.5">
+        <div className="text-right text-xs leading-5 text-slate-500 space-y-0.5">
           <p><EditableText value={contact.email} onChange={(val) => updateContact?.("email", val)} readOnly={readOnly} placeholder="Email" /></p>
           <p><EditableText value={contact.phone} onChange={(val) => updateContact?.("phone", val)} readOnly={readOnly} placeholder="Phone" /></p>
           <p><EditableText value={contact.location} onChange={(val) => updateContact?.("location", val)} readOnly={readOnly} placeholder="Location" /></p>
@@ -118,7 +118,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
                     <h3 className="text-xs font-bold text-white">
                       <EditableText value={exp.role} onChange={(val) => updateExperience?.(exp.id, "role", val)} readOnly={readOnly} placeholder="Job Title" />
                     </h3>
-                    <p className="mt-0.5 text-[11px] text-slate-400">
+                    <p className="mt-0.5 text-[11px] text-slate-500">
                       <EditableText value={exp.company} onChange={(val) => updateExperience?.(exp.id, "company", val)} readOnly={readOnly} placeholder="Company" />
                     </p>
                   </div>
@@ -128,7 +128,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
                     <EditableText value={exp.endDate} onChange={(val) => updateExperience?.(exp.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
                   </div>
                 </div>
-                <div className="mt-1.5 text-xs leading-5 text-slate-400">
+                <div className="mt-1.5 text-xs leading-5 text-slate-500">
                   <EditableText value={exp.description} onChange={(val) => updateExperience?.(exp.id, "description", val)} multiline readOnly={readOnly} placeholder="Responsibilities..." />
                 </div>
                 {!readOnly && (
@@ -168,7 +168,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
                       <EditableText value={proj.endDate} onChange={(val) => updateProject?.(proj.id, "endDate", val)} readOnly={readOnly} placeholder="End" />
                     </div>
                   </div>
-                  <div className="mt-1 text-xs leading-5 text-slate-400">
+                  <div className="mt-1 text-xs leading-5 text-slate-500">
                     <EditableText value={proj.description} onChange={(val) => updateProject?.(proj.id, "description", val)} multiline readOnly={readOnly} placeholder="Project details..." />
                   </div>
                   {!readOnly && (
@@ -206,7 +206,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
                       <EditableText value={award.year} onChange={(val) => updateAward?.(award.id, "year", val)} readOnly={readOnly} placeholder="Year" />
                     </div>
                   </div>
-                  <div className="mt-0.5 text-[11px] text-slate-400">
+                  <div className="mt-0.5 text-[11px] text-slate-500">
                     <EditableText value={award.description} onChange={(val) => updateAward?.(award.id, "description", val)} multiline readOnly={readOnly} placeholder="Award description..." />
                   </div>
                   {!readOnly && (
@@ -365,7 +365,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
                 <div className="text-xs font-bold text-white">
                   <EditableText value={entry.degree} onChange={(val) => updateEducation?.(entry.id, "degree", val)} readOnly={readOnly} placeholder="Degree" />
                 </div>
-                <div className="mt-0.5 text-xs text-slate-400">
+                <div className="mt-0.5 text-xs text-slate-500">
                   <EditableText value={entry.school} onChange={(val) => updateEducation?.(entry.id, "school", val)} readOnly={readOnly} placeholder="School" />
                   <span> · </span>
                   <EditableText value={entry.year} onChange={(val) => updateEducation?.(entry.id, "year", val)} readOnly={readOnly} placeholder="Year" />
@@ -397,7 +397,7 @@ const Resume3 = memo(function Resume3({ data: propData, theme, readOnly = false 
                   <div className="font-bold text-white">
                     <EditableText value={cert.name} onChange={(val) => updateCertification?.(cert.id, "name", val)} readOnly={readOnly} placeholder="Cert Title" />
                   </div>
-                  <div className="text-[10px] text-slate-400">
+                  <div className="text-[10px] text-slate-500">
                     <EditableText value={cert.authority} onChange={(val) => updateCertification?.(cert.id, "authority", val)} readOnly={readOnly} placeholder="Issuer" />
                     <span> · </span>
                     <EditableText value={cert.date} onChange={(val) => updateCertification?.(cert.id, "date", val)} readOnly={readOnly} placeholder="Year" />
