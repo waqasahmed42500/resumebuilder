@@ -1,17 +1,16 @@
-export const metadata = {
-  title: "Export & Download Resume PDF | EasyResume",
+import { createMetadata } from "../lib/seo";
+
+export const metadata = createMetadata({
+  title: "Export & Download Resume PDF",
   description:
     "Preview your formatted resume layout and download a vector PDF ready for job applications.",
-  alternates: {
-    canonical: "/export",
+  path: "/export",
+  keywords: ["Resume PDF Download", "Professional Resume", "ATS Resume Builder"],
+  robots: {
+    index: false,
+    follow: false,
   },
-  openGraph: {
-    title: "Export & Download Resume PDF | EasyResume",
-    description:
-      "Download your ATS-friendly professional resume as a high-resolution vector PDF.",
-    url: "/export",
-  },
-};
+});
 
 export default function ExportLayout({ children }) {
   return <>{children}</>;

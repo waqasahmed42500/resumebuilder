@@ -801,22 +801,26 @@ export function ResumeProvider({ children }) {
 
   // Load initial draft from localStorage
   useEffect(() => {
-    const storedDraft = readStoredDraft();
-    if (!storedDraft) return;
+    const frame = requestAnimationFrame(() => {
+      const storedDraft = readStoredDraft();
+      if (!storedDraft) return;
 
-    if (storedDraft.resumeData) {
-      // Robust restoration ensuring collections exist
-      const restored = {
-        ...initialCuratorData,
-        ...storedDraft.resumeData,
-        skills: storedDraft.resumeData.skills || [],
-        tools: storedDraft.resumeData.tools || [],
-      };
-      setHistory([restored]);
-      setHistoryIndex(0);
-    }
-    if (storedDraft.themeFont) setThemeFont(storedDraft.themeFont);
-    if (storedDraft.themeAccent) setThemeAccent(storedDraft.themeAccent);
+      if (storedDraft.resumeData) {
+        // Robust restoration ensuring collections exist
+        const restored = {
+          ...initialCuratorData,
+          ...storedDraft.resumeData,
+          skills: storedDraft.resumeData.skills || [],
+          tools: storedDraft.resumeData.tools || [],
+        };
+        setHistory([restored]);
+        setHistoryIndex(0);
+      }
+      if (storedDraft.themeFont) setThemeFont(storedDraft.themeFont);
+      if (storedDraft.themeAccent) setThemeAccent(storedDraft.themeAccent);
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   return (

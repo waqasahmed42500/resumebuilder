@@ -1,82 +1,74 @@
-import { rolesData } from './templates/roleData';
-import { blogPostsData } from './blog/blogPostsData';
-import { countryData } from './country/countryData';
+import { blogPostsData } from "./blog/blogPostsData";
+import { countryData } from "./country/countryData";
+import { siteConfig } from "./lib/seo";
+import { rolesData } from "./templates/roleData";
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+  const baseUrl = siteConfig.url;
 
-  // Core Static Routes — with real lastModified dates instead of dynamic new Date()
-  // to prevent Google from wasting crawl budget re-crawling unchanged pages
   const staticRoutes = [
-    { route: '',                           changeFreq: 'daily',   priority: 1.0,  date: '2026-07-31' },
-    { route: '/builder',                   changeFreq: 'daily',   priority: 0.95, date: '2026-07-28' },
-    { route: '/templates',                 changeFreq: 'weekly',  priority: 0.9,  date: '2026-07-31' },
-    { route: '/ats-resume-builder',        changeFreq: 'weekly',  priority: 0.9,  date: '2026-07-31' },
-    { route: '/ai-resume-builder',         changeFreq: 'weekly',  priority: 0.9,  date: '2026-07-31' },
-    { route: '/resume-generator',          changeFreq: 'weekly',  priority: 0.9,  date: '2026-07-31' },
-    { route: '/cv-maker',                  changeFreq: 'weekly',  priority: 0.9,  date: '2026-07-31' },
-    { route: '/professional-resume-builder', changeFreq: 'weekly', priority: 0.9, date: '2026-07-31' },
-    { route: '/examples',                  changeFreq: 'weekly',  priority: 0.85, date: '2026-07-28' },
-    { route: '/cover-letter',              changeFreq: 'weekly',  priority: 0.85, date: '2026-07-28' },
-    { route: '/blog',                      changeFreq: 'daily',   priority: 0.8,  date: '2026-07-31' },
-    { route: '/country',                   changeFreq: 'monthly', priority: 0.7,  date: '2026-07-01' },
-    { route: '/resources',                 changeFreq: 'monthly', priority: 0.65, date: '2026-07-01' },
-    { route: '/privacy',                   changeFreq: 'yearly',  priority: 0.4,  date: '2026-07-31' },
-    { route: '/terms',                     changeFreq: 'yearly',  priority: 0.4,  date: '2026-07-31' },
-    { route: '/open-source',               changeFreq: 'monthly', priority: 0.5,  date: '2026-07-01' },
-  ].map(({ route, changeFreq, priority, date }) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: date,
-    changeFrequency: changeFreq,
-    priority,
-  }));
+    { route: "", changeFrequency: "daily", priority: 1.0, lastModified: "2026-08-03" },
+    { route: "/builder", changeFrequency: "daily", priority: 0.95, lastModified: "2026-08-03" },
+    { route: "/templates", changeFrequency: "weekly", priority: 0.9, lastModified: "2026-08-03" },
+    { route: "/pricing", changeFrequency: "monthly", priority: 0.75, lastModified: "2026-08-03" },
+    { route: "/contact", changeFrequency: "yearly", priority: 0.5, lastModified: "2026-08-03" },
+    { route: "/privacy", changeFrequency: "yearly", priority: 0.4, lastModified: "2026-08-03" },
+    { route: "/terms", changeFrequency: "yearly", priority: 0.4, lastModified: "2026-08-03" },
+    { route: "/ats-resume-builder", changeFrequency: "weekly", priority: 0.9, lastModified: "2026-08-03" },
+    { route: "/examples", changeFrequency: "weekly", priority: 0.85, lastModified: "2026-08-03" },
+    { route: "/cover-letter", changeFrequency: "weekly", priority: 0.85, lastModified: "2026-08-03" },
+    { route: "/blog", changeFrequency: "daily", priority: 0.8, lastModified: "2026-08-03" },
+    { route: "/country", changeFrequency: "monthly", priority: 0.7, lastModified: "2026-08-03" },
+    { route: "/resources", changeFrequency: "monthly", priority: 0.65, lastModified: "2026-08-03" },
+    { route: "/open-source", changeFrequency: "monthly", priority: 0.5, lastModified: "2026-08-03" },
+  ];
 
-  // Dynamic Country Regional Routes (5 Target Regions)
-  const countryRoutes = countryData.map((c) => ({
-    url: `${baseUrl}/country/${c.slug}`,
-    lastModified: '2026-07-01',
-    changeFrequency: 'monthly',
+  const countryRoutes = countryData.map((country) => ({
+    route: `/country/${country.slug}`,
+    changeFrequency: "monthly",
     priority: 0.75,
+    lastModified: "2026-08-03",
   }));
 
-  // Dynamic Programmatic Role Template Routes (30 Professions)
-  const programmaticTemplateRoutes = rolesData.map((role) => ({
-    url: `${baseUrl}/templates/${role.slug}`,
-    lastModified: '2026-07-28',
-    changeFrequency: 'weekly',
+  const roleTemplateRoutes = rolesData.map((role) => ({
+    route: `/templates/${role.slug}`,
+    changeFrequency: "weekly",
     priority: 0.8,
+    lastModified: "2026-08-03",
   }));
 
-  // Dynamic Programmatic Role Example Routes (30 Professions)
-  const programmaticExampleRoutes = rolesData.map((role) => ({
-    url: `${baseUrl}/examples/${role.slug}`,
-    lastModified: '2026-07-28',
-    changeFrequency: 'weekly',
+  const roleExampleRoutes = rolesData.map((role) => ({
+    route: `/examples/${role.slug}`,
+    changeFrequency: "weekly",
     priority: 0.8,
+    lastModified: "2026-08-03",
   }));
 
-  // Dynamic Programmatic Cover Letter Routes (30 Professions)
-  const programmaticCoverLetterRoutes = rolesData.map((role) => ({
-    url: `${baseUrl}/cover-letter/${role.slug}`,
-    lastModified: '2026-07-28',
-    changeFrequency: 'weekly',
+  const coverLetterRoutes = rolesData.map((role) => ({
+    route: `/cover-letter/${role.slug}`,
+    changeFrequency: "weekly",
     priority: 0.75,
+    lastModified: "2026-08-03",
   }));
 
-  // Dynamic Blog Post Routes — use post's publishDate for accurate freshness signals
   const blogRoutes = blogPostsData.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.modifiedDate || post.publishDate,
-    changeFrequency: 'monthly',
+    route: `/blog/${post.slug}`,
+    changeFrequency: "monthly",
     priority: 0.7,
+    lastModified: post.modifiedDate || post.publishDate,
   }));
 
   return [
     ...staticRoutes,
     ...countryRoutes,
-    ...programmaticTemplateRoutes,
-    ...programmaticExampleRoutes,
-    ...programmaticCoverLetterRoutes,
+    ...roleTemplateRoutes,
+    ...roleExampleRoutes,
+    ...coverLetterRoutes,
     ...blogRoutes,
-  ];
+  ].map(({ route, lastModified, changeFrequency, priority }) => ({
+    url: `${baseUrl}${route}`,
+    lastModified,
+    changeFrequency,
+    priority,
+  }));
 }

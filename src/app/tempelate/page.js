@@ -1,70 +1,12 @@
-import TemplateGalleryClient from "./TemplateGalleryClient";
-import { templatesData } from "./templatesData";
-import JsonLd from "../Component/SEO/JsonLd";
-import Header from "../Component/Header";
-import Footer from "../Component/Home/footer";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://esayresume.com";
+import { permanentRedirect } from "next/navigation";
 
 export const metadata = {
-  title: "20+ Free ATS Resume Templates & Professional CV Designs",
-  description:
-    "Explore 20 recruiter-tested, ATS-optimized free resume templates. Designed for software engineers, marketing managers, executives, and creative professionals.",
-  alternates: {
-    canonical: "/templates",
-  },
-  openGraph: {
-    title: "20+ Free ATS Resume Templates & Professional CV Designs",
-    description:
-      "Explore 20 recruiter-tested, ATS-optimized free resume templates. Modern, executive, creative, and minimalist layouts.",
-    url: "/templates",
+  robots: {
+    index: false,
+    follow: true,
   },
 };
 
-export default function TempelatePage() {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: siteUrl,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Resume Templates",
-        item: `${siteUrl}/templates`,
-      },
-    ],
-  };
-
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: "Free ATS Resume Templates",
-    description: "20 Recruiter-tested professional resume and CV templates",
-    numberOfItems: templatesData.length,
-    itemListElement: templatesData.map((tmpl, idx) => ({
-      "@type": "ListItem",
-      position: idx + 1,
-      name: tmpl.title,
-      description: tmpl.description,
-      url: `${siteUrl}/builder?template=${tmpl.id}`,
-    })),
-  };
-
-  return (
-    <>
-      <JsonLd data={breadcrumbSchema} />
-      <JsonLd data={itemListSchema} />
-      <Header />
-      <main className="pt-20">
-        <TemplateGalleryClient />
-      </main>
-      <Footer />
-    </>
-  );
+export default function LegacyTempelatePage() {
+  permanentRedirect("/templates");
 }

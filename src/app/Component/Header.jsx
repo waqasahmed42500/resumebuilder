@@ -77,6 +77,7 @@ const navigation = [
       { label: "Career Guides", href: "/resources", icon: HiLightningBolt, desc: "Step-by-step career resources" },
       { label: "Resume Tips", href: "/blog/how-to-pass-ats-resume-scanners-2026", icon: HiClipboardCheck, desc: "Beat ATS screening software" },
       { label: "FAQ", href: "/resources#faq", icon: HiQuestionMarkCircle, desc: "Common questions answered" },
+      { label: "Pricing", href: "/pricing", icon: HiDocumentText, desc: "Free PDF download details" },
     ],
   },
   {
@@ -85,7 +86,7 @@ const navigation = [
       { label: "Regional Resume Builders", href: "/country", icon: HiGlobe, desc: "US, UK, CA, AU & IN standards" },
       { label: "Open Source", href: "/open-source", icon: HiCode, desc: "GitHub schemas & developer tools" },
       { label: "About", href: "/resources#about", icon: HiInformationCircle, desc: "Our mission & team" },
-      { label: "Contact", href: "/resources#contact", icon: HiMail, desc: "Get in touch with us" },
+      { label: "Contact", href: "/contact", icon: HiMail, desc: "Get in touch with us" },
     ],
   },
 ];
@@ -319,8 +320,12 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
 
   /* Close mobile menu on route change */
   useEffect(() => {
-    setMobileMenuOpen(false);
-    setOpenDropdown(null);
+    const frame = requestAnimationFrame(() => {
+      setMobileMenuOpen(false);
+      setOpenDropdown(null);
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, [pathname]);
 
   const closeMobile = useCallback(() => setMobileMenuOpen(false), []);
@@ -410,6 +415,7 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
             onClick={undo}
             disabled={!canUndo}
             title="Undo (Ctrl+Z)"
+            aria-label="Undo resume edit"
             className="flex h-8 w-8 items-center justify-center text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition disabled:opacity-30 active:bg-slate-100"
           >
             <MdUndo className="h-4 w-4" />
@@ -420,6 +426,7 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
             onClick={redo}
             disabled={!canRedo}
             title="Redo (Ctrl+Y)"
+            aria-label="Redo resume edit"
             className="flex h-8 w-8 items-center justify-center text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition disabled:opacity-30 active:bg-slate-100"
           >
             <MdRedo className="h-4 w-4" />
@@ -432,6 +439,7 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
           onClick={() => onChangeTemplate()}
           className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition active:scale-95"
           title="Change Template"
+          aria-label="Change resume template"
         >
           <MdGridView className="h-4 w-4 text-emerald-600" />
           <span className="hidden sm:inline">Template</span>
@@ -442,6 +450,7 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
             onClick={handleShare}
             className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:flex"
             title="Share"
+            aria-label="Share resume builder link"
           >
             <HiShare className="h-3.5 w-3.5" />
             <span className="md:hidden inline ">Share</span>
@@ -457,6 +466,7 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
         <Link
           href={`/export?template=${selectedTemplate}`}
           className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition hover:shadow-md active:scale-95"
+          aria-label="Export resume as PDF"
         >
           <IoMdDownload className="h-4 w-4" />
           <span className="hidden  md:inline">Export PDF</span>

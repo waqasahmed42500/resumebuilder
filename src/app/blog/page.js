@@ -3,21 +3,16 @@ import Header from '@/app/Component/Header';
 import Footer from '@/app/Component/Home/footer';
 import JsonLd from '@/app/Component/SEO/JsonLd';
 import { blogPostsData } from './blogPostsData';
+import { createMetadata } from '../lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
 
-export const metadata = {
+export const metadata = createMetadata({
   title: 'Resume Advice, ATS Optimization Guides & Career Blog | EasyResume',
   description: 'Expert career advice, ATS optimization strategies, resume formatting guides, and job search tips to help you land your dream job fast.',
-  alternates: {
-    canonical: `${siteUrl}/blog`,
-  },
-  openGraph: {
-    title: 'EasyResume Career Blog & ATS Guides',
-    description: 'Master ATS screening, resume formatting, and job applications with expert guides.',
-    url: `${siteUrl}/blog`,
-  },
-};
+  path: '/blog',
+  keywords: ['Resume Advice', 'ATS Resume Builder', 'Resume Generator'],
+});
 
 export default function BlogIndexPage() {
   const breadcrumbSchema = {

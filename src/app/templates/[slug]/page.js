@@ -6,8 +6,9 @@ import Footer from '@/app/Component/Home/footer';
 import JsonLd from '@/app/Component/SEO/JsonLd';
 import AtsScoreMeter from '@/app/Component/SEO/AtsScoreMeter';
 import { rolesData, getRoleBySlug } from '../roleData';
+import { seoKeywords } from '@/app/lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
 
 export async function generateStaticParams() {
   return rolesData.map((role) => ({
@@ -26,8 +27,13 @@ export async function generateMetadata({ params }) {
   return {
     title: role.seoTitle || `Free ${role.title} Resume Builder & Examples (2026)`,
     description: role.metaDescription || `Build an ATS-optimized ${role.title} resume in 5 minutes. Includes recruiter-tested skills, pre-written bullet points, and 100% free PDF download.`,
+    keywords: [...seoKeywords, `${role.title} Resume`, `${role.title} Resume Builder`, `${role.title} Resume Template`],
     alternates: {
       canonical: `${siteUrl}/templates/${slug}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: role.seoTitle || `Free ${role.title} Resume Builder | EasyResume`,

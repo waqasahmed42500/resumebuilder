@@ -4,7 +4,7 @@ import JsonLd from '../Component/SEO/JsonLd';
 import Header from '../Component/Header';
 import Footer from '../Component/Home/footer';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
 
 export const metadata = {
   title: '30+ Free Cover Letter Examples & Generators by Industry (2026)',

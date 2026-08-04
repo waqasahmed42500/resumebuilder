@@ -7,7 +7,7 @@ import JsonLd from '@/app/Component/SEO/JsonLd';
 import CoverLetterInteractive from './CoverLetterInteractive';
 import { rolesData, getRoleBySlug } from '@/app/templates/roleData';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
 
 export async function generateStaticParams() {
   return rolesData.map((role) => ({

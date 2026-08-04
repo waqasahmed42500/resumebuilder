@@ -5,8 +5,9 @@ import Header from '@/app/Component/Header';
 import Footer from '@/app/Component/Home/footer';
 import JsonLd from '@/app/Component/SEO/JsonLd';
 import { blogPostsData, getBlogPostBySlug } from '../blogPostsData';
+import { seoKeywords } from '@/app/lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
 
 export async function generateStaticParams() {
   return blogPostsData.map((post) => ({
@@ -25,8 +26,13 @@ export async function generateMetadata({ params }) {
   return {
     title: `${post.title} | EasyResume Blog`,
     description: post.excerpt,
+    keywords: [...seoKeywords, post.category, 'Resume Blog', 'ATS Resume Guide'],
     alternates: {
       canonical: `${siteUrl}/blog/${post.slug}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: post.title,
@@ -90,7 +96,21 @@ export default async function BlogPostPage({ params }) {
       url: siteUrl,
     },
     image: imageUrl,
+    mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
   };
+
+  const faqSchema = post.faqs?.length ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  } : null;
 
   const imageObjectSchema = {
     '@context': 'https://schema.org',
@@ -106,6 +126,7 @@ export default async function BlogPostPage({ params }) {
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={articleSchema} />
       <JsonLd data={imageObjectSchema} />
+      {faqSchema && <JsonLd data={faqSchema} />}
       <Header />
       <main className="min-h-screen bg-slate-50 px-4 pb-24 pt-24 sm:px-6 lg:px-12">
         <article className="mx-auto max-w-4xl">

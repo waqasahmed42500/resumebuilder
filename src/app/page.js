@@ -5,21 +5,15 @@ import Sec2 from "./Component/Home/sec2";
 import Sec3 from "./Component/Home/sec3";
 import Sec4 from "./Component/Home/sec4";
 import FaqSection from "./Component/Home/FaqSection";
+import { createMetadata } from "./lib/seo";
 
-export const metadata = {
+export const metadata = createMetadata({
   title: "Free Resume Builder & ATS Resume Maker | EasyResume",
   description:
     "Build a job-winning, 100% free ATS resume in minutes. Pick from 20+ recruiter-approved templates, edit experience live, and download high-resolution PDFs.",
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    title: "Free Resume Builder & ATS Resume Maker | EasyResume",
-    description:
-      "Create professional, ATS-optimized resumes in minutes. 20+ designer templates, live PDF preview, 100% free export.",
-    url: "/",
-  },
-};
+  path: "/",
+  keywords: ["AI Resume Builder", "Free Resume Builder", "ATS Resume Builder"],
+});
 
 export default function Home() {
   return (

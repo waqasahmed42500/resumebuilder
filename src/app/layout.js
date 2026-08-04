@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ResumeProvider } from "./context/ResumeContext";
 import JsonLd from "./Component/SEO/JsonLd";
+import { seoKeywords, siteConfig } from "./lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,10 +16,16 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://esayresume.netlify.app";
+const siteUrl = siteConfig.url;
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
+  applicationName: siteConfig.name,
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
   alternates: {
     canonical: "/",
   },
@@ -27,27 +34,8 @@ export const metadata = {
     template: "%s | EasyResume",
   },
   description:
-    "Build a free ATS resume in 5 minutes. Choose from 20+ professional resume templates, customize with our online resume maker, and download a pixel-perfect PDF — no credit card required.",
-  keywords: [
-    "Resume Builder",
-    "Free Resume Builder",
-    "ATS Resume Builder",
-    "Online Resume Maker",
-    "Professional Resume Builder",
-    "AI Resume Builder",
-    "Resume Templates",
-    "CV Builder",
-    "Free CV Maker",
-    "ATS Resume Checker",
-    "Resume Generator",
-    "Resume Creator",
-    "Free Resume Download PDF",
-    "ATS Friendly Resume",
-    "Resume Builder Free",
-    "Best Resume Builder",
-    "Online CV Maker",
-    "Resume Maker",
-  ],
+    "Build a free ATS resume in 5 minutes. Choose from 20+ professional resume templates, customize with our online resume maker, and download a pixel-perfect PDF - no credit card required.",
+  keywords: seoKeywords,
   authors: [{ name: "EasyResume Team" }],
   creator: "EasyResume",
   publisher: "EasyResume",
@@ -59,7 +47,7 @@ export const metadata = {
   openGraph: {
     title: "Free Resume Builder & ATS Resume Maker | EasyResume",
     description:
-      "Build a free ATS resume in 5 minutes. 20+ professional resume templates, live editor, instant PDF download — no paywall, no signup.",
+      "Build a free ATS resume in 5 minutes. 20+ professional resume templates, live editor, instant PDF download - no paywall, no signup.",
     url: siteUrl,
     siteName: "EasyResume",
     locale: "en_US",
@@ -69,7 +57,7 @@ export const metadata = {
         url: "/home.png",
         width: 1200,
         height: 630,
-        alt: "EasyResume — Free Online ATS Resume Builder with 20+ Professional Templates",
+        alt: "EasyResume free online ATS resume builder with professional templates",
       },
     ],
   },
@@ -77,9 +65,9 @@ export const metadata = {
     card: "summary_large_image",
     title: "Free Resume Builder & ATS Resume Maker | EasyResume",
     description:
-      "Build a free ATS resume in 5 minutes. 20+ professional resume templates, live editor, instant PDF download — no paywall, no signup.",
+      "Build a free ATS resume in 5 minutes. 20+ professional resume templates, live editor, instant PDF download - no paywall, no signup.",
     images: ["/home.png"],
-    creator: "@easyresume",
+    creator: siteConfig.twitterHandle,
   },
   robots: {
     index: true,
@@ -98,7 +86,7 @@ export const viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0f172a",
+  themeColor: siteConfig.themeColor,
 };
 
 export default function RootLayout({ children }) {
@@ -110,7 +98,6 @@ export default function RootLayout({ children }) {
         "@id": `${siteUrl}/#organization`,
         name: "EasyResume",
         url: siteUrl,
-        // Full ImageObject for logo — required for Google Knowledge Panel eligibility
         logo: {
           "@type": "ImageObject",
           url: `${siteUrl}/icon.png`,
@@ -133,7 +120,6 @@ export default function RootLayout({ children }) {
         publisher: {
           "@id": `${siteUrl}/#organization`,
         },
-        // SearchAction enables Google Sitelinks Search Box
         potentialAction: {
           "@type": "SearchAction",
           target: {
@@ -144,28 +130,28 @@ export default function RootLayout({ children }) {
         },
       },
       {
-        "@type": "WebApplication",
-        "@id": `${siteUrl}/#webapp`,
+        "@type": "SoftwareApplication",
+        "@id": `${siteUrl}/#software`,
         name: "EasyResume Resume Builder",
         url: siteUrl,
         applicationCategory: "BusinessApplication",
-        operatingSystem: "All",
-        browserRequirements: "Requires JavaScript. Requires HTML5.",
+        operatingSystem: "Web",
+        browserRequirements: "Requires JavaScript and HTML5.",
         offers: {
           "@type": "Offer",
           price: "0",
           priceCurrency: "USD",
-          description: "Free — no subscription, no credit card required",
+          description: "Free - no subscription, no credit card required",
         },
         description:
-          "Free online resume builder with 20+ ATS-optimized templates, live custom styling, and PDF download.",
+          "Free online resume builder with ATS-optimized templates, live custom styling, and PDF download.",
         featureList: [
-          "20+ ATS-Optimized Resume Templates",
-          "Live Online Resume Editor",
-          "Free PDF Download — No Paywall",
-          "100% Client-Side Privacy",
-          "30+ Profession-Specific Resume Builders",
-          "Cover Letter Generator",
+          "ATS-optimized resume templates",
+          "Live online resume editor",
+          "Free resume PDF download",
+          "Client-side privacy",
+          "Profession-specific resume builders",
+          "Cover letter generator",
         ],
       },
     ],
@@ -178,13 +164,39 @@ export default function RootLayout({ children }) {
     >
       <head>
         <JsonLd data={globalSchema} />
-        {/* Preconnect to external image CDN used in hero + template cards — improves LCP */}
+        {/* SEO/CWV: Preconnect to the remote image origin used above the fold to improve LCP. */}
         <link
           rel="preconnect"
           href="https://lh3.googleusercontent.com"
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+        {/* SEO: Google Search Console placeholder. Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in production. */}
+        {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ? (
+          <meta
+            name="google-site-verification"
+            content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
+          />
+        ) : null}
+        {/* Analytics: GA4 placeholder. Set NEXT_PUBLIC_GA_MEASUREMENT_ID in production. */}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', { anonymize_ip: true });
+                `,
+              }}
+            />
+          </>
+        ) : null}
       </head>
       <body className="flex min-h-full flex-col bg-slate-50 text-slate-900">
         <ResumeProvider>{children}</ResumeProvider>

@@ -81,6 +81,11 @@ export default function Footer() {
                 Open Source JSON Schemas & Privacy
               </Link>
             </li>
+            <li>
+              <Link className="transition-colors hover:text-sky-700" href="/pricing">
+                Pricing
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -145,11 +150,14 @@ export default function Footer() {
       <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-4 border-t border-slate-200 pt-8 text-xs font-semibold uppercase tracking-wider text-slate-500 md:flex-row">
         <p>© {new Date().getFullYear()} EasyResume. All Rights Reserved.</p>
         <div className="flex gap-6">
-          <Link href="/resources" className="hover:text-sky-700">
+          <Link href="/terms" className="hover:text-sky-700">
             Terms of Service
           </Link>
-          <Link href="/resources" className="hover:text-sky-700">
+          <Link href="/privacy" className="hover:text-sky-700">
             Privacy Policy
+          </Link>
+          <Link href="/contact" className="hover:text-sky-700">
+            Contact
           </Link>
         </div>
       </div>

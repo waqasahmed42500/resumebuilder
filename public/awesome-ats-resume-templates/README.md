@@ -2,7 +2,7 @@
 
 > Curated open-source ATS-friendly resume templates, JSON schemas, and markdown formats designed for software engineers, nurses, teachers, accountants, and career professionals.
 
-Powered by [**EasyResume**](https://esayresume.netlify.app/) - 100% Free Online ATS Resume Builder.
+Powered by [**EasyResume**](https://geteasyresume.netlify.app/) - 100% Free Online ATS Resume Builder.
 
 ---
 
@@ -19,24 +19,24 @@ Powered by [**EasyResume**](https://esayresume.netlify.app/) - 100% Free Online 
 
 Instead of manually editing raw Markdown or JSON files, build your ATS resume online for free with live PDF preview:
 
-👉 **[Launch EasyResume Online Builder](https://esayresume.netlify.app/builder)**
+👉 **[Launch EasyResume Online Builder](https://geteasyresume.netlify.app/builder)**
 
 ---
 
 ## 📚 Included Templates by Profession
 
-- 💻 [Software Engineer Resume Template](https://esayresume.netlify.app/templates/software-engineer)
-- ⚛️ [Frontend Developer Resume Template](https://esayresume.netlify.app/templates/frontend-developer)
-- ⚙️ [Backend Developer Resume Template](https://esayresume.netlify.app/templates/backend-developer)
-- 🌐 [Full Stack Developer Resume Template](https://esayresume.netlify.app/templates/full-stack-developer)
-- 📊 [Data Analyst Resume Template](https://esayresume.netlify.app/templates/data-analyst)
-- 🤖 [Data Scientist Resume Template](https://esayresume.netlify.app/templates/data-scientist)
-- ☁️ [DevOps Engineer Resume Template](https://esayresume.netlify.app/templates/devops-engineer)
-- 🔒 [Cyber Security Analyst Resume Template](https://esayresume.netlify.app/templates/cyber-security-analyst)
-- 🏥 [Registered Nurse Resume Template](https://esayresume.netlify.app/templates/nurse)
-- 🎓 [Teacher Resume Template](https://esayresume.netlify.app/templates/teacher)
-- 💼 [Product Manager Resume Template](https://esayresume.netlify.app/templates/product-manager)
-- 📈 [Marketing Manager Resume Template](https://esayresume.netlify.app/templates/marketing-manager)
+- 💻 [Software Engineer Resume Template](https://geteasyresume.netlify.app/templates/software-engineer)
+- ⚛️ [Frontend Developer Resume Template](https://geteasyresume.netlify.app/templates/frontend-developer)
+- ⚙️ [Backend Developer Resume Template](https://geteasyresume.netlify.app/templates/backend-developer)
+- 🌐 [Full Stack Developer Resume Template](https://geteasyresume.netlify.app/templates/full-stack-developer)
+- 📊 [Data Analyst Resume Template](https://geteasyresume.netlify.app/templates/data-analyst)
+- 🤖 [Data Scientist Resume Template](https://geteasyresume.netlify.app/templates/data-scientist)
+- ☁️ [DevOps Engineer Resume Template](https://geteasyresume.netlify.app/templates/devops-engineer)
+- 🔒 [Cyber Security Analyst Resume Template](https://geteasyresume.netlify.app/templates/cyber-security-analyst)
+- 🏥 [Registered Nurse Resume Template](https://geteasyresume.netlify.app/templates/nurse)
+- 🎓 [Teacher Resume Template](https://geteasyresume.netlify.app/templates/teacher)
+- 💼 [Product Manager Resume Template](https://geteasyresume.netlify.app/templates/product-manager)
+- 📈 [Marketing Manager Resume Template](https://geteasyresume.netlify.app/templates/marketing-manager)
 
 ---
 
@@ -70,10 +70,10 @@ Instead of manually editing raw Markdown or JSON files, build your ATS resume on
 
 ## 🔗 Useful Links & Resources
 
-- 🌐 [EasyResume Website](https://esayresume.netlify.app/)
-- 📝 [Cover Letter Generator](https://esayresume.netlify.app/cover-letter)
-- 🌍 [Regional Resume Standards (US/UK/CA/AU/IN)](https://esayresume.netlify.app/country)
-- 📖 [ATS Resume Optimization Guide](https://esayresume.netlify.app/blog/how-to-pass-ats-resume-scanners-2026)
+- 🌐 [EasyResume Website](https://geteasyresume.netlify.app/)
+- 📝 [Cover Letter Generator](https://geteasyresume.netlify.app/cover-letter)
+- 🌍 [Regional Resume Standards (US/UK/CA/AU/IN)](https://geteasyresume.netlify.app/country)
+- 📖 [ATS Resume Optimization Guide](https://geteasyresume.netlify.app/blog/how-to-pass-ats-resume-scanners-2026)
 
 ---
 
@@ -83,4 +83,4 @@ Pull requests are welcome! Feel free to add new markdown resume templates or sch
 
 ## 📄 License
 
-MIT © [EasyResume](https://esayresume.netlify.app/)
+MIT © [EasyResume](https://geteasyresume.netlify.app/)

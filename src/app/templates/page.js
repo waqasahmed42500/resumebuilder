@@ -5,23 +5,17 @@ import { rolesData } from './roleData';
 import JsonLd from '../Component/SEO/JsonLd';
 import Header from '../Component/Header';
 import Footer from '../Component/Home/footer';
+import { createMetadata } from '../lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
 
-export const metadata = {
+export const metadata = createMetadata({
   title: '20+ Free ATS Resume Templates & 30+ Industry Role Builders (2026)',
   description:
     'Browse 20+ recruiter-tested, ATS-friendly resume templates and 30+ role-specific resume builders for software engineers, nurses, teachers, accountants, and executives.',
-  alternates: {
-    canonical: `${siteUrl}/templates`,
-  },
-  openGraph: {
-    title: '20+ Free ATS Resume Templates & Professional CV Designs',
-    description:
-      'Explore recruiter-tested, ATS-optimized free resume templates and industry role builders. Modern, executive, creative, and minimalist layouts.',
-    url: `${siteUrl}/templates`,
-  },
-};
+  path: '/templates',
+  keywords: ['Resume Templates', 'Professional Resume', 'ATS Resume Builder'],
+});
 
 export default function TemplatesPage() {
   const breadcrumbSchema = {

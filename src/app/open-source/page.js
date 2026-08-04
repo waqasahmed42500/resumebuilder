@@ -3,7 +3,7 @@ import JsonLd from '../Component/SEO/JsonLd';
 import Header from '../Component/Header';
 import Footer from '../Component/Home/footer';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
 
 export const metadata = {
   title: 'Open Source ATS Resume Schemas & GitHub Repositories | EasyResume',
@@ -104,7 +104,7 @@ export default function OpenSourcePage() {
             {/* Code Snippet Box */}
             <div className="rounded-xl bg-slate-900 p-5 font-mono text-xs text-emerald-400 overflow-x-auto">
               <pre>{`{
-  "$schema": "https://esayresume.netlify.app/schema/resume.json",
+  "$schema": "https://geteasyresume.netlify.app/schema/resume.json",
   "basics": {
     "name": "Developer Candidate",
     "label": "Software Engineer",

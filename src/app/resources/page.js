@@ -3,7 +3,7 @@ import Header from "../Component/Header";
 import Footer from "../Component/Home/footer";
 import JsonLd from "../Component/SEO/JsonLd";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://esayresume.netlify.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://geteasyresume.netlify.app";
 
 export const metadata = {
   title: "Resume Writing Guides & ATS Optimization Checklist",

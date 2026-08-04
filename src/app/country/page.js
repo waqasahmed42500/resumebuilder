@@ -4,7 +4,7 @@ import JsonLd from '../Component/SEO/JsonLd';
 import Header from '../Component/Header';
 import Footer from '../Component/Home/footer';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
 
 export const metadata = {
   title: 'Country-Specific Resume Builders: US, UK, Canada, Australia & India (2026)',

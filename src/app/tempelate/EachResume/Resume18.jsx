@@ -105,7 +105,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
       {/* Summary */}
       <section className="mb-6">
         <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-1.5 border-b border-black pb-0.5">
-          // SUMMARY
+          {"// SUMMARY"}
         </h2>
         <p className="text-xs leading-5 text-slate-800 font-mono">
           <EditableText value={data?.summary} onChange={(val) => updateSummary?.(val)} multiline readOnly={readOnly} placeholder="Summary..." />
@@ -115,7 +115,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
       {/* Experience */}
       <section className="mb-6">
         <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-3 border-b border-black pb-0.5">
-          // EXPERIENCE
+          {"// EXPERIENCE"}
         </h2>
         {experiences.map((exp, index) => (
           <div key={exp.id || index} className="group/item relative mb-4 last:mb-0">
@@ -154,7 +154,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
       {projects.length > 0 && (
         <section className="mb-6">
           <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-2.5 border-b border-black pb-0.5">
-            // PROJECTS
+            {"// PROJECTS"}
           </h2>
           {projects.map((proj, index) => (
             <div key={proj.id || index} className="group/item relative mb-3 last:mb-0 font-mono text-xs">
@@ -191,7 +191,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
       <div className="grid grid-cols-2 gap-6 border-t border-black pt-5">
         <section>
           <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-2 border-b border-black pb-0.5">
-            // EDUCATION
+            {"// EDUCATION"}
           </h2>
           {education.map((entry, index) => (
             <div key={entry.id || index} className="group/item relative mb-2.5 last:mb-0 font-mono text-xs">
@@ -221,7 +221,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
           {certifications.length > 0 && (
             <div className="mt-3">
               <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-1.5 border-b border-black pb-0.5">
-                // CERTS
+                {"// CERTS"}
               </h2>
               {certifications.map((cert, index) => (
                 <div key={cert.id || index} className="group/item relative mb-1.5 last:mb-0 font-mono text-xs">
@@ -253,7 +253,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
 
         <section>
           <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-2 border-b border-black pb-0.5">
-            // SKILLS
+            {"// SKILLS"}
           </h2>
           <div className="flex flex-wrap gap-1 font-mono text-xs mb-3">
             {skills.map((skill, index) => (
@@ -280,7 +280,7 @@ const Resume18 = memo(function Resume18({ data: propData, theme, readOnly = fals
           {languages.length > 0 && (
             <div>
               <h2 className="text-xs font-mono font-bold uppercase tracking-[0.3em] mb-1.5 border-b border-black pb-0.5">
-                // LANGUAGES
+                {"// LANGUAGES"}
               </h2>
               <div className="space-y-1 font-mono text-xs">
                 {languages.map((lang, index) => (

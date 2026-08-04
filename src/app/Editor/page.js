@@ -319,21 +319,29 @@ function EditorContent() {
   }, [undo, redo]);
 
   useEffect(() => {
-    const storedDraft = readStoredDraft();
-    if (!storedDraft) return;
+    const frame = requestAnimationFrame(() => {
+      const storedDraft = readStoredDraft();
+      if (!storedDraft) return;
 
-    setActiveSection(storedDraft.activeSection || "contact");
-    setSkillInput(storedDraft.skillInput || "");
-    setDraftStatus("Draft restored");
-    setDraftSavedAt(
-      storedDraft.updatedAt
-        ? new Date(storedDraft.updatedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
-        : ""
-    );
+      setActiveSection(storedDraft.activeSection || "contact");
+      setSkillInput(storedDraft.skillInput || "");
+      setDraftStatus("Draft restored");
+      setDraftSavedAt(
+        storedDraft.updatedAt
+          ? new Date(storedDraft.updatedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+          : ""
+      );
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
-    persistDraft("Auto-saved locally");
+    const frame = requestAnimationFrame(() => {
+      persistDraft("Auto-saved locally");
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, [resumeData, skillInput, activeSection, themeAccent, themeFont]);
 
   const handleSaveDraft = () => {

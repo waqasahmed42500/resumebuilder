@@ -1,31 +1,15 @@
-export default function robots() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://esayresume.netlify.app';
+import { siteConfig } from "./lib/seo";
 
+export default function robots() {
   return {
     rules: [
       {
-        // All standard search engine crawlers — full access except private/dynamic routes
-        userAgent: '*',
-        allow: ['/'],
-        disallow: ['/api/', '/_next/', '/export/', '/builder?*'],
-      },
-      {
-        // Block AI training crawlers — they scrape content without providing link equity
-        userAgent: [
-          'GPTBot',
-          'ChatGPT-User',
-          'PerplexityBot',
-          'ClaudeBot',
-          'Google-Extended',
-          'Bytespider',
-          'CCBot',
-          'Amazonbot',
-          'anthropic-ai',
-        ],
-        disallow: ['/'],
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/api/", "/_next/", "/export/"],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+    host: siteConfig.url,
   };
 }
