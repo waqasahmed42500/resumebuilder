@@ -39,6 +39,11 @@ export const metadata = {
   authors: [{ name: "Resuvix Team" }],
   creator: "Resuvix",
   publisher: "Resuvix",
+
+    other: {
+    "google-adsense-account": "ca-pub-5103683580698340",
+  },
+  
   formatDetection: {
     email: false,
     address: false,
@@ -163,6 +168,7 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        
         <JsonLd data={globalSchema} />
         {/* SEO/CWV: Preconnect to the remote image origin used above the fold to improve LCP. */}
         <link
