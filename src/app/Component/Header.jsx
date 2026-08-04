@@ -350,7 +350,7 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
           <Link
             href="/"
             className="shrink-0 text-lg font-extrabold text-slate-900 sm:text-xl"
-            aria-label="EasyResume Home"
+            aria-label="Resuvix Home"
           >
             Easy<span className="text-sky-600">Resume</span>
           </Link>

@@ -3,7 +3,7 @@ import Footer from "../Component/Home/footer";
 import Link from "next/link";
 import JsonLd from "../Component/SEO/JsonLd";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://geteasyresume.netlify.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://resuvix.com";
 
 export const metadata = {
   title: "Free ATS Resume Builder | Pass Applicant Tracking Systems 100%",
@@ -35,9 +35,9 @@ const atsFaqs = [
       "An Applicant Tracking System (ATS) is recruitment software used by over 98% of Fortune 500 companies to store, scan, rate, and rank job applications automatically before a human recruiter reads them.",
   },
   {
-    question: "How does EasyResume guarantee ATS compatibility?",
+    question: "How does Resuvix guarantee ATS compatibility?",
     answer:
-      "All EasyResume templates use standard HTML5 typography hierarchies, standard section headings (Work Experience, Education, Skills), single/dual clean text blocks, and vector PDF encoding that ATS parsers extract without layout corruption.",
+      "All Resuvix templates use standard HTML5 typography hierarchies, standard section headings (Work Experience, Education, Skills), single/dual clean text blocks, and vector PDF encoding that ATS parsers extract without layout corruption.",
   },
   {
     question: "What formatting mistakes break ATS parsing?",

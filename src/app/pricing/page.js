@@ -7,7 +7,7 @@ import { breadcrumbSchema, createMetadata } from "../lib/seo";
 export const metadata = createMetadata({
   title: "Pricing - Free Resume Builder With PDF Download",
   description:
-    "EasyResume is a free online resume builder with ATS resume templates, CV maker tools, and resume PDF download without credit card requirements.",
+    "Resuvix is a free online resume builder with ATS resume templates, CV maker tools, and resume PDF download without credit card requirements.",
   path: "/pricing",
   keywords: ["Free Resume Builder", "Resume PDF Download", "Online Resume Builder"],
 });
@@ -49,7 +49,7 @@ export default function PricingPage() {
             <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
               <div>
                 <h2 className="text-2xl font-extrabold text-slate-900">
-                  EasyResume Free
+                  Resuvix Free
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
                   Everything needed to create an ATS-friendly professional resume online.

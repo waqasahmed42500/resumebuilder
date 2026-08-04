@@ -8,7 +8,7 @@ import AtsScoreMeter from '@/app/Component/SEO/AtsScoreMeter';
 import { rolesData, getRoleBySlug } from '../roleData';
 import { seoKeywords } from '@/app/lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resuvix.com';
 
 export async function generateStaticParams() {
   return rolesData.map((role) => ({
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }) {
       follow: true,
     },
     openGraph: {
-      title: role.seoTitle || `Free ${role.title} Resume Builder | EasyResume`,
+      title: role.seoTitle || `Free ${role.title} Resume Builder | Resuvix`,
       description: role.metaDescription,
       url: `${siteUrl}/templates/${slug}`,
       type: 'website',
@@ -101,7 +101,7 @@ export default async function RoleResumeBuilderPage({ params }) {
     url: `${siteUrl}/templates/${role.slug}`,
     publisher: {
       '@type': 'Organization',
-      name: 'EasyResume',
+      name: 'Resuvix',
       url: siteUrl,
     },
   };

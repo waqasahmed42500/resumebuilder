@@ -148,7 +148,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-4 border-t border-slate-200 pt-8 text-xs font-semibold uppercase tracking-wider text-slate-500 md:flex-row">
-        <p>© {new Date().getFullYear()} EasyResume. All Rights Reserved.</p>
+        <p>© {new Date().getFullYear()} Resuvix. All Rights Reserved.</p>
         <div className="flex gap-6">
           <Link href="/terms" className="hover:text-sky-700">
             Terms of Service

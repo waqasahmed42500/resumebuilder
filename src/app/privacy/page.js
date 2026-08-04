@@ -6,7 +6,7 @@ import { breadcrumbSchema, createMetadata } from "../lib/seo";
 export const metadata = createMetadata({
   title: "Privacy Policy",
   description:
-    "Read the EasyResume privacy policy for the free online resume builder, local draft storage, analytics placeholders, and contact options.",
+    "Read the Resuvix privacy policy for the free online resume builder, local draft storage, analytics placeholders, and contact options.",
   path: "/privacy",
   keywords: ["Resume Builder Privacy", "Online Resume Builder", "Free Resume Builder"],
 });
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-2xl font-bold text-slate-900">Resume Data</h2>
               <p className="mt-3 leading-relaxed">
-                EasyResume stores resume drafts locally in your browser so you can continue editing without creating an account. Resume content is not intentionally sold or shared.
+                Resuvix stores resume drafts locally in your browser so you can continue editing without creating an account. Resume content is not intentionally sold or shared.
               </p>
             </section>
             <section>
@@ -45,7 +45,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-2xl font-bold text-slate-900">Contact</h2>
               <p className="mt-3 leading-relaxed">
-                For privacy requests, contact support@easyresume.example.
+                For privacy requests, contact support@resuvix.example.
               </p>
             </section>
           </div>

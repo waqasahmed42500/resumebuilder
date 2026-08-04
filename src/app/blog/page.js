@@ -5,10 +5,10 @@ import JsonLd from '@/app/Component/SEO/JsonLd';
 import { blogPostsData } from './blogPostsData';
 import { createMetadata } from '../lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resuvix.com';
 
 export const metadata = createMetadata({
-  title: 'Resume Advice, ATS Optimization Guides & Career Blog | EasyResume',
+  title: 'Resume Advice, ATS Optimization Guides & Career Blog | Resuvix',
   description: 'Expert career advice, ATS optimization strategies, resume formatting guides, and job search tips to help you land your dream job fast.',
   path: '/blog',
   keywords: ['Resume Advice', 'ATS Resume Builder', 'Resume Generator'],
@@ -35,7 +35,7 @@ export default function BlogIndexPage() {
               Career & ATS Insights
             </span>
             <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
-              EasyResume Career Blog
+              Resuvix Career Blog
             </h1>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl">
               Actionable guides on passing ATS scanners, writing recruiter-tested bullet points, and optimizing your job application strategy.

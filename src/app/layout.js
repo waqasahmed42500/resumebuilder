@@ -30,26 +30,26 @@ export const metadata = {
     canonical: "/",
   },
   title: {
-    default: "Free Resume Builder & ATS Resume Maker | EasyResume",
-    template: "%s | EasyResume",
+    default: "Resuvix – Free Resume Builder, ATS Resume Maker & Professional CV Builder",
+    template: "%s | Resuvix",
   },
   description:
-    "Build a free ATS resume in 5 minutes. Choose from 20+ professional resume templates, customize with our online resume maker, and download a pixel-perfect PDF - no credit card required.",
+    "Create a professional ATS-friendly resume online with Resuvix. Use free resume templates, build a modern CV in minutes, customize your resume, and download high-quality PDF resumes for free. No signup or credit card required.",
   keywords: seoKeywords,
-  authors: [{ name: "EasyResume Team" }],
-  creator: "EasyResume",
-  publisher: "EasyResume",
+  authors: [{ name: "Resuvix Team" }],
+  creator: "Resuvix",
+  publisher: "Resuvix",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   openGraph: {
-    title: "Free Resume Builder & ATS Resume Maker | EasyResume",
+    title: "Free Resume Builder & ATS Resume Maker | Resuvix",
     description:
       "Build a free ATS resume in 5 minutes. 20+ professional resume templates, live editor, instant PDF download - no paywall, no signup.",
     url: siteUrl,
-    siteName: "EasyResume",
+    siteName: "Resuvix",
     locale: "en_US",
     type: "website",
     images: [
@@ -57,13 +57,13 @@ export const metadata = {
         url: "/home.png",
         width: 1200,
         height: 630,
-        alt: "EasyResume free online ATS resume builder with professional templates",
+        alt: "Resuvix free online ATS resume builder with professional templates",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Resume Builder & ATS Resume Maker | EasyResume",
+    title: "Free Resume Builder & ATS Resume Maker | Resuvix",
     description:
       "Build a free ATS resume in 5 minutes. 20+ professional resume templates, live editor, instant PDF download - no paywall, no signup.",
     images: ["/home.png"],
@@ -96,7 +96,7 @@ export default function RootLayout({ children }) {
       {
         "@type": "Organization",
         "@id": `${siteUrl}/#organization`,
-        name: "EasyResume",
+        name: "Resuvix",
         url: siteUrl,
         logo: {
           "@type": "ImageObject",
@@ -105,17 +105,17 @@ export default function RootLayout({ children }) {
           height: 512,
         },
         description:
-          "EasyResume is a free online platform for building recruiter-tested, ATS-friendly professional resumes and CVs.",
+          "Resuvix is a free online platform for building recruiter-tested, ATS-friendly professional resumes and CVs.",
         sameAs: [
-          "https://twitter.com/easyresume",
-          "https://linkedin.com/company/easyresume",
+          "https://twitter.com/resuvix",
+          "https://linkedin.com/company/resuvix",
         ],
       },
       {
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
-        name: "EasyResume",
+        name: "Resuvix",
         description: "Free ATS Resume Builder & Professional CV Maker",
         publisher: {
           "@id": `${siteUrl}/#organization`,
@@ -132,7 +132,7 @@ export default function RootLayout({ children }) {
       {
         "@type": "SoftwareApplication",
         "@id": `${siteUrl}/#software`,
-        name: "EasyResume Resume Builder",
+        name: "Resuvix Resume Builder",
         url: siteUrl,
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web",

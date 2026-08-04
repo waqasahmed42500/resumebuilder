@@ -5,7 +5,7 @@ export const blogPostsData = [
     excerpt: 'Over 98% of Fortune 500 companies use ATS software to filter resumes automatically. Learn exact formatting, header setups, and keyword strategy to pass screening.',
     publishDate: '2026-07-28',
     category: 'ATS Optimization',
-    author: 'EasyResume Career Team A',
+    author: 'Resuvix Career Team A',
     readTime: '7 min read',
     featuredImage: '/images/hero/ats-scanner-guide.jpg',
     imageAlt: 'Digital resume passing through green checkmark ATS scanner check illustration',
@@ -22,7 +22,7 @@ export const blogPostsData = [
       </ul>
 
       <h2>Free ATS Score Scanner</h2>
-      <p>You can test your resume layout and keywords for free using EasyResume's online ATS resume builder.</p>
+      <p>You can test your resume layout and keywords for free using Resuvix's online ATS resume builder.</p>
     `,
     faqs: [
       {
@@ -37,7 +37,7 @@ export const blogPostsData = [
     excerpt: 'Custom fonts can break ATS parsers. Discover the top recruiter-tested fonts like Geist, Arial, Helvetica, and Calibri for high readability.',
     publishDate: '2026-07-25',
     category: 'Resume Formatting',
-    author: 'EasyResume Design Team',
+    author: 'Resuvix Design Team',
     readTime: '5 min read',
     featuredImage: '/images/hero/ats-fonts-guide.jpg',
     imageAlt: 'Clean typography layout comparison showing ATS-friendly fonts',
@@ -59,10 +59,10 @@ export const blogPostsData = [
   {
     slug: 'zety-alternative-free-pdf-resume-builder',
     title: 'Looking for a Free Zety Alternative? Zero Paywalls, Free PDF Downloads',
-    excerpt: 'Tired of building a resume only to be hit with a $1.95 trial paywall upon download? Compare EasyResume with Zety and learn why EasyResume is 100% free.',
+    excerpt: 'Tired of building a resume only to be hit with a $1.95 trial paywall upon download? Compare Resuvix with Zety and learn why Resuvix is 100% free.',
     publishDate: '2026-07-20',
     category: 'Tool Comparisons',
-    author: 'EasyResume Product Team',
+    author: 'Resuvix Product Team',
     readTime: '6 min read',
     featuredImage: '/home.png',
     imageAlt: 'Free online resume builder interface preview with no paywall',
@@ -70,8 +70,8 @@ export const blogPostsData = [
       <h2>The Hidden Paywall Problem in Modern Resume Builders</h2>
       <p>Many online resume tools invite job seekers to fill out their work history for 20 minutes, only to block the PDF download button behind a subscription paywall or auto-recurring trial subscription.</p>
 
-      <h2>EasyResume vs Zety & Paid Resume Makers</h2>
-      <p>EasyResume was engineered with a clear commitment: zero paywall traps. Every template, ATS check, and high-resolution vector PDF export is 100% free with no credit card required.</p>
+      <h2>Resuvix vs Zety & Paid Resume Makers</h2>
+      <p>Resuvix was engineered with a clear commitment: zero paywall traps. Every template, ATS check, and high-resolution vector PDF export is 100% free with no credit card required.</p>
     `,
     faqs: [],
   },

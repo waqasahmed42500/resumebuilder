@@ -6,7 +6,7 @@ import { breadcrumbSchema, createMetadata } from "../lib/seo";
 export const metadata = createMetadata({
   title: "Terms of Service",
   description:
-    "Read the EasyResume terms of service for using the free AI resume builder, ATS resume templates, CV maker, and PDF export tools.",
+    "Read the Resuvix terms of service for using the free AI resume builder, ATS resume templates, CV maker, and PDF export tools.",
   path: "/terms",
   keywords: ["Resume Builder Terms", "AI Resume Builder", "Resume PDF Download"],
 });
@@ -31,9 +31,9 @@ export default function TermsPage() {
           </header>
           <div className="mt-10 space-y-8 text-slate-700">
             <section>
-              <h2 className="text-2xl font-bold text-slate-900">Use of EasyResume</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Use of Resuvix</h2>
               <p className="mt-3 leading-relaxed">
-                EasyResume provides free resume builder, CV maker, template, and PDF export tools for personal job search use.
+                Resuvix provides free resume builder, CV maker, template, and PDF export tools for personal job search use.
               </p>
             </section>
             <section>
@@ -45,7 +45,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-2xl font-bold text-slate-900">No Hiring Guarantee</h2>
               <p className="mt-3 leading-relaxed">
-                ATS optimization and professional templates can improve formatting quality, but EasyResume does not guarantee interviews, offers, or employment outcomes.
+                ATS optimization and professional templates can improve formatting quality, but Resuvix does not guarantee interviews, offers, or employment outcomes.
               </p>
             </section>
           </div>

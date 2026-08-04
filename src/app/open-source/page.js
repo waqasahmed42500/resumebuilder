@@ -3,10 +3,10 @@ import JsonLd from '../Component/SEO/JsonLd';
 import Header from '../Component/Header';
 import Footer from '../Component/Home/footer';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resuvix.com';
 
 export const metadata = {
-  title: 'Open Source ATS Resume Schemas & GitHub Repositories | EasyResume',
+  title: 'Open Source ATS Resume Schemas & GitHub Repositories | Resuvix',
   description:
     'Explore open-source Markdown and JSON resume schemas built for developers and job seekers. Free GitHub resume templates with 100% client-side privacy.',
   alternates: {
@@ -54,7 +54,7 @@ export default function OpenSourcePage() {
               Open Source ATS Resume Standards
             </h1>
             <p className="mt-4 text-lg text-slate-600 max-w-3xl">
-              EasyResume is committed to privacy-first, developer-friendly open standards. Explore our GitHub repository, JSON schemas, and privacy-first local storage architecture.
+              Resuvix is committed to privacy-first, developer-friendly open standards. Explore our GitHub repository, JSON schemas, and privacy-first local storage architecture.
             </p>
           </header>
 
@@ -67,7 +67,7 @@ export default function OpenSourcePage() {
                 </span>
                 <h2 className="text-2xl font-black">Your Resume Data Never Leaves Your Browser</h2>
                 <p className="text-slate-300 text-sm mt-2 max-w-xl">
-                  Unlike traditional resume builders that store your personal contact details on remote database servers, EasyResume processes 100% of your data locally inside your browser session using HTML5 LocalStorage and vector PDF generation.
+                  Unlike traditional resume builders that store your personal contact details on remote database servers, Resuvix processes 100% of your data locally inside your browser session using HTML5 LocalStorage and vector PDF generation.
                 </p>
               </div>
 
@@ -104,7 +104,7 @@ export default function OpenSourcePage() {
             {/* Code Snippet Box */}
             <div className="rounded-xl bg-slate-900 p-5 font-mono text-xs text-emerald-400 overflow-x-auto">
               <pre>{`{
-  "$schema": "https://geteasyresume.netlify.app/schema/resume.json",
+  "$schema": "https://resuvix.com/schema/resume.json",
   "basics": {
     "name": "Developer Candidate",
     "label": "Software Engineer",

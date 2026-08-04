@@ -7,7 +7,7 @@ import JsonLd from '@/app/Component/SEO/JsonLd';
 import { blogPostsData, getBlogPostBySlug } from '../blogPostsData';
 import { seoKeywords } from '@/app/lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resuvix.com';
 
 export async function generateStaticParams() {
   return blogPostsData.map((post) => ({
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
   const imageUrl = post.featuredImage ? `${siteUrl}${post.featuredImage}` : `${siteUrl}/home.png`;
 
   return {
-    title: `${post.title} | EasyResume Blog`,
+    title: `${post.title} | Resuvix Blog`,
     description: post.excerpt,
     keywords: [...seoKeywords, post.category, 'Resume Blog', 'ATS Resume Guide'],
     alternates: {
@@ -92,7 +92,7 @@ export default async function BlogPostPage({ params }) {
     },
     publisher: {
       '@type': 'Organization',
-      name: 'EasyResume',
+      name: 'Resuvix',
       url: siteUrl,
     },
     image: imageUrl,
@@ -183,7 +183,7 @@ export default async function BlogPostPage({ params }) {
           <div className="mt-14 rounded-3xl bg-slate-900 p-8 text-center text-white shadow-xl">
             <h3 className="text-2xl font-black mb-3">Ready to Build Your ATS Resume?</h3>
             <p className="text-slate-300 text-sm mb-6 max-w-md mx-auto">
-              Test your resume formatting against recruiter-approved standards with EasyResume.
+              Test your resume formatting against recruiter-approved standards with Resuvix.
             </p>
             <Link
               href="/builder"

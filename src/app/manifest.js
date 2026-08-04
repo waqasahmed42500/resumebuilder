@@ -2,8 +2,8 @@ import { siteConfig } from "./lib/seo";
 
 export default function manifest() {
   return {
-    name: "EasyResume | Free ATS Resume Builder & Professional CV Creator",
-    short_name: "EasyResume",
+    name: "Resuvix | Free ATS Resume Builder & Professional CV Creator",
+    short_name: "Resuvix",
     description:
       "Build ATS-friendly professional resumes online for free. Choose from recruiter-tested templates, customize designs, and export high-resolution PDFs.",
     start_url: "/",

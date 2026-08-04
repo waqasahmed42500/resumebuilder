@@ -5,9 +5,9 @@ import JsonLd from "../Component/SEO/JsonLd";
 import { breadcrumbSchema, createMetadata } from "../lib/seo";
 
 export const metadata = createMetadata({
-  title: "Contact EasyResume",
+  title: "Contact Resuvix",
   description:
-    "Contact EasyResume for resume builder support, ATS resume template feedback, partnership questions, and privacy requests.",
+    "Contact Resuvix for resume builder support, ATS resume template feedback, partnership questions, and privacy requests.",
   path: "/contact",
   keywords: ["Resume Builder Support", "ATS Resume Builder", "Professional Resume"],
 });
@@ -29,7 +29,7 @@ export default function ContactPage() {
               Contact
             </p>
             <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
-              Contact EasyResume
+              Contact Resuvix
             </h1>
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
               Questions about the resume builder, templates, PDF export, or privacy can be sent through the support channel below.
@@ -40,10 +40,10 @@ export default function ContactPage() {
             <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-bold text-slate-900">Support</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                For product support, template feedback, and resume PDF download questions, email the EasyResume team.
+                For product support, template feedback, and resume PDF download questions, email the Resuvix team.
               </p>
               <a
-                href="mailto:support@easyresume.example"
+                href="mailto:support@resuvix.example"
                 className="mt-5 inline-flex rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800"
               >
                 Email Support

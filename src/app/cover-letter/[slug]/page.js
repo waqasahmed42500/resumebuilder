@@ -7,7 +7,7 @@ import JsonLd from '@/app/Component/SEO/JsonLd';
 import CoverLetterInteractive from './CoverLetterInteractive';
 import { rolesData, getRoleBySlug } from '@/app/templates/roleData';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resuvix.com';
 
 export async function generateStaticParams() {
   return rolesData.map((role) => ({
@@ -97,7 +97,7 @@ export default async function RoleCoverLetterPage({ params }) {
     url: `${siteUrl}/cover-letter/${role.slug}`,
     publisher: {
       '@type': 'Organization',
-      name: 'EasyResume',
+      name: 'Resuvix',
       url: siteUrl,
     },
   };

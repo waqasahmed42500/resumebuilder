@@ -7,7 +7,7 @@ import Header from '../Component/Header';
 import Footer from '../Component/Home/footer';
 import { createMetadata } from '../lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resuvix.com';
 
 export const metadata = createMetadata({
   title: '20+ Free ATS Resume Templates & 30+ Industry Role Builders (2026)',

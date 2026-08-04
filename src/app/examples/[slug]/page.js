@@ -5,7 +5,7 @@ import Footer from '@/app/Component/Home/footer';
 import JsonLd from '@/app/Component/SEO/JsonLd';
 import { rolesData, getRoleBySlug } from '../../templates/roleData';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resuvix.com';
 
 export async function generateStaticParams() {
   return rolesData.map((role) => ({
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }) {
       canonical: `${siteUrl}/examples/${slug}`,
     },
     openGraph: {
-      title: `${role.title} Resume Example | EasyResume`,
+      title: `${role.title} Resume Example | Resuvix`,
       description: `Real ${role.title} resume sample with recruiter-tested bullet points and top ATS skills. Customize and export free PDF.`,
       url: `${siteUrl}/examples/${slug}`,
       type: 'article',
@@ -80,7 +80,7 @@ export default async function RoleResumeExamplePage({ params }) {
     url: `${siteUrl}/examples/${role.slug}`,
     publisher: {
       '@type': 'Organization',
-      name: 'EasyResume',
+      name: 'Resuvix',
       url: siteUrl,
     },
   };

@@ -8,7 +8,7 @@ import FaqSection from "./Component/Home/FaqSection";
 import { createMetadata } from "./lib/seo";
 
 export const metadata = createMetadata({
-  title: "Free Resume Builder & ATS Resume Maker | EasyResume",
+  title: "Free Resume Builder & ATS Resume Maker | Resuvix",
   description:
     "Build a job-winning, 100% free ATS resume in minutes. Pick from 20+ recruiter-approved templates, edit experience live, and download high-resolution PDFs.",
   path: "/",

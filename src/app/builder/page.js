@@ -16,7 +16,7 @@ export default function BuilderPage() {
   const webAppSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "EasyResume Online Resume Builder",
+    name: "Resuvix Online Resume Builder",
     url: `${siteUrl}/builder`,
     applicationCategory: "BusinessApplication",
     operatingSystem: "All",

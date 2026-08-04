@@ -6,7 +6,7 @@ import JsonLd from '@/app/Component/SEO/JsonLd';
 import { countryData, getCountryBySlug } from '../countryData';
 import { rolesData } from '@/app/templates/roleData';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://geteasyresume.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://resuvix.com';
 
 export async function generateStaticParams() {
   return countryData.map((country) => ({
@@ -90,7 +90,7 @@ export default async function CountryResumePage({ params }) {
     url: `${siteUrl}/country/${country.slug}`,
     publisher: {
       '@type': 'Organization',
-      name: 'EasyResume',
+      name: 'Resuvix',
       url: siteUrl,
     },
   };
