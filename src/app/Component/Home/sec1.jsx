@@ -58,7 +58,7 @@ export default function Sec1() {
     width={1267}
     height={1122}
     priority
-    className="h-auto md:w-[490px] md:max-w-[500px] xl:w-[650px] xl:max-w-[690px] object-contain"
+    className="h-auto md:-mr-5 md:w-[490px] md:max-w-[500px] xl:w-[650px] xl:max-w-[690px] object-contain"
   />
 </div>
       </div>

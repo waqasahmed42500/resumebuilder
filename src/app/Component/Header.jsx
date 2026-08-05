@@ -39,6 +39,7 @@ import { IoMdDownload } from "react-icons/io";
 
 const navigation = [
   { label: "Home", href: "/" },
+  
   {
     label: "Resume",
     children: [
@@ -220,7 +221,7 @@ function MobileAccordion({ item, pathname, onNavigate }) {
 
       <div
         className={`overflow-hidden transition-all duration-250 ease-in-out ${
-          expanded ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+          expanded ? "max-h-150 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="pb-2 pl-4 pr-4">
