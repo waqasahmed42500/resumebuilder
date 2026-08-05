@@ -24,7 +24,7 @@ const templates = [
     title: "The Analyst",
     subtitle: "Technical & Detailed",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDgvp9RuJKEQ3RhNUhqeC76ls30FpW55IZ-PXoP24Ss3i9vpFVLGU--OSs4UdOC78A_N6cQ5qwxnDxbdel-Lk_baUiEt77DBsp1pov-EieV_pbRmhnPtaJWXFR18M9bAKaQG2x79U8E5kcWtt9OF0yPnIVpbXDLQ_Af0LWusCY8hLtSr2bxinuzRwlgp5STpKLAErVdYhMAVfqQs7SYoVqzvlq3-Rkwanmx7Hc-qInHrfz9bAsYIRI3Wj1uVxCpiArmc4Pfc_64",
+      "/images/home-page-3.png",
     alt: "The Analyst modern technical software engineer resume template",
   },
 ];
