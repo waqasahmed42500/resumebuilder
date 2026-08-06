@@ -1,4 +1,4 @@
-import Editor from "../Editor/page";
+import ClientEditorWrapper from "./ClientEditorWrapper";
 import JsonLd from "../Component/SEO/JsonLd";
 import { breadcrumbSchema, createMetadata, siteConfig } from "../lib/seo";
 
@@ -38,7 +38,7 @@ export default function BuilderPage() {
     <>
       <JsonLd data={webAppSchema} />
       <JsonLd data={builderBreadcrumbSchema} />
-      <Editor />
+      <ClientEditorWrapper />
     </>
   );
 }

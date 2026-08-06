@@ -39,7 +39,7 @@ import { IoMdDownload } from "react-icons/io";
 
 const navigation = [
   { label: "Home", href: "/" },
-  
+  { label: "Portfolio", href: "/Profolio" },
   {
     label: "Resume",
     children: [
@@ -396,16 +396,28 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
           {/* ── Right Section: CTA + Mobile Toggle ── */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             {!isEditorRoute ? (
-              <Link
-                href="/builder"
-                className={`rounded-xl bg-slate-900 font-bold text-white shadow-sm transition-all hover:bg-slate-800 active:scale-[0.97] ${
-                  scrolled
-                    ? "px-4 py-1.5 text-xs sm:px-5 sm:text-sm"
-                    : "px-4 py-2 text-xs sm:px-5 sm:text-sm"
-                }`}
-              >
-                Build Resume Free
-              </Link>
+              <div className="flex gap-2">
+                <Link
+                  href="/builder"
+                  className={`rounded-xl bg-slate-900 font-bold text-white shadow-sm transition-all hover:bg-slate-800 active:scale-[0.97] ${
+                    scrolled
+                      ? "px-4 py-1.5 text-xs sm:px-5 sm:text-sm"
+                      : "px-4 py-2 text-xs sm:px-5 sm:text-sm"
+                  }`}
+                >
+                  Build Resume Free
+                </Link>
+                <Link
+                  href="/Profolio"
+                  className={`hidden sm:flex items-center justify-center rounded-xl bg-emerald-600 font-bold text-white shadow-sm transition-all hover:bg-emerald-500 active:scale-[0.97] ${
+                    scrolled
+                      ? "px-4 py-1.5 text-xs sm:px-5 sm:text-sm"
+                      : "px-4 py-2 text-xs sm:px-5 sm:text-sm"
+                  }`}
+                >
+                  Build Portfolio
+                </Link>
+              </div>
             ):<div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
         {/* Undo / Redo */}
         <div className="flex items-center rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
@@ -514,9 +526,14 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
       >
         {/* Mobile Header */}
         <div className="flex h-16 items-center justify-between border-b border-slate-100 px-4">
-          <Link href="/" onClick={closeMobile} className="text-lg font-extrabold text-slate-900">
-            Easy<span className="text-sky-600">Resume</span>
-          </Link>
+          <Link
+          onClick={closeMobile}
+  href="/"
+  className="shrink-0 text-lg font-extrabold text-slate-900 sm:text-xl"
+  aria-label="Resuvix Home"
+>
+  Resu<span className="text-sky-600">vix</span>
+</Link>
           <button
             type="button"
             onClick={closeMobile}
@@ -562,17 +579,21 @@ export default function Header({undo,canUndo,redo,canRedo,onChangeTemplate,handl
 
         {/* Sticky CTA at bottom */}
         {!isEditorRoute && (
-          <div className="absolute bottom-0 left-0 right-0 border-t border-slate-200 bg-white p-4">
+          <div className="absolute bottom-0 left-0 right-0 border-t border-slate-200 bg-white p-4 flex gap-2">
             <Link
               href="/builder"
               onClick={closeMobile}
-              className="block w-full rounded-xl bg-slate-900 px-6 py-3.5 text-center text-base font-bold text-white shadow-md transition-all hover:bg-slate-800 active:scale-[0.98]"
+              className="flex-1 rounded-xl bg-slate-900 px-2 py-3.5 text-center text-sm font-bold text-white shadow-md transition-all hover:bg-slate-800 active:scale-[0.98]"
             >
-              Build Resume Free →
+              Build Resume
             </Link>
-            <p className="mt-2 text-center text-xs text-slate-500">
-              🔒 100% Free · No Credit Card · Client-Side Privacy
-            </p>
+            <Link
+              href="/Profolio"
+              onClick={closeMobile}
+              className="flex-1 rounded-xl bg-emerald-600 px-2 py-3.5 text-center text-sm font-bold text-white shadow-md transition-all hover:bg-emerald-700 active:scale-[0.98]"
+            >
+              Build Portfolio
+            </Link>
           </div>
         )}
       </div>

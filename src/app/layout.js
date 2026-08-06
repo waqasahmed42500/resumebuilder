@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ResumeProvider } from "./context/ResumeContext";
+import { PortfolioProvider } from "./context/PortfolioContext";
 import JsonLd from "./Component/SEO/JsonLd";
 import { seoKeywords, siteConfig } from "./lib/seo";
 
@@ -205,7 +206,7 @@ export default function RootLayout({ children }) {
         ) : null}
       </head>
       <body className="flex min-h-full flex-col bg-slate-50 text-slate-900">
-        <ResumeProvider>{children}</ResumeProvider>
+        <ResumeProvider><PortfolioProvider>{children}</PortfolioProvider></ResumeProvider>
       </body>
     </html>
   );

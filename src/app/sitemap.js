@@ -21,6 +21,8 @@ export default async function sitemap() {
     { route: "/country", changeFrequency: "monthly", priority: 0.7, lastModified: "2026-08-03" },
     { route: "/resources", changeFrequency: "monthly", priority: 0.65, lastModified: "2026-08-03" },
     { route: "/open-source", changeFrequency: "monthly", priority: 0.5, lastModified: "2026-08-03" },
+    { route: "/Profolio", changeFrequency: "daily", priority: 0.9, lastModified: "2026-08-06" },
+    { route: "/Profolio/tempelate", changeFrequency: "weekly", priority: 0.85, lastModified: "2026-08-06" },
   ];
 
   const countryRoutes = countryData.map((country) => ({

@@ -128,3 +128,112 @@ export function faqSchema(faqs = []) {
     })),
   };
 }
+
+export function createBlogMetadata({ post, siteUrl = siteConfig.url }) {
+  const canonical = `${siteUrl}/blog/${post.slug}`;
+  const imageUrl = `${siteUrl}${post.featuredImage}`;
+
+  return {
+    title: post.seoTitle || `${post.title} | Resuvix Blog`,
+    description: post.metaDescription || post.excerpt,
+    keywords: [...new Set([...seoKeywords, post.focusKeyword, ...post.relatedKeywords])],
+    alternates: {
+      canonical,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    openGraph: {
+      title: post.title,
+      description: post.metaDescription || post.excerpt,
+      url: canonical,
+      siteName: siteConfig.name,
+      locale: 'en_US',
+      type: 'article',
+      publishedTime: post.publishDate,
+      modifiedTime: post.modifiedDate,
+      authors: [post.author],
+      section: post.category,
+      tags: post.relatedKeywords,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 675,
+          alt: post.imageAlt || post.title,
+          type: 'image/jpeg',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.seoTitle || post.title,
+      description: post.metaDescription || post.excerpt,
+      images: [imageUrl],
+      creator: siteConfig.twitterHandle,
+    },
+    other: {
+      'article:published_time': post.publishDate,
+      'article:modified_time': post.modifiedDate,
+      'article:author': post.author,
+      'article:section': post.category,
+      'twitter:label1': 'Reading time',
+      'twitter:data1': post.readTime,
+      'twitter:label2': 'Written by',
+      'twitter:data2': post.author,
+    },
+  };
+}
+
+export function articleSchema({ post, siteUrl = siteConfig.url }) {
+  const canonical = `${siteUrl}/blog/${post.slug}`;
+  const imageUrl = `${siteUrl}${post.featuredImage}`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.metaDescription || post.excerpt,
+    image: {
+      '@type': 'ImageObject',
+      url: imageUrl,
+      width: 1200,
+      height: 675,
+      caption: post.imageCaption || post.imageAlt,
+    },
+    datePublished: post.publishDate,
+    dateModified: post.modifiedDate || post.publishDate,
+    author: {
+      '@type': 'Organization',
+      name: post.author,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Resuvix',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/icon.png`,
+        width: 512,
+        height: 512,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonical,
+    },
+    wordCount: post.wordCount,
+    inLanguage: 'en-US',
+    keywords: post.relatedKeywords?.join(', '),
+    articleSection: post.category,
+  };
+}

@@ -1,5 +1,10 @@
 import Link from 'next/link';
-import TemplateGalleryClient from '../tempelate/TemplateGalleryClient';
+import dynamic from 'next/dynamic';
+
+const TemplateGalleryClient = dynamic(() => import('../tempelate/TemplateGalleryClient'), {
+  ssr: true,
+  loading: () => <div className="h-96 flex items-center justify-center bg-slate-50"><div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div></div>
+});
 import { templatesData } from '../tempelate/templatesData';
 import { rolesData } from './roleData';
 import JsonLd from '../Component/SEO/JsonLd';

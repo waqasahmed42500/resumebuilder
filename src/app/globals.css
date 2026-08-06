@@ -87,7 +87,7 @@
   --color-gray-300: #d1d5db;
   --color-emerald-50: #ecfdf5;
   --color-emerald-400: #34d399;
-  --color-emerald-500: gray;
+  --color-emerald-500: #10b981;
   --color-emerald-600: #059669;
   --color-emerald-700: #047857;
   --color-emerald-800: #065f46;
@@ -280,3 +280,182 @@ body {
 
 @keyframes slideUpFade { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 .animate-slide-up { animation: slideUpFade 0.4s ease-out forwards; }
+
+/* ===== Custom Scrollbar Rules for Modals ===== */
+.custom-scrollbar {
+  overflow-y: auto !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #475569 #0f172a !important;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0f172a;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* ===== Blog Styles ===== */
+.blog-card-image {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.blog-card:hover .blog-card-image {
+  transform: scale(1.05);
+}
+
+.blog-prose {
+  font-size: 1.125rem;
+  line-height: 1.85;
+  color: #334155 !important;
+}
+.blog-prose h2 {
+  font-size: 1.625rem;
+  font-weight: 800;
+  color: #0f172a !important;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.blog-prose h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b !important;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.blog-prose p {
+  margin-bottom: 1.25rem;
+  color: #334155 !important;
+}
+.blog-prose ul, .blog-prose ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+.blog-prose li {
+  margin-bottom: 0.5rem;
+  color: #475569 !important;
+}
+.blog-prose strong {
+  color: #0f172a !important;
+  font-weight: 700;
+}
+.blog-prose blockquote {
+  border-left: 4px solid #059669;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background: #ecfdf5;
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: #065f46 !important;
+  font-style: italic;
+}
+.blog-prose a {
+  color: #059669 !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.blog-prose a:hover {
+  color: #047857 !important;
+}
+.blog-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+.blog-prose th, .blog-prose td {
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: #334155 !important;
+}
+.blog-prose th {
+  background: #f1f5f9;
+  font-weight: 700;
+  color: #0f172a !important;
+}
+
+/* Reading progress bar */
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #059669, #34d399);
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* FAQ Accordion animation */
+.faq-content {
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+}
+
+/* TOC active state */
+.toc-link {
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  padding-left: 12px;
+}
+.toc-link-active {
+  border-left-color: #059669;
+  color: #047857 !important;
+  font-weight: 600;
+  background: #ecfdf5;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Blog card line clamp */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== Portfolio Builder Styles ===== */
+.portfolio-section {
+  scroll-margin-top: 80px;
+}
+
+.portfolio-template {
+  font-family: var(--portfolio-font, 'Inter', sans-serif);
+}
+
+.portfolio-template h1,
+.portfolio-template h2,
+.portfolio-template h3,
+.portfolio-template h4 {
+  font-family: var(--portfolio-heading-font, 'Inter', sans-serif);
+}
+
+.editor-panel::-webkit-scrollbar {
+  width: 5px;
+}
+.editor-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.editor-panel::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 99px;
+}
+.editor-panel::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.template-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.template-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+}
